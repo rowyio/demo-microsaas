@@ -3,6 +3,9 @@ import { useDropzone, FileWithPath } from "react-dropzone";
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useS3Upload, getImageData } from "next-s3-upload";
+import { useCookies } from "react-cookie";
+import { COOKIE_ID, FREE_CREDITS } from "@/utils/const";
+import { AnonymousData } from "./_app";
 
 const baseStyle = {
   flex: 1,
@@ -42,6 +45,7 @@ export default function Home() {
   const [prediction, setPrediction] = useState<any>(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [used, setUsed] = useState<number>();
 
   const [setImageDimensions, imageDimensions] = useState<{
     width: number;
@@ -63,6 +67,7 @@ export default function Home() {
       await handleUpload(acceptedFiles[0]);
     },
   });
+  const [cookies, setCookie] = useCookies([COOKIE_ID]);
 
   const style = useMemo(
     () => ({
@@ -126,12 +131,26 @@ export default function Home() {
       setPrediction(prediction);
     }
     setLoading(false);
+    const anonymousData = cookies.anonymous_data as AnonymousData;
+
+    setCookie(COOKIE_ID, {
+      used: ++anonymousData.used,
+    });
   };
+
+  useEffect(() => {
+    console.log("gooo");
+    const anonymousData = cookies.anonymous_data as AnonymousData;
+    if (anonymousData) setUsed(anonymousData.used);
+    console.log("anonymousData", anonymousData);
+  }, [cookies.anonymous_data]);
 
   useEffect(() => {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
     return () => localFile && URL.revokeObjectURL(localFile.preview);
   }, []);
+
+  console.log(used);
 
   return (
     <>
@@ -168,7 +187,11 @@ export default function Home() {
             <input {...getInputProps()} />
             <p>Drop a image, or click to select one</p>
           </div>
-          <p className="text-zinc-400 mt-2">0/10 images</p>
+          {used != undefined && (
+            <p className="text-zinc-400 mt-2">
+              {used}/{FREE_CREDITS} images
+            </p>
+          )}
         </div>
         <div className="flex-1">
           <h1 className="text-2xl mb-5">Result</h1>
