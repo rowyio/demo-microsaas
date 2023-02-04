@@ -13,7 +13,6 @@ const baseStyle = {
   borderRadius: 2,
   borderColor: "#eeeeee",
   borderStyle: "dashed",
-  backgroundColor: "#fafafa",
   color: "#bdbdbd",
   outline: "none",
   transition: "border .24s ease-in-out",
@@ -35,9 +34,13 @@ type CustomFile = FileWithPath & {
   preview: string;
 };
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 export default function Home() {
   const [localFile, setLocalFile] = useState<CustomFile>();
   const [s3FileUrl, setS3FileUrl] = useState<string>();
+  const [prediction, setPrediction] = useState<any>(null);
+  const [error, setError] = useState(null);
 
   const [setImageDimensions, imageDimensions] = useState<{
     width: number;
@@ -56,16 +59,7 @@ export default function Home() {
     accept: { "image/*": [] },
     maxFiles: 1,
     onDrop: async (acceptedFiles) => {
-      setLocalFile(
-        Object.assign(acceptedFiles[0], {
-          preview: URL.createObjectURL(acceptedFiles[0]),
-        })
-      );
-
-      let { url } = await uploadToS3(acceptedFiles[0]);
-      setS3FileUrl(url);
-      // let { height, width } = await getImageData(file);
-      console.log("S3 URL", url);
+      await handleUpload(acceptedFiles[0]);
     },
   });
 
@@ -78,6 +72,55 @@ export default function Home() {
     }),
     [isFocused, isDragAccept, isDragReject]
   );
+
+  const handleUpload = async (file: File) => {
+    setLocalFile(
+      Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      })
+    );
+
+    let { url } = await uploadToS3(file);
+    setS3FileUrl(url);
+    // let { height, width } = await getImageData(file);
+    console.log("S3 URL", url);
+
+    const response = await fetch("/api/predictions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        image: url,
+      }),
+    });
+
+    let prediction = await response.json();
+
+    if (response.status !== 201) {
+      console.log("some errror", prediction.detail);
+      setError(prediction.detail);
+      return;
+    }
+
+    setPrediction(prediction);
+    console.log("prediction", prediction);
+
+    while (
+      prediction.status !== "succeeded" &&
+      prediction.status !== "failed"
+    ) {
+      await sleep(1000);
+      const response = await fetch("/api/predictions/" + prediction.id);
+      prediction = await response.json();
+      if (response.status !== 200) {
+        setError(prediction.detail);
+        return;
+      }
+      console.log({ prediction });
+      setPrediction(prediction);
+    }
+  };
 
   useEffect(() => {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
@@ -100,7 +143,7 @@ export default function Home() {
       </div>
       <div className="flex my-12 gap-12">
         <div className="flex-1">
-          <h1 className="text-xl mb-5">Upload</h1>
+          <h1 className="text-2xl mb-5">Upload</h1>
           {localFile && (
             <Image
               alt="uploaded photo"
@@ -110,26 +153,33 @@ export default function Home() {
               height={475}
             />
           )}
+          {localFile && (
+            <p className="mb-2">
+              {localFile.path} - {localFile.size} bytes
+            </p>
+          )}
           <div {...getRootProps({ style: style as React.CSSProperties })}>
             <input {...getInputProps()} />
             <p>Drop a image, or click to select one</p>
           </div>
-          {localFile && (
-            <p className="mt-2">
-              {localFile.path} - {localFile.size} bytes
-            </p>
-          )}
         </div>
         <div className="flex-1">
-          <h1 className="text-xl mb-5">Result</h1>
-          {s3FileUrl && (
-            <Image
-              src={s3FileUrl}
-              width={475}
-              height={475}
-              alt="photo with bg removed"
-              className="rounded-2xl relative sm:mt-0 mt-2 cursor-zoom-in mb-4"
-            />
+          <h1 className="text-2xl mb-5">Result</h1>
+
+          {prediction && (
+            <div>
+              {prediction.output && (
+                <>
+                  <Image
+                    src={prediction.output}
+                    alt="output"
+                    className="rounded-2xl relative sm:mt-0 mt-2 cursor-zoom-in mb-4"
+                    width={475}
+                    height={475}
+                  />
+                </>
+              )}
+            </div>
           )}
         </div>
       </div>
