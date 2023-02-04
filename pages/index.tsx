@@ -168,6 +168,7 @@ export default function Home() {
             <input {...getInputProps()} />
             <p>Drop a image, or click to select one</p>
           </div>
+          <p className="text-zinc-400 mt-2">0/10 images</p>
         </div>
         <div className="flex-1">
           <h1 className="text-2xl mb-5">Result</h1>
