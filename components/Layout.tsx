@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className={inter.className}>
-      <div className="max-w-4xl m-auto py-8 flex gap-12 items-center">
+      <div className="max-w-5xl m-auto py-8 flex gap-12 items-center">
         <div className="text-zinc-500">
           <Link href="/">bg removal app</Link>
         </div>
@@ -22,7 +22,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           </ul>
         </div>
       </div>
-      <main className="max-w-4xl m-auto">{children}</main>
+      <main className="max-w-5xl m-auto">{children}</main>
     </div>
   );
 }
