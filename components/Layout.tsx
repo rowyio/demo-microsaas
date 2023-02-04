@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className={inter.className}>
       <div className="max-w-5xl m-auto py-8 flex gap-12 items-center">
-        <div className="text-zinc-500">
+        <div className="text-zinc-800  bg-zinc-200 rounded-sm py-1 px-2">
           <Link href="/">Background Removal App</Link>
         </div>
         <div className="flex-1 ">
