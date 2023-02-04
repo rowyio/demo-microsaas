@@ -7,9 +7,9 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className={inter.className}>
-      <div className="max-w-4xl m-auto py-8 flex gap-12 items-center">
-        <div className="text-zinc-500">
-          <Link href="/">bg removal app</Link>
+      <div className="max-w-5xl m-auto py-8 flex gap-12 items-center">
+        <div className="text-zinc-800  bg-zinc-200 rounded-sm py-1 px-2">
+          <Link href="/">Background Removal App</Link>
         </div>
         <div className="flex-1 ">
           <ul className="flex gap-8 justify-end text-zinc-500">
@@ -22,7 +22,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           </ul>
         </div>
       </div>
-      <main className="max-w-4xl m-auto">{children}</main>
+      <main className="max-w-5xl m-auto">{children}</main>
     </div>
   );
 }
