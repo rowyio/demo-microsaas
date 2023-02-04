@@ -1,41 +1,11 @@
 import Head from "next/head";
-import { useDropzone, FileWithPath } from "react-dropzone";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useS3Upload, getImageData } from "next-s3-upload";
+import { useS3Upload } from "next-s3-upload";
 import { useCookies } from "react-cookie";
 import { COOKIE_ID, FREE_CREDITS } from "@/utils/const";
 import { AnonymousData } from "./_app";
-
-const baseStyle = {
-  flex: 1,
-  display: "flex",
-  flexDirection: "column",
-  padding: "20px",
-  borderWidth: 2,
-  borderRadius: 2,
-  borderColor: "#eeeeee",
-  borderStyle: "dashed",
-  color: "#bdbdbd",
-  outline: "none",
-  transition: "border .24s ease-in-out",
-};
-
-const focusedStyle = {
-  borderColor: "#2196f3",
-};
-
-const acceptStyle = {
-  borderColor: "#00e676",
-};
-
-const rejectStyle = {
-  borderColor: "#ff1744",
-};
-
-type CustomFile = FileWithPath & {
-  preview: string;
-};
+import Upload, { CustomFile } from "@/components/Upload";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -53,31 +23,8 @@ export default function Home() {
   }>();
 
   let { uploadToS3 } = useS3Upload();
-  const {
-    getRootProps,
-    getInputProps,
-    acceptedFiles,
-    isFocused,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({
-    accept: { "image/*": [] },
-    maxFiles: 1,
-    onDrop: async (acceptedFiles) => {
-      await handleUpload(acceptedFiles[0]);
-    },
-  });
-  const [cookies, setCookie] = useCookies([COOKIE_ID]);
 
-  const style = useMemo(
-    () => ({
-      ...baseStyle,
-      ...(isFocused ? focusedStyle : {}),
-      ...(isDragAccept ? acceptStyle : {}),
-      ...(isDragReject ? rejectStyle : {}),
-    }),
-    [isFocused, isDragAccept, isDragReject]
-  );
+  const [cookies, setCookie] = useCookies([COOKIE_ID]);
 
   const handleUpload = async (file: File) => {
     setLoading(true);
@@ -183,10 +130,9 @@ export default function Home() {
               {localFile.path} - {localFile.size} bytes
             </p>
           )}
-          <div {...getRootProps({ style: style as React.CSSProperties })}>
-            <input {...getInputProps()} />
-            <p>Drop a image, or click to select one</p>
-          </div>
+
+          <Upload onUpload={handleUpload} />
+
           {used != undefined && (
             <p className="text-zinc-400 mt-2">
               {used}/{FREE_CREDITS} images
