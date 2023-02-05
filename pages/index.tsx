@@ -6,6 +6,7 @@ import { useCookies } from "react-cookie";
 import { COOKIE_ID, MAX_FREE_CREDITS } from "@/utils/const";
 import { AnonymousData } from "./_app";
 import Upload, { CustomFile } from "@/components/Upload";
+import Modal from "@/components/Modal";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -16,6 +17,7 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [used, setUsed] = useState<number>();
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const [setImageDimensions, imageDimensions] = useState<{
     width: number;
@@ -160,6 +162,29 @@ export default function Home() {
             </div>
           )}
         </div>
+        <Modal
+          isOpen={true}
+          onClose={() => setShowLoginModal(false)}
+          title="Sign in to continue"
+        >
+          <div className="py-4">
+            <div className="mb-8 text-center">
+              <p className="text-zinc-500">
+                You&apos;ve used all your free credits.
+              </p>
+              <p>
+                Good news is by signing up you get an additional 100 free
+                credits!
+              </p>
+            </div>
+
+            <div className="text-center">
+              <button className="cursor-pointer rounded-sm bg-black py-2 px-3 text-white hover:text-zinc-300">
+                Sign in with Google
+              </button>
+            </div>
+          </div>
+        </Modal>
       </div>
     </>
   );
