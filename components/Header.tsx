@@ -22,6 +22,7 @@ export default function Header() {
       })
       .catch((error) => {
         // Handle Errors here.
+        console.log("Failed to sign in", error);
         const errorCode = error.code;
         const errorMessage = error.message;
         // The email of the user's account used.
@@ -46,34 +47,45 @@ export default function Header() {
 
   return (
     <div className="m-auto flex max-w-5xl items-center gap-12 py-8">
-      <div className="rounded-sm  bg-zinc-200 py-1 px-2 text-zinc-800">
+      <div className=" text-zinc-500">
         <Link href="/">Background Removal App</Link>
       </div>
       <div className="flex-1 ">
-        <ul className="flex justify-end gap-8 text-zinc-500">
+        <ul className="flex justify-end gap-5 text-zinc-500">
           {!user && (
             <>
               <li>
-                <p className="cursor-pointer" onClick={registerOrLogin}>
+                <button
+                  className="cursor-pointer rounded-sm py-2 px-3 active:bg-zinc-200"
+                  onClick={registerOrLogin}
+                >
                   Sign In
-                </p>
+                </button>
               </li>
               <li>
-                <p className="cursor-pointer" onClick={registerOrLogin}>
+                <button
+                  className="cursor-pointer rounded-sm bg-black py-2 px-3 text-white hover:text-zinc-300"
+                  onClick={registerOrLogin}
+                >
                   Get Started
-                </p>
+                </button>
               </li>
             </>
           )}
           {user && (
             <>
               <li>
-                <p className="cursor-pointer" onClick={logout}>
+                <button
+                  className="cursor-pointer rounded-sm py-2 px-3 active:bg-zinc-200"
+                  onClick={logout}
+                >
                   Sign Out
-                </p>
+                </button>
               </li>
               <li>
-                <p className="cursor-pointer">Settings</p>
+                <button className="cursor-pointer rounded-sm bg-black py-2 px-3 text-white hover:text-zinc-300">
+                  Settings
+                </button>
               </li>
             </>
           )}
