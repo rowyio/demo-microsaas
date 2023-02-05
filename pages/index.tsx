@@ -1,38 +1,11 @@
 import Head from "next/head";
-import { useDropzone, FileWithPath } from "react-dropzone";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useS3Upload, getImageData } from "next-s3-upload";
-
-const baseStyle = {
-  flex: 1,
-  display: "flex",
-  flexDirection: "column",
-  padding: "20px",
-  borderWidth: 2,
-  borderRadius: 2,
-  borderColor: "#eeeeee",
-  borderStyle: "dashed",
-  color: "#bdbdbd",
-  outline: "none",
-  transition: "border .24s ease-in-out",
-};
-
-const focusedStyle = {
-  borderColor: "#2196f3",
-};
-
-const acceptStyle = {
-  borderColor: "#00e676",
-};
-
-const rejectStyle = {
-  borderColor: "#ff1744",
-};
-
-type CustomFile = FileWithPath & {
-  preview: string;
-};
+import { useS3Upload } from "next-s3-upload";
+import { useCookies } from "react-cookie";
+import { COOKIE_ID, MAX_FREE_CREDITS } from "@/utils/const";
+import { AnonymousData } from "./_app";
+import Upload, { CustomFile } from "@/components/Upload";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -42,6 +15,7 @@ export default function Home() {
   const [prediction, setPrediction] = useState<any>(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [used, setUsed] = useState<number>();
 
   const [setImageDimensions, imageDimensions] = useState<{
     width: number;
@@ -49,30 +23,8 @@ export default function Home() {
   }>();
 
   let { uploadToS3 } = useS3Upload();
-  const {
-    getRootProps,
-    getInputProps,
-    acceptedFiles,
-    isFocused,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({
-    accept: { "image/*": [] },
-    maxFiles: 1,
-    onDrop: async (acceptedFiles) => {
-      await handleUpload(acceptedFiles[0]);
-    },
-  });
 
-  const style = useMemo(
-    () => ({
-      ...baseStyle,
-      ...(isFocused ? focusedStyle : {}),
-      ...(isDragAccept ? acceptStyle : {}),
-      ...(isDragReject ? rejectStyle : {}),
-    }),
-    [isFocused, isDragAccept, isDragReject]
-  );
+  const [cookies, setCookie] = useCookies([COOKIE_ID]);
 
   const handleUpload = async (file: File) => {
     setLoading(true);
@@ -126,12 +78,25 @@ export default function Home() {
       setPrediction(prediction);
     }
     setLoading(false);
+    const anonymousData = cookies.anonymous_data as AnonymousData;
+
+    setCookie(COOKIE_ID, {
+      used: ++anonymousData.used,
+    });
   };
+
+  useEffect(() => {
+    const anonymousData = cookies.anonymous_data as AnonymousData;
+    if (anonymousData) setUsed(anonymousData.used);
+    console.log("anonymousData", anonymousData);
+  }, [cookies.anonymous_data]);
 
   useEffect(() => {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
     return () => localFile && URL.revokeObjectURL(localFile.preview);
   }, []);
+
+  console.log(used);
 
   return (
     <>
@@ -164,11 +129,17 @@ export default function Home() {
               {localFile.path} - {localFile.size} bytes
             </p>
           )}
-          <div {...getRootProps({ style: style as React.CSSProperties })}>
-            <input {...getInputProps()} />
-            <p>Drop a image, or click to select one</p>
-          </div>
-          <p className="text-zinc-400 mt-2">0/10 images</p>
+
+          <Upload
+            onUpload={handleUpload}
+            disabled={used === MAX_FREE_CREDITS}
+          />
+
+          {used != undefined && (
+            <p className="text-zinc-500 mt-2">
+              {used}/{MAX_FREE_CREDITS} images remaining
+            </p>
+          )}
         </div>
         <div className="flex-1">
           <h1 className="text-2xl mb-5">Result</h1>
