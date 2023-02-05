@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useS3Upload } from "next-s3-upload";
 import { useCookies } from "react-cookie";
-import { COOKIE_ID, FREE_CREDITS } from "@/utils/const";
+import { COOKIE_ID, MAX_FREE_CREDITS } from "@/utils/const";
 import { AnonymousData } from "./_app";
 import Upload, { CustomFile } from "@/components/Upload";
 
@@ -86,7 +86,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    console.log("gooo");
     const anonymousData = cookies.anonymous_data as AnonymousData;
     if (anonymousData) setUsed(anonymousData.used);
     console.log("anonymousData", anonymousData);
@@ -131,11 +130,14 @@ export default function Home() {
             </p>
           )}
 
-          <Upload onUpload={handleUpload} />
+          <Upload
+            onUpload={handleUpload}
+            disabled={used === MAX_FREE_CREDITS}
+          />
 
           {used != undefined && (
             <p className="text-zinc-500 mt-2">
-              {used}/{FREE_CREDITS} images remaining
+              {used}/{MAX_FREE_CREDITS} images remaining
             </p>
           )}
         </div>

@@ -32,10 +32,11 @@ export type CustomFile = FileWithPath & {
 };
 
 type Props = {
+  disabled?: boolean;
   onUpload: (file: File) => void;
 };
 
-export default function Upload({ onUpload }: Props) {
+export default function Upload({ onUpload, disabled = false }: Props) {
   const [localFile, setLocalFile] = useState<CustomFile>();
 
   const {
@@ -48,6 +49,7 @@ export default function Upload({ onUpload }: Props) {
   } = useDropzone({
     accept: { "image/*": [] },
     maxFiles: 1,
+    disabled,
     onDrop: async (acceptedFiles) => {
       onUpload(acceptedFiles[0]);
     },
