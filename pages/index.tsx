@@ -134,8 +134,8 @@ export default function Home() {
           <Upload onUpload={handleUpload} />
 
           {used != undefined && (
-            <p className="text-zinc-400 mt-2">
-              {used}/{FREE_CREDITS} images
+            <p className="text-zinc-500 mt-2">
+              {used}/{FREE_CREDITS} images remaining
             </p>
           )}
         </div>
