@@ -96,8 +96,6 @@ export default function Home() {
     return () => localFile && URL.revokeObjectURL(localFile.preview);
   }, []);
 
-  console.log(used);
-
   return (
     <>
       <Head>
@@ -106,20 +104,20 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="mt-12 border-zinc-800 border-b pb-6">
+      <div className="mt-12 border-b border-zinc-800 pb-6">
         <h1 className="text-5xl">Try for free!</h1>
-        <p className="text-zinc-500 pt-2">
+        <p className="pt-2 text-zinc-500">
           Remove the background from up to 10 images, no charge.
         </p>
       </div>
-      <div className="flex my-12 gap-12">
+      <div className="my-12 flex gap-12">
         <div className="flex-1">
-          <h1 className="text-2xl mb-5">Upload</h1>
+          <h1 className="mb-5 text-2xl">Upload</h1>
           {localFile && (
             <Image
               alt="uploaded photo"
               src={localFile.preview}
-              className="rounded-2xl relative sm:mt-0 mt-2  mb-4"
+              className="relative mt-2 mb-4 rounded-2xl  sm:mt-0"
               width={475}
               height={475}
             />
@@ -136,13 +134,13 @@ export default function Home() {
           />
 
           {used != undefined && (
-            <p className="text-zinc-500 mt-2">
+            <p className="mt-2 text-zinc-500">
               {used}/{MAX_FREE_CREDITS} images remaining
             </p>
           )}
         </div>
         <div className="flex-1">
-          <h1 className="text-2xl mb-5">Result</h1>
+          <h1 className="mb-5 text-2xl">Result</h1>
 
           {loading && <p>Loading...</p>}
 
@@ -153,7 +151,7 @@ export default function Home() {
                   <Image
                     src={prediction.output}
                     alt="output"
-                    className="rounded-2xl relative sm:mt-0 mt-2 mb-4"
+                    className="relative mt-2 mb-4 rounded-2xl sm:mt-0"
                     width={475}
                     height={475}
                   />
