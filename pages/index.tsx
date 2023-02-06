@@ -7,6 +7,10 @@ import { COOKIE_ID, MAX_FREE_CREDITS } from "@/utils/const";
 import { AnonymousData } from "./_app";
 import Upload, { CustomFile } from "@/components/Upload";
 import Modal from "@/components/Modal";
+import { collection, setDoc, doc } from "firebase/firestore";
+import { db } from "@/utils/firebase";
+import useAuth from "@/hooks/useAuth";
+import useCredits from "@/hooks/useCredits";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -18,6 +22,8 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [used, setUsed] = useState<number>();
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const { user } = useAuth();
+  const { usedCredits, limit } = useCredits();
 
   const [setImageDimensions, imageDimensions] = useState<{
     width: number;
@@ -76,20 +82,34 @@ export default function Home() {
       await sleep(1000);
       const response = await fetch("/api/predictions/" + prediction.id);
       prediction = await response.json();
+
       if (response.status !== 200) {
         setError(prediction.detail);
         setLoading(false);
         return;
       }
+
       console.log({ prediction });
       setPrediction(prediction);
     }
+
     setLoading(false);
     const anonymousData = cookies.anonymous_data as AnonymousData;
 
     setCookie(COOKIE_ID, {
       used: ++anonymousData.used,
     });
+
+    if (user) {
+      // Save prediction in firestore
+      const predictionsRef = collection(db, "profiles");
+      await setDoc(doc(predictionsRef), {
+        input: s3FileUrl,
+        output: prediction.output,
+        profile: user.uid,
+        "_createdBy.timestamp": new Date(),
+      });
+    }
   };
 
   useEffect(() => {
@@ -142,7 +162,7 @@ export default function Home() {
 
           {used != undefined && (
             <p className="mt-2 text-zinc-500">
-              {used}/{MAX_FREE_CREDITS} images remaining
+              {used}/{limit} images remaining
             </p>
           )}
         </div>

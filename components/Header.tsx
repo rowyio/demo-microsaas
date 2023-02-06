@@ -111,7 +111,7 @@ export default function Header() {
               </li>
               <li>
                 <button className="cursor-pointer rounded-sm bg-black py-2 px-3 text-white hover:text-zinc-300">
-                  Settings
+                  Dashboard
                 </button>
               </li>
             </>
