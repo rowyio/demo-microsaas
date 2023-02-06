@@ -29,6 +29,11 @@ export default function Home() {
   const [cookies, setCookie] = useCookies([COOKIE_ID]);
 
   const handleUpload = async (file: File) => {
+    if (used === MAX_FREE_CREDITS) {
+      setShowLoginModal(true);
+      return;
+    }
+
     setLoading(true);
 
     setLocalFile(
@@ -132,7 +137,7 @@ export default function Home() {
 
           <Upload
             onUpload={handleUpload}
-            disabled={used === MAX_FREE_CREDITS}
+            // disabled={used === MAX_FREE_CREDITS}
           />
 
           {used != undefined && (
@@ -163,7 +168,7 @@ export default function Home() {
           )}
         </div>
         <Modal
-          isOpen={true}
+          isOpen={showLoginModal}
           onClose={() => setShowLoginModal(false)}
           title="Sign in to continue"
         >

@@ -47,7 +47,7 @@ export default function Header() {
 
   return (
     <div className="m-auto flex max-w-5xl items-center gap-12 py-8">
-      <div className=" text-zinc-500">
+      <div className=" tracking-wider text-zinc-500">
         <Link href="/">Background Removal App</Link>
       </div>
       <div className="flex-1 ">
