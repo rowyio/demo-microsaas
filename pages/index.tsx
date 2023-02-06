@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useS3Upload } from "next-s3-upload";
 import { useCookies } from "react-cookie";
-import { COOKIE_ID, MAX_FREE_CREDITS } from "@/utils/const";
+import { COOKIE_ID } from "@/utils/const";
 import { AnonymousData } from "./_app";
 import Upload, { CustomFile } from "@/components/Upload";
 import Modal from "@/components/Modal";
@@ -35,7 +35,7 @@ export default function Home() {
   const [cookies, setCookie] = useCookies([COOKIE_ID]);
 
   const handleUpload = async (file: File) => {
-    if (used === MAX_FREE_CREDITS) {
+    if (usedCredits === limit) {
       setShowLoginModal(true);
       return;
     }
@@ -102,11 +102,11 @@ export default function Home() {
 
     if (user) {
       // Save prediction in firestore
-      const predictionsRef = collection(db, "profiles");
+      const predictionsRef = collection(db, "predictions");
       await setDoc(doc(predictionsRef), {
-        input: s3FileUrl,
+        input: url,
         output: prediction.output,
-        profile: user.uid,
+        profile: user.profileId,
         "_createdBy.timestamp": new Date(),
       });
     }
@@ -162,7 +162,7 @@ export default function Home() {
 
           {used != undefined && (
             <p className="mt-2 text-zinc-500">
-              {used}/{limit} images remaining
+              {usedCredits}/{limit} images remaining
             </p>
           )}
         </div>
