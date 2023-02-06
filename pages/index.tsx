@@ -6,6 +6,11 @@ import { useCookies } from "react-cookie";
 import { COOKIE_ID, MAX_FREE_CREDITS } from "@/utils/const";
 import { AnonymousData } from "./_app";
 import Upload, { CustomFile } from "@/components/Upload";
+import Modal from "@/components/Modal";
+import { collection, setDoc, doc } from "firebase/firestore";
+import { db } from "@/utils/firebase";
+import useAuth from "@/hooks/useAuth";
+import useCredits from "@/hooks/useCredits";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -16,6 +21,9 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [used, setUsed] = useState<number>();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const { user } = useAuth();
+  const { usedCredits, limit } = useCredits();
 
   const [setImageDimensions, imageDimensions] = useState<{
     width: number;
@@ -27,6 +35,11 @@ export default function Home() {
   const [cookies, setCookie] = useCookies([COOKIE_ID]);
 
   const handleUpload = async (file: File) => {
+    if (used === MAX_FREE_CREDITS) {
+      setShowLoginModal(true);
+      return;
+    }
+
     setLoading(true);
 
     setLocalFile(
@@ -69,20 +82,34 @@ export default function Home() {
       await sleep(1000);
       const response = await fetch("/api/predictions/" + prediction.id);
       prediction = await response.json();
+
       if (response.status !== 200) {
         setError(prediction.detail);
         setLoading(false);
         return;
       }
+
       console.log({ prediction });
       setPrediction(prediction);
     }
+
     setLoading(false);
     const anonymousData = cookies.anonymous_data as AnonymousData;
 
     setCookie(COOKIE_ID, {
       used: ++anonymousData.used,
     });
+
+    if (user) {
+      // Save prediction in firestore
+      const predictionsRef = collection(db, "profiles");
+      await setDoc(doc(predictionsRef), {
+        input: s3FileUrl,
+        output: prediction.output,
+        profile: user.uid,
+        "_createdBy.timestamp": new Date(),
+      });
+    }
   };
 
   useEffect(() => {
@@ -96,8 +123,6 @@ export default function Home() {
     return () => localFile && URL.revokeObjectURL(localFile.preview);
   }, []);
 
-  console.log(used);
-
   return (
     <>
       <Head>
@@ -106,20 +131,20 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="mt-12 border-zinc-800 border-b pb-6">
+      <div className="mt-12 border-b border-zinc-800 pb-6">
         <h1 className="text-5xl">Try for free!</h1>
-        <p className="text-zinc-500 pt-2">
+        <p className="pt-2 text-zinc-500">
           Remove the background from up to 10 images, no charge.
         </p>
       </div>
-      <div className="flex my-12 gap-12">
+      <div className="my-12 flex gap-12">
         <div className="flex-1">
-          <h1 className="text-2xl mb-5">Upload</h1>
+          <h1 className="mb-5 text-2xl">Upload</h1>
           {localFile && (
             <Image
               alt="uploaded photo"
               src={localFile.preview}
-              className="rounded-2xl relative sm:mt-0 mt-2  mb-4"
+              className="relative mt-2 mb-4 rounded-2xl  sm:mt-0"
               width={475}
               height={475}
             />
@@ -132,17 +157,17 @@ export default function Home() {
 
           <Upload
             onUpload={handleUpload}
-            disabled={used === MAX_FREE_CREDITS}
+            // disabled={used === MAX_FREE_CREDITS}
           />
 
           {used != undefined && (
-            <p className="text-zinc-500 mt-2">
-              {used}/{MAX_FREE_CREDITS} images remaining
+            <p className="mt-2 text-zinc-500">
+              {used}/{limit} images remaining
             </p>
           )}
         </div>
         <div className="flex-1">
-          <h1 className="text-2xl mb-5">Result</h1>
+          <h1 className="mb-5 text-2xl">Result</h1>
 
           {loading && <p>Loading...</p>}
 
@@ -153,7 +178,7 @@ export default function Home() {
                   <Image
                     src={prediction.output}
                     alt="output"
-                    className="rounded-2xl relative sm:mt-0 mt-2 mb-4"
+                    className="relative mt-2 mb-4 rounded-2xl sm:mt-0"
                     width={475}
                     height={475}
                   />
@@ -162,6 +187,29 @@ export default function Home() {
             </div>
           )}
         </div>
+        <Modal
+          isOpen={showLoginModal}
+          onClose={() => setShowLoginModal(false)}
+          title="Sign in to continue"
+        >
+          <div className="py-4">
+            <div className="mb-8 text-center">
+              <p className="text-zinc-500">
+                You&apos;ve used all your free credits.
+              </p>
+              <p>
+                Good news is by signing up you get an additional 100 free
+                credits!
+              </p>
+            </div>
+
+            <div className="text-center">
+              <button className="cursor-pointer rounded-sm bg-black py-2 px-3 text-white hover:text-zinc-300">
+                Sign in with Google
+              </button>
+            </div>
+          </div>
+        </Modal>
       </div>
     </>
   );
