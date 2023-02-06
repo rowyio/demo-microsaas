@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { db } from "@/utils/firebase";
-import { doc, getDoc } from "firebase/firestore";
 import useAuth from "./useAuth";
+import { getPackage } from "@/lib/packages";
 
 export default function useCredits() {
   const [usedCredits, setUsedCredits] = useState();
@@ -10,12 +9,9 @@ export default function useCredits() {
 
   useEffect(() => {
     async function loadPackage() {
-      const packagesRef = doc(db, "credit_packages", user?.packageId as string);
-      const packagesSnap = await getDoc(packagesRef);
+      const data = await getPackage(user?.packageId as string);
 
-      if (packagesSnap.exists()) {
-        const data = packagesSnap.data();
-        console.log("packagesSnap", data);
+      if (data) {
         setLimit(data.limit);
       }
     }

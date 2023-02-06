@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
-import { auth, db } from "@/utils/firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { auth } from "@/utils/firebase";
+import { getUserProfile } from "@/lib/profiles";
 
 type Profile = {
   profileId: string;
@@ -16,14 +16,9 @@ export default function useAuth() {
 
   useEffect(() => {
     async function loadProfile(user: User) {
-      const profilesQuery = query(
-        collection(db, "profiles"),
-        where("profileId", "==", user.uid)
-      );
-      const profilesSnapshot = await getDocs(profilesQuery);
+      const profile = await getUserProfile(user.uid);
 
-      if (!profilesSnapshot.empty) {
-        const profile = profilesSnapshot.docs[0].data();
+      if (profile) {
         setUser({
           ...user,
           packageId: profile.package,

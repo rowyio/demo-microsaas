@@ -1,15 +1,10 @@
 import Link from "next/link";
 import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import { auth, db } from "@/utils/firebase";
-import {
-  collection,
-  setDoc,
-  doc,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
+import { collection, setDoc, doc, query, where } from "firebase/firestore";
 import useAuth from "@/hooks/useAuth";
+import { getPackages } from "@/lib/packages";
+import { getUserProfile } from "@/lib/profiles";
 
 const provider = new GoogleAuthProvider();
 
@@ -26,17 +21,16 @@ export default function Header() {
         const user = result.user;
         const userId = user.uid;
 
-        const q = query(collection(db, "profiles"), where("id", "==", userId));
-        const querySnapshot = await getDocs(q);
+        const existingProfile = await getUserProfile(userId);
 
         // Create profile on first sign in
-        if (querySnapshot.empty) {
+        if (!existingProfile) {
           const packagesQuery = query(
             collection(db, "credit_packages"),
             where("price", "==", 0)
           );
-          const packagesSnapshot = await getDocs(packagesQuery);
-          const packageId = packagesSnapshot.docs[0].id;
+          const packagesSnapshot = await getPackages(packagesQuery);
+          const packageId = packagesSnapshot[0].id;
 
           // Assign free package for new users
           const profilesRef = collection(db, "profiles");
