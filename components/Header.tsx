@@ -31,9 +31,18 @@ export default function Header() {
 
         // Create profile on first sign in
         if (querySnapshot.empty) {
+          const packagesQuery = query(
+            collection(db, "credit_packages"),
+            where("price", "==", 0)
+          );
+          const packagesSnapshot = await getDocs(packagesQuery);
+          const packageId = packagesSnapshot.docs[0].id;
+
+          // Assign free package for new users
           const profilesRef = collection(db, "profiles");
           await setDoc(doc(profilesRef), {
-            id: userId,
+            profileId: userId,
+            package: packageId,
             "_createdBy.timestamp": new Date(),
           });
         }
