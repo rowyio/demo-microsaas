@@ -3,7 +3,7 @@ import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/utils/firebase";
 import { getUserProfile } from "@/lib/profiles";
 
-type Profile = {
+export type Profile = {
   id: string;
   userId: string;
   package: { id: string; limit: number; price: number; used: number };

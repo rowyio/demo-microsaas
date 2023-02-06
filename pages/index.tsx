@@ -10,7 +10,7 @@ import Modal from "@/components/Modal";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { db } from "@/utils/firebase";
 import useAuth from "@/hooks/useAuth";
-import useCredits from "@/hooks/useCredits";
+import usePackage from "@/hooks/usePackage";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -22,7 +22,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const { user } = useAuth();
-  const { used, limit } = useCredits();
+  const { used, limit } = usePackage();
 
   const [setImageDimensions, imageDimensions] = useState<{
     width: number;
@@ -154,10 +154,7 @@ export default function Home() {
             </p>
           )}
 
-          <Upload
-            onUpload={handleUpload}
-            // disabled={used === MAX_FREE_CREDITS}
-          />
+          <Upload onUpload={handleUpload} />
 
           {used != undefined && (
             <p className="mt-2 text-zinc-500">
