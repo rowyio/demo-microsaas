@@ -2,15 +2,13 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useS3Upload } from "next-s3-upload";
-import { useCookies } from "react-cookie";
-import { COOKIE_ID } from "@/utils/const";
-import { AnonymousData } from "./_app";
 import Upload, { CustomFile } from "@/components/Upload";
 import Modal from "@/components/Modal";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { db } from "@/utils/firebase";
 import useAuth from "@/hooks/useAuth";
 import usePackage from "@/hooks/usePackage";
+import { registerOrLogin } from "@/lib/auth";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -22,7 +20,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const { user } = useAuth();
-  const { used, limit } = usePackage();
+  const { used, limit, incrementFreeUsed } = usePackage();
 
   const [setImageDimensions, imageDimensions] = useState<{
     width: number;
@@ -30,8 +28,6 @@ export default function Home() {
   }>();
 
   let { uploadToS3 } = useS3Upload();
-
-  const [cookies, setCookie] = useCookies([COOKIE_ID]);
 
   const handleUpload = async (file: File) => {
     if (used === limit) {
@@ -93,11 +89,6 @@ export default function Home() {
     }
 
     setLoading(false);
-    const anonymousData = cookies.anonymous_data as AnonymousData;
-
-    setCookie(COOKIE_ID, {
-      used: ++anonymousData.used,
-    });
 
     if (user) {
       // Save prediction in firestore
@@ -108,14 +99,10 @@ export default function Home() {
         profile: user.id,
         "_createdBy.timestamp": new Date(),
       });
+    } else {
+      incrementFreeUsed();
     }
   };
-
-  useEffect(() => {
-    const anonymousData = cookies.anonymous_data as AnonymousData;
-    // if (anonymousData) setUsed(anonymousData.used);
-    console.log("anonymousData", anonymousData);
-  }, [cookies.anonymous_data]);
 
   useEffect(() => {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
@@ -200,7 +187,15 @@ export default function Home() {
             </div>
 
             <div className="text-center">
-              <button className="cursor-pointer rounded-sm bg-black py-2 px-3 text-white hover:text-zinc-300">
+              <button
+                className="cursor-pointer rounded-sm bg-black py-2 px-3 text-white hover:text-zinc-300"
+                onClick={async () => {
+                  const { user } = await registerOrLogin();
+                  if (user) {
+                    setShowLoginModal(false);
+                  }
+                }}
+              >
                 Sign in with Google
               </button>
             </div>

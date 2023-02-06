@@ -13,6 +13,15 @@ export default function usePackage() {
   const [used, setUsed] = useState<number>(0);
   const [limit, setLimit] = useState<number>(0);
 
+  const incrementFreeUsed = () => {
+    const data = cookies.anonymous_data as AnonymousData;
+    console.log("incrementFreeUsed", data);
+
+    setCookie(COOKIE_ID, {
+      used: ++data.used,
+    });
+  };
+
   useEffect(() => {
     if (!loading && !user) {
       const anonymousData = cookies.anonymous_data as AnonymousData;
@@ -41,5 +50,6 @@ export default function usePackage() {
   return {
     limit,
     used,
+    incrementFreeUsed,
   };
 }
