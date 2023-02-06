@@ -1,4 +1,4 @@
-import { auth, db } from "@/utils/firebase";
+import { auth, db } from "@/lib/firebase";
 import { GoogleAuthProvider, signInWithPopup, User } from "firebase/auth";
 import { collection, doc, query, setDoc, where } from "firebase/firestore";
 import { getPackages } from "./packages";

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import useAuth from "./useAuth";
 import { useCookies } from "react-cookie";
-import { COOKIE_ID, MAX_FREE_CREDITS } from "@/utils/const";
+import { COOKIE_ID, MAX_FREE_CREDITS } from "@/lib/const";
 import { AnonymousData } from "@/pages/_app";
 import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "@/utils/firebase";
+import { db } from "@/lib/firebase";
 
 export default function usePackage() {
   const { user, loading } = useAuth();

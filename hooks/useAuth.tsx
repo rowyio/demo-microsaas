@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
-import { auth } from "@/utils/firebase";
+import { auth } from "@/lib/firebase";
 import { getUserProfile } from "@/lib/profiles";
 
 export type Profile = {

@@ -1,4 +1,4 @@
-import { db } from "@/utils/firebase";
+import { db } from "@/lib/firebase";
 import { doc, DocumentData, getDoc, getDocs, Query } from "firebase/firestore";
 
 export async function getPackage(id: string) {

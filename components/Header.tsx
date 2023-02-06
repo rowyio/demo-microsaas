@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { signOut } from "firebase/auth";
-import { auth, db } from "@/utils/firebase";
+import { auth, db } from "@/lib/firebase";
 import useAuth from "@/hooks/useAuth";
 import { registerOrLogin } from "@/lib/auth";
 

@@ -1,4 +1,4 @@
-import { db } from "@/utils/firebase";
+import { db } from "@/lib/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
 export async function getUserProfile(userId: string) {

@@ -5,7 +5,7 @@ import { useS3Upload } from "next-s3-upload";
 import Upload, { CustomFile } from "@/components/Upload";
 import Modal from "@/components/Modal";
 import { collection, setDoc, doc } from "firebase/firestore";
-import { db } from "@/utils/firebase";
+import { db } from "@/lib/firebase";
 import useAuth from "@/hooks/useAuth";
 import usePackage from "@/hooks/usePackage";
 import { registerOrLogin } from "@/lib/auth";
