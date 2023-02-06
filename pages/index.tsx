@@ -20,10 +20,9 @@ export default function Home() {
   const [prediction, setPrediction] = useState<any>(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [used, setUsed] = useState<number>();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const { user } = useAuth();
-  const { usedCredits, limit } = useCredits();
+  const { used, limit } = useCredits();
 
   const [setImageDimensions, imageDimensions] = useState<{
     width: number;
@@ -35,7 +34,7 @@ export default function Home() {
   const [cookies, setCookie] = useCookies([COOKIE_ID]);
 
   const handleUpload = async (file: File) => {
-    if (usedCredits === limit) {
+    if (used === limit) {
       setShowLoginModal(true);
       return;
     }
@@ -106,7 +105,7 @@ export default function Home() {
       await setDoc(doc(predictionsRef), {
         input: url,
         output: prediction.output,
-        profile: user.profileId,
+        profile: user.id,
         "_createdBy.timestamp": new Date(),
       });
     }
@@ -114,7 +113,7 @@ export default function Home() {
 
   useEffect(() => {
     const anonymousData = cookies.anonymous_data as AnonymousData;
-    if (anonymousData) setUsed(anonymousData.used);
+    // if (anonymousData) setUsed(anonymousData.used);
     console.log("anonymousData", anonymousData);
   }, [cookies.anonymous_data]);
 
@@ -162,7 +161,7 @@ export default function Home() {
 
           {used != undefined && (
             <p className="mt-2 text-zinc-500">
-              {usedCredits}/{limit} images remaining
+              {used}/{limit} images remaining
             </p>
           )}
         </div>

@@ -30,13 +30,18 @@ export default function Header() {
             where("price", "==", 0)
           );
           const packagesSnapshot = await getPackages(packagesQuery);
-          const packageId = packagesSnapshot[0].id;
+          const packageData = packagesSnapshot[0];
 
           // Assign free package for new users
           const profilesRef = collection(db, "profiles");
           await setDoc(doc(profilesRef), {
-            profileId: userId,
-            package: packageId,
+            userId,
+            package: {
+              id: packageData.id,
+              price: packageData.data().price,
+              limit: packageData.data().limit,
+              used: 0,
+            },
             "_createdBy.timestamp": new Date(),
           });
         }
