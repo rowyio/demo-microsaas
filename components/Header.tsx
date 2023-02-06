@@ -1,6 +1,14 @@
 import Link from "next/link";
 import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
-import { auth } from "@/utils/firebase";
+import { auth, db } from "@/utils/firebase";
+import {
+  collection,
+  setDoc,
+  doc,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import useAuth from "@/hooks/useAuth";
 
 const provider = new GoogleAuthProvider();
@@ -10,15 +18,25 @@ export default function Header() {
 
   const registerOrLogin = () => {
     signInWithPopup(auth, provider)
-      .then((result) => {
+      .then(async (result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential?.accessToken;
         // The signed-in user info.
         const user = result.user;
-        console.log("user signed in", user);
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
+        const userId = user.uid;
+
+        const q = query(collection(db, "profiles"), where("id", "==", userId));
+        const querySnapshot = await getDocs(q);
+
+        // Create profile on first sign in
+        if (querySnapshot.empty) {
+          const profilesRef = collection(db, "profiles");
+          await setDoc(doc(profilesRef), {
+            id: userId,
+            "_createdBy.timestamp": new Date(),
+          });
+        }
       })
       .catch((error) => {
         // Handle Errors here.
