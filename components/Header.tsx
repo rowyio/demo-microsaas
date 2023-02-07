@@ -3,15 +3,18 @@ import { signOut } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
 import useAuth from "@/hooks/useAuth";
 import { registerOrLogin } from "@/lib/auth";
+import { useRouter } from "next/router";
 
 export default function Header() {
   const { user } = useAuth();
+  const router = useRouter();
 
   const logout = () => {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
         console.log("Signed out successfully");
+        router.push("/");
       })
       .catch((error) => {
         // An error happened.
