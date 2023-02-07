@@ -57,9 +57,11 @@ export default function Header() {
                 </button>
               </li>
               <li>
-                <button className="cursor-pointer rounded-sm bg-black py-2 px-3 text-white hover:text-zinc-300">
-                  Dashboard
-                </button>
+                <Link href="/dashboard">
+                  <button className="cursor-pointer rounded-sm bg-black py-2 px-3 text-white hover:text-zinc-300">
+                    Dashboard
+                  </button>
+                </Link>
               </li>
             </>
           )}

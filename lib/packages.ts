@@ -15,3 +15,26 @@ export async function getPackages(q: Query<DocumentData>) {
   const packagesSnapshot = await getDocs(q);
   return packagesSnapshot.docs;
 }
+
+export const creditPacks = [
+  {
+    price: 0,
+    credits: 100,
+  },
+  {
+    price: 5,
+    credits: 100,
+  },
+  {
+    price: 7,
+    credits: 200,
+  },
+  {
+    price: 14,
+    credits: 500,
+  },
+  {
+    price: 25,
+    credits: 1000,
+  },
+] as const;
