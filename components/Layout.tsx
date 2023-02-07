@@ -1,7 +1,7 @@
 import { ReactNode, useEffect } from "react";
 import { Inter } from "@next/font/google";
 import { useCookies } from "react-cookie";
-import { COOKIE_ID } from "@/utils/const";
+import { COOKIE_ID } from "@/lib/const";
 import { AnonymousData } from "@/pages/_app";
 import Header from "./Header";
 
