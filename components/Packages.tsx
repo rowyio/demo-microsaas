@@ -60,7 +60,7 @@ export default function Packages() {
                 </div>
               </div>
             )}
-            <div className="p-4">
+            <div className="px-4 py-8">
               <div className="flex gap-2">
                 <h1 className="mb-1 text-2xl">${pack.price}</h1>
                 {pack.price === 0 && (

@@ -20,6 +20,9 @@ export default async function handler(
     try {
       const data = req.body.creditPackage;
       const session = await stripe.checkout.sessions.create({
+        metadata: {
+          purchasedPackage: JSON.stringify(data),
+        },
         payment_method_types: ["card"],
         mode: "payment",
         success_url: "http://localhost:3000/dashboard?payment_status=success",
