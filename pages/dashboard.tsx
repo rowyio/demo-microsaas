@@ -1,5 +1,4 @@
 import Packages from "@/components/Packages";
-import useAuth from "@/hooks/useAuth";
 import usePackage from "@/hooks/usePackage";
 
 export default function Dashboard() {
@@ -12,7 +11,7 @@ export default function Dashboard() {
           <div className="h-2.5 w-full rounded-full bg-zinc-300">
             <div
               className="h-2.5 rounded-full bg-black"
-              style={{ width: "45%" }}
+              style={{ width: `${(used / limit) * 100}%` }}
             ></div>
           </div>
           <div>
