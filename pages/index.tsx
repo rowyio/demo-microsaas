@@ -194,7 +194,7 @@ export default function Home() {
             <div className="text-center">
               {!user && (
                 <button
-                  className="cursor-pointer rounded-sm bg-black py-2 px-3 text-white hover:text-zinc-300"
+                  className="cursor-pointer rounded-sm bg-black py-2 px-8 text-white hover:text-zinc-300"
                   onClick={async () => {
                     const { user } = await registerOrLogin();
                     if (user) {
