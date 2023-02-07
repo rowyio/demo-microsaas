@@ -1,14 +1,8 @@
 import usePackage from "@/hooks/usePackage";
 import { db } from "@/lib/firebase";
-import { getPackages } from "@/lib/packages";
+import { getPackages, Package } from "@/lib/packages";
 import { collection, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-
-export type Package = {
-  id: string;
-  limit: number;
-  price: number;
-};
 
 export default function Packages() {
   const { packageId, hasCredit } = usePackage();
@@ -25,6 +19,26 @@ export default function Packages() {
       id: item.id,
     })) as Package[];
     setPackages(allPackages);
+  };
+
+  const purchase = async (creditPackage: Package) => {
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ creditPackage }),
+      });
+
+      if (response.ok) {
+        const data = (await response.json()) as { url: string };
+        const win: Window = window;
+        win.location = data.url;
+      }
+    } catch (error) {
+      console.log("checkout error", error);
+    }
   };
 
   useEffect(() => {
@@ -59,6 +73,7 @@ export default function Packages() {
               <button
                 className="hover:text-zinc-white w-full cursor-pointer rounded-sm border border-black py-2 px-3 text-sm hover:bg-black hover:text-white disabled:cursor-not-allowed  disabled:border-zinc-300 disabled:text-zinc-300 disabled:hover:bg-white disabled:hover:text-zinc-300"
                 disabled={hasCredit()}
+                onClick={() => purchase(pack)}
               >
                 Purchase
               </button>
