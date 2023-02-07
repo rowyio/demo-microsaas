@@ -5,6 +5,9 @@ import { COOKIE_ID, MAX_FREE_CREDITS } from "@/lib/const";
 import { AnonymousData } from "@/pages/_app";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { Package } from "@/components/Packages";
+
+export type ProfilePackage = Package & { used: number };
 
 export default function usePackage() {
   const { user, loading } = useAuth();
@@ -12,14 +15,18 @@ export default function usePackage() {
 
   const [used, setUsed] = useState<number>(0);
   const [limit, setLimit] = useState<number>(0);
+  const [packageId, setPackageId] = useState<string>();
 
   const incrementFreeUsed = () => {
     const data = cookies.anonymous_data as AnonymousData;
-    console.log("incrementFreeUsed", data);
 
     setCookie(COOKIE_ID, {
       used: ++data.used,
     });
+  };
+
+  const hasCredit = () => {
+    return used < limit;
   };
 
   useEffect(() => {
@@ -36,8 +43,10 @@ export default function usePackage() {
         console.log("Current data: ", doc.data());
         const profile = doc.data();
         if (profile) {
-          setUsed(profile.package.used);
-          setLimit(profile.package.limit);
+          const profilePackage = profile.package as ProfilePackage;
+          setUsed(profilePackage.used);
+          setLimit(profilePackage.limit);
+          setPackageId(profilePackage.id);
         }
       });
 
@@ -50,6 +59,8 @@ export default function usePackage() {
   return {
     limit,
     used,
+    packageId,
     incrementFreeUsed,
+    hasCredit,
   };
 }
