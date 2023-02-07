@@ -9,6 +9,7 @@ import { db } from "@/lib/firebase";
 import useAuth from "@/hooks/useAuth";
 import usePackage from "@/hooks/usePackage";
 import { registerOrLogin } from "@/lib/auth";
+import Link from "next/link";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -173,31 +174,44 @@ export default function Home() {
         <Modal
           isOpen={showLoginModal}
           onClose={() => setShowLoginModal(false)}
-          title="Sign in to continue"
+          title={
+            user ? "Purchase more credits to continue" : "Sign in to continue"
+          }
         >
           <div className="py-4">
             <div className="mb-8 text-center">
               <p className="text-zinc-500">
-                You&apos;ve used all your free credits.
+                Oh oh, you&apos;ve used up all your credits.
               </p>
-              <p>
-                Good news is by signing up you get an additional 100 free
-                credits!
-              </p>
+              {!user && (
+                <p>
+                  Good news is by signing up you get an additional 100 free
+                  credits!
+                </p>
+              )}
             </div>
 
             <div className="text-center">
-              <button
-                className="cursor-pointer rounded-sm bg-black py-2 px-3 text-white hover:text-zinc-300"
-                onClick={async () => {
-                  const { user } = await registerOrLogin();
-                  if (user) {
-                    setShowLoginModal(false);
-                  }
-                }}
-              >
-                Sign in with Google
-              </button>
+              {!user && (
+                <button
+                  className="cursor-pointer rounded-sm bg-black py-2 px-3 text-white hover:text-zinc-300"
+                  onClick={async () => {
+                    const { user } = await registerOrLogin();
+                    if (user) {
+                      setShowLoginModal(false);
+                    }
+                  }}
+                >
+                  Sign in with Google
+                </button>
+              )}
+              {user && (
+                <Link href="/dashboard">
+                  <button className="cursor-pointer rounded-sm bg-black py-2 px-8 text-white hover:text-zinc-300">
+                    Buy credits
+                  </button>
+                </Link>
+              )}
             </div>
           </div>
         </Modal>

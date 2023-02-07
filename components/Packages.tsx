@@ -57,7 +57,7 @@ export default function Packages() {
               </div>
               <p className="mb-4 text-lg">{pack.limit} Credits</p>
               <button
-                className="hover:text-zinc-white w-full cursor-pointer rounded-sm border border-black py-2 px-3 text-sm hover:bg-black hover:text-white disabled:cursor-not-allowed  disabled:hover:bg-white disabled:hover:text-inherit"
+                className="hover:text-zinc-white w-full cursor-pointer rounded-sm border border-black py-2 px-3 text-sm hover:bg-black hover:text-white disabled:cursor-not-allowed  disabled:border-zinc-300 disabled:text-zinc-300 disabled:hover:bg-white disabled:hover:text-zinc-300"
                 disabled={hasCredit()}
               >
                 Purchase
