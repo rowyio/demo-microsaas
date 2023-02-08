@@ -125,7 +125,7 @@ export default function Home() {
           Remove the background from up to 10 images, no charge.
         </p>
       </div>
-      <div className="my-12 flex gap-12">
+      <div className="my-16 flex gap-12">
         <div className="flex-1">
           <h1 className="mb-5 text-2xl">Upload</h1>
           {localFile && (
