@@ -10,6 +10,7 @@ import useAuth from "@/hooks/useAuth";
 import usePackage from "@/hooks/usePackage";
 import { registerOrLogin } from "@/lib/auth";
 import Link from "next/link";
+import UsageBar from "@/components/UsageBar";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -143,12 +144,9 @@ export default function Home() {
           )}
 
           <Upload onUpload={handleUpload} />
-
-          {used != undefined && (
-            <p className="mt-2 text-zinc-500">
-              {used}/{limit} images remaining
-            </p>
-          )}
+          <div className="mt-4">
+            <UsageBar />
+          </div>
         </div>
         <div className="flex-1">
           <h1 className="mb-5 text-2xl">Result</h1>
