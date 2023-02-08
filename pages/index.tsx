@@ -121,7 +121,7 @@ export default function Home() {
       </Head>
       <div className="mt-12 border-b border-zinc-800 pb-6">
         <h1 className="text-5xl">Try for free!</h1>
-        <p className="pt-2 text-zinc-500">
+        <p className="pt-2 text-lg text-zinc-500">
           Remove the background from up to 10 images, no charge.
         </p>
       </div>
