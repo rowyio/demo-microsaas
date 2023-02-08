@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <div className="mt-4 border-t py-8">
+    <div className="mt-4 border-t py-8 text-center">
       <p className="text-zinc-800">
         Powered by{" "}
         <a
@@ -11,7 +11,15 @@ export default function Footer() {
         >
           Rowy
         </a>{" "}
-        and Vercel
+        and{" "}
+        <a
+          href="https://vercel.com/"
+          target="_blank"
+          rel="noreferrer"
+          className="underline-offset-2 transition hover:underline"
+        >
+          Vercel.
+        </a>
       </p>
     </div>
   );

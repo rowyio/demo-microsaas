@@ -5,11 +5,15 @@ export default function UsageBar() {
 
   return (
     <div className="flex items-center gap-3">
-      <div className="h-2 w-full rounded-full bg-zinc-300">
+      <div className="w-full overflow-hidden rounded-full bg-zinc-300">
         <div
-          className="h-2 rounded-full bg-black"
-          style={{ width: `${(used / limit) * 100}%` }}
-        ></div>
+          className="rounded-full bg-black py-0.5 text-center text-xs font-medium leading-none text-white"
+          style={{ width: `${Math.ceil((used / limit) * 100)}%` }}
+        >
+          <span className="p-0.5 ">{`${Math.ceil(
+            (used / limit) * 100
+          )}%`}</span>
+        </div>
       </div>
       <div>
         <p>

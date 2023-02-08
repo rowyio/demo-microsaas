@@ -25,7 +25,7 @@ export default function Header() {
   return (
     <div className="flex items-center gap-12 py-8">
       <div className=" tracking-wider text-zinc-500">
-        <Link href="/">Background Removal App</Link>
+        <Link href={user ? "/remove-bg" : "/"}>Background Removal App</Link>
       </div>
       <div className="flex-1 ">
         <ul className="flex justify-end gap-5 text-zinc-500">
