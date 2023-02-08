@@ -11,7 +11,15 @@ export default function Footer() {
         >
           Rowy
         </a>{" "}
-        and Vercel
+        and{" "}
+        <a
+          href="https://vercel.com/"
+          target="_blank"
+          rel="noreferrer"
+          className="underline-offset-2 transition hover:underline"
+        >
+          Vercel.
+        </a>
       </p>
     </div>
   );
