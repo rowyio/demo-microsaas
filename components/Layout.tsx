@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import { COOKIE_ID } from "@/lib/const";
 import { AnonymousData } from "@/pages/_app";
 import Header from "./Header";
+import Footer from "./Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,9 +18,12 @@ export default function Layout({ children }: { children: ReactNode }) {
   }, [cookies.anonymous_data, setCookie]);
 
   return (
-    <div className={inter.className}>
+    <div
+      className={`${inter.className} m-auto flex min-h-screen w-full max-w-5xl flex-col`}
+    >
       <Header />
-      <main className="m-auto max-w-5xl">{children}</main>
+      <main className="flex w-full flex-1 flex-col">{children}</main>
+      <Footer />
     </div>
   );
 }
