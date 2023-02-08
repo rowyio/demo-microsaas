@@ -3,6 +3,8 @@ import usePackage from "@/hooks/usePackage";
 export default function UsageBar() {
   const { used, limit } = usePackage();
 
+  if (!used && !limit) return null;
+
   return (
     <div className="flex items-center gap-3">
       <div className="w-full overflow-hidden rounded-full bg-zinc-300">
@@ -16,7 +18,7 @@ export default function UsageBar() {
         </div>
       </div>
       <div>
-        <p>
+        <p className="font-medium">
           {used}/{limit}
         </p>
       </div>
