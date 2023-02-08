@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <div className="mt-4 border-t py-8">
+    <div className="mt-4 border-t py-8 text-center">
       <p className="text-zinc-800">
         Powered by{" "}
         <a
