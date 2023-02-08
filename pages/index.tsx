@@ -88,9 +88,8 @@ export default function Home() {
 
       console.log({ prediction });
       setPrediction(prediction);
+      setLoading(false);
     }
-
-    setLoading(false);
 
     if (user) {
       // Save prediction in firestore
