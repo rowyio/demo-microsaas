@@ -5,7 +5,7 @@ import { COOKIE_ID, MAX_FREE_CREDITS } from "@/lib/const";
 import { AnonymousData } from "@/pages/_app";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { Package } from "@/components/Packages";
+import { Package } from "@/lib/packages";
 
 export type ProfilePackage = Package & { used: number };
 

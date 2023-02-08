@@ -1,3 +1,4 @@
+import useAuth from "@/hooks/useAuth";
 import usePackage from "@/hooks/usePackage";
 import { db } from "@/lib/firebase";
 import { getPackages, Package } from "@/lib/packages";
@@ -6,6 +7,7 @@ import { useEffect, useState } from "react";
 
 export default function Packages() {
   const { packageId, hasCredit } = usePackage();
+  const { user } = useAuth();
   const [packages, setPackages] = useState<Package[]>();
 
   const loadPackages = async () => {
@@ -27,6 +29,7 @@ export default function Packages() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          token: `${user?.token}`,
         },
         body: JSON.stringify({ creditPackage }),
       });
