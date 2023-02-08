@@ -6,14 +6,25 @@ import { getUserProfile } from "./profiles";
 
 const provider = new GoogleAuthProvider();
 
+export type FormattedUser = {
+  uid: string;
+  email: string | null;
+  name: string | null;
+  provider: string;
+  photoUrl: string | null;
+  token: string;
+  expirationTime: string;
+};
+
 export async function registerOrLogin(): Promise<{
   errorCode?: string;
   errorMessage?: string;
-  user?: User;
+  user?: FormattedUser;
 }> {
   try {
     const result = await signInWithPopup(auth, provider);
     const credential = GoogleAuthProvider.credentialFromResult(result);
+
     // The signed-in user info.
     const user = result.user;
     const userId = user.uid;
@@ -42,16 +53,31 @@ export async function registerOrLogin(): Promise<{
         "_createdBy.timestamp": new Date(),
       });
     }
-    return { user };
+
+    const formattedUser = await formatUser(user);
+
+    return { user: formattedUser };
   } catch (error: any) {
-    // Handle Errors here.
     console.log("Failed to sign in", error);
     const errorCode = error.code;
     const errorMessage = error.message;
-    // The email of the user's account used.
-    const email = error.customData.email;
     // The AuthCredential type that was used.
     const credential = GoogleAuthProvider.credentialFromError(error);
     return { errorCode, errorMessage };
   }
 }
+
+export const formatUser = async (user: User) => {
+  const decodedToken = await user.getIdTokenResult(/*forceRefresh*/ true);
+  const { token, expirationTime } = decodedToken;
+  console.log(token);
+  return {
+    uid: user.uid,
+    email: user.email,
+    name: user.displayName,
+    provider: user.providerData[0].providerId,
+    photoUrl: user.photoURL,
+    token,
+    expirationTime,
+  };
+};

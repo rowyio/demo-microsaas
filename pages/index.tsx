@@ -10,6 +10,7 @@ import useAuth from "@/hooks/useAuth";
 import usePackage from "@/hooks/usePackage";
 import { registerOrLogin } from "@/lib/auth";
 import Link from "next/link";
+import UsageBar from "@/components/UsageBar";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -120,11 +121,11 @@ export default function Home() {
       </Head>
       <div className="mt-12 border-b border-zinc-800 pb-6">
         <h1 className="text-5xl">Try for free!</h1>
-        <p className="pt-2 text-zinc-500">
+        <p className="pt-2 text-lg text-zinc-500">
           Remove the background from up to 10 images, no charge.
         </p>
       </div>
-      <div className="my-12 flex gap-12">
+      <div className="my-16 flex gap-12">
         <div className="flex-1">
           <h1 className="mb-5 text-2xl">Upload</h1>
           {localFile && (
@@ -143,12 +144,9 @@ export default function Home() {
           )}
 
           <Upload onUpload={handleUpload} />
-
-          {used != undefined && (
-            <p className="mt-2 text-zinc-500">
-              {used}/{limit} images remaining
-            </p>
-          )}
+          <div className="mt-4">
+            <UsageBar />
+          </div>
         </div>
         <div className="flex-1">
           <h1 className="mb-5 text-2xl">Result</h1>
