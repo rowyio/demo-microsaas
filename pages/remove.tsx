@@ -56,7 +56,6 @@ export default function RemoveBackground() {
     let { url } = await uploadToS3(file);
     setS3FileUrl(url);
     // let { height, width } = await getImageData(file);
-    console.log("S3 URL", url);
 
     const response = await fetch("/api/predictions", {
       method: "POST",
@@ -93,7 +92,6 @@ export default function RemoveBackground() {
         return;
       }
 
-      console.log({ prediction });
       setPrediction(prediction);
       setLoading(false);
     }
@@ -180,6 +178,14 @@ export default function RemoveBackground() {
             <div>
               {prediction.output && (
                 <>
+                  {!removedBgLoaded && (
+                    <div className="justify-centertext-center flex w-full flex-col items-center">
+                      <Spinner />
+                      <p className="text-lg text-zinc-700">
+                        Adding final touches...
+                      </p>
+                    </div>
+                  )}
                   <Image
                     src={prediction.output}
                     alt="output"
