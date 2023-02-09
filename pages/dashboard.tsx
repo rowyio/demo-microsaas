@@ -40,7 +40,12 @@ export default function Dashboard() {
           <UsageBar />
         </div>
         <div>
-          <h2 className="mb-3 text-xl tracking-wide">Credit packages</h2>
+          <div className="flex items-baseline justify-between">
+            <h2 className="mb-3 text-xl tracking-wide">Credit packages</h2>
+            <div className="rounded-md border border-zinc-100 bg-zinc-50 px-2 text-sm">
+              Note: 1 credit = 1 photo
+            </div>
+          </div>
           <Packages />
         </div>
       </div>
