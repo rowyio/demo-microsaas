@@ -1,3 +1,4 @@
+import Hero from "@/components/Hero";
 import Packages from "@/components/Packages";
 import UsageBar from "@/components/UsageBar";
 import useAuth from "@/hooks/useAuth";
@@ -23,11 +24,11 @@ export default function Dashboard() {
 
   return (
     <div className="mb-16">
-      <div className="mt-12 border-b border-zinc-800 pb-6">
-        <h1 className="text-5xl">Your account</h1>
-        <p className="pt-2 text-lg text-zinc-500">
-          View your history, usage, or purchase credits.
-        </p>
+      <div className="mt-12">
+        <Hero
+          heading="Your account"
+          subHeading="View your history, usage, or purchase credits."
+        />
       </div>
       <div className="my-12">
         <h2 className="mb-3 text-xl tracking-wide">Credit usage</h2>

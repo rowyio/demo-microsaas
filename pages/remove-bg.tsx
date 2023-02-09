@@ -11,6 +11,7 @@ import usePackage from "@/hooks/usePackage";
 import { registerOrLogin } from "@/lib/auth";
 import Link from "next/link";
 import UsageBar from "@/components/UsageBar";
+import Hero from "@/components/Hero";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -118,11 +119,11 @@ export default function RemoveBackground() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="mt-12 border-b border-zinc-800 pb-6">
-        <h1 className="text-5xl">Remove background</h1>
-        <p className="pt-2 text-lg text-zinc-500">
-          Upload your photo and watch the magic happen.
-        </p>
+      <div className="mt-12">
+        <Hero
+          heading="Remove background"
+          subHeading="Upload your photo and watch the magic happen."
+        />
       </div>
       <div className="my-16 flex gap-12">
         <div className="flex-1">

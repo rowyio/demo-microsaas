@@ -1,6 +1,6 @@
+import Hero from "@/components/Hero";
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function Home() {
   return (
@@ -11,16 +11,13 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="mt-12 border-b border-zinc-800 pb-10 text-center">
-        <h1 className="text-5xl">Try for free!</h1>
-        <p className="mb-10 pt-2 text-lg text-zinc-500">
-          Remove backgrounds from up to 10 images, no charge.
-        </p>
-        <Link href="/remove-bg">
-          <button className="cursor-pointer rounded-sm bg-black py-2 px-8 text-white hover:text-zinc-300">
-            Remove Background
-          </button>
-        </Link>
+      <div className="mt-12">
+        <Hero
+          heading="Try for free!"
+          subHeading="Remove backgrounds from up to 10 images, no charge."
+          link={{ title: "Remove Background", to: "/remove-bg" }}
+          alignment="center"
+        />
       </div>
 
       <div className="mt-6 flex w-full flex-col items-center justify-between text-center sm:mt-10">
