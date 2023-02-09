@@ -20,7 +20,9 @@ export default function Packages() {
       ...item.data(),
       id: item.id,
     })) as Package[];
-    setPackages(allPackages);
+    // Filter out free package
+    const filteredPackages = allPackages.filter((item) => item.price !== 0);
+    setPackages(filteredPackages);
   };
 
   const purchase = async (creditPackage: Package) => {
