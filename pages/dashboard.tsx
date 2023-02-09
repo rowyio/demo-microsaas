@@ -22,8 +22,14 @@ export default function Dashboard() {
   if (!user) router.push("/");
 
   return (
-    <div>
-      <div className="mb-12 mt-8">
+    <div className="mb-16">
+      <div className="mt-12 border-b border-zinc-800 pb-6">
+        <h1 className="text-5xl">Your account</h1>
+        <p className="pt-2 text-lg text-zinc-500">
+          View your history, usage, or purchase credits.
+        </p>
+      </div>
+      <div className="my-12">
         <h2 className="mb-3 text-xl tracking-wide">Credit usage</h2>
         <UsageBar />
       </div>
