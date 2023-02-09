@@ -2,10 +2,20 @@ import Packages from "@/components/Packages";
 import UsageBar from "@/components/UsageBar";
 import useAuth from "@/hooks/useAuth";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { toast } from "react-hot-toast";
 
 export default function Dashboard() {
   const { loading, user } = useAuth();
   const router = useRouter();
+
+  const { payment_status: paymentStatus } = router.query;
+
+  useEffect(() => {
+    if (paymentStatus && paymentStatus === "success") {
+      toast.success("Purchase successful");
+    }
+  }, [paymentStatus]);
 
   if (loading) return null;
 
@@ -13,12 +23,12 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div className="mb-8 mt-4">
-        <h2 className="mb-3 text-xl">Credit usage</h2>
+      <div className="mb-12 mt-8">
+        <h2 className="mb-3 text-xl tracking-wide">Credit usage</h2>
         <UsageBar />
       </div>
       <div>
-        <h2 className="mb-3 text-xl">Credit packages</h2>
+        <h2 className="mb-3 text-xl tracking-wide">Credit packages</h2>
         <Packages />
       </div>
     </div>
