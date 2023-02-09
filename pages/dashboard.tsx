@@ -18,19 +18,17 @@ export default function Dashboard() {
     }
   }, [paymentStatus]);
 
-  if (loading) return null;
-
-  if (!user) router.push("/");
+  if (!loading && !user) router.push("/");
 
   return (
     <div className="mb-16">
       <div className="mt-12">
         <Hero
           heading="Your account"
-          subHeading="View your history, usage, or purchase credits."
+          subHeading="View your usage, or buy more credits."
         />
       </div>
-      <div className="my-12">
+      <div className="my-16">
         <h2 className="mb-3 text-xl tracking-wide">Credit usage</h2>
         <UsageBar />
       </div>
