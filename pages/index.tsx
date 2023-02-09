@@ -14,7 +14,7 @@ export default function Home() {
         <Hero
           heading="Try for free!"
           subHeading="Remove backgrounds from up to 10 images, no charge."
-          link={{ title: "Remove Background", to: "/remove-bg" }}
+          link={{ title: "Remove Background", to: "/remove" }}
           alignment="center"
         />
       </div>
