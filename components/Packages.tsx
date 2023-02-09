@@ -6,6 +6,7 @@ import { collection, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 export default function Packages() {
+  const [loading, setLoading] = useState(false);
   const { packageId, hasCredit } = usePackage();
   const { user } = useAuth();
   const [packages, setPackages] = useState<Package[]>();
@@ -26,6 +27,7 @@ export default function Packages() {
   };
 
   const purchase = async (creditPackage: Package) => {
+    setLoading(true);
     try {
       const response = await fetch("/api/checkout", {
         method: "POST",
@@ -43,6 +45,8 @@ export default function Packages() {
       }
     } catch (error) {
       console.log("checkout error", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -58,7 +62,7 @@ export default function Packages() {
             key={pack.id}
             className="flex-1 rounded-sm border border-zinc-300"
           >
-            {packageId === pack.id && (
+            {hasCredit() && packageId === pack.id && (
               <div className="relative">
                 <div className="absolute right-0 -top-3 rounded-md bg-black px-2 text-center text-sm text-white">
                   Active
@@ -77,7 +81,7 @@ export default function Packages() {
               <p className="mb-4 text-lg">{pack.limit} Credits</p>
               <button
                 className="hover:text-zinc-white w-full cursor-pointer rounded-sm border border-black py-2 px-3 text-sm hover:bg-black hover:text-white disabled:cursor-not-allowed  disabled:border-zinc-300 disabled:text-zinc-300 disabled:hover:bg-white disabled:hover:text-zinc-300"
-                disabled={hasCredit()}
+                disabled={hasCredit() || loading}
                 onClick={() => purchase(pack)}
               >
                 Purchase

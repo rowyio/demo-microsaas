@@ -34,8 +34,8 @@ export default async function handler(
       },
       payment_method_types: ["card"],
       mode: "payment",
-      success_url: "http://localhost:3000/dashboard?payment_status=success",
-      cancel_url: "http://localhost:3000/dashboard?payment_status=cancel",
+      success_url: `${process.env.SITE_URL}/dashboard?payment_status=success`,
+      cancel_url: `${process.env.SITE_URL}/dashboard?payment_status=cancel`,
       line_items: [
         {
           price_data: {

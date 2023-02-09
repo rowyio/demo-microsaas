@@ -182,7 +182,7 @@ export default function RemoveBackground() {
         >
           <div className="py-4">
             <div className="mb-8 text-center">
-              <p className="text-zinc-500">
+              <p className="font-semibold">
                 Oh oh, you&apos;ve used up all your credits.
               </p>
               {!user && (
