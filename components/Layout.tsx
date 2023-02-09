@@ -2,7 +2,7 @@ import { ReactNode, useEffect } from "react";
 import { Inter } from "@next/font/google";
 import { useCookies } from "react-cookie";
 import { COOKIE_ID } from "@/lib/const";
-import { AnonymousData } from "@/pages/_app";
+import { CookieData } from "@/pages/_app";
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -12,10 +12,10 @@ export default function Layout({ children }: { children: ReactNode }) {
   const [cookies, setCookie] = useCookies([COOKIE_ID]);
 
   useEffect(() => {
-    if (!cookies.anonymous_data) {
-      setCookie(COOKIE_ID, JSON.stringify({ used: 0 } as AnonymousData));
+    if (!cookies.free_credits) {
+      setCookie(COOKIE_ID, JSON.stringify({ used: 0 } as CookieData));
     }
-  }, [cookies.anonymous_data, setCookie]);
+  }, [cookies.free_credits, setCookie]);
 
   return (
     <div

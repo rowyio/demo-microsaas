@@ -4,7 +4,7 @@ import type { AppProps } from "next/app";
 import { CookiesProvider } from "react-cookie";
 import { Toaster } from "react-hot-toast";
 
-export type AnonymousData = {
+export type CookieData = {
   used: 0;
 };
 

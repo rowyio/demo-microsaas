@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useAuth from "./useAuth";
 import { useCookies } from "react-cookie";
 import { COOKIE_ID, MAX_FREE_CREDITS } from "@/lib/const";
-import { AnonymousData } from "@/pages/_app";
+import { CookieData } from "@/pages/_app";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Package } from "@/lib/packages";
@@ -18,7 +18,7 @@ export default function usePackage() {
   const [packageId, setPackageId] = useState<string>();
 
   const incrementFreeUsed = () => {
-    const data = cookies.anonymous_data as AnonymousData;
+    const data = cookies.free_credits as CookieData;
 
     setCookie(COOKIE_ID, {
       used: ++data.used,
@@ -31,11 +31,11 @@ export default function usePackage() {
 
   useEffect(() => {
     if (!loading && !user) {
-      const anonymousData = cookies.anonymous_data as AnonymousData;
+      const anonymousData = cookies.free_credits as CookieData;
       setLimit(MAX_FREE_CREDITS);
       setUsed(anonymousData.used);
     }
-  }, [loading, cookies.anonymous_data, user]);
+  }, [loading, cookies.free_credits, user]);
 
   useEffect(() => {
     if (user) {
