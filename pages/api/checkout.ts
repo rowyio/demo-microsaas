@@ -26,8 +26,6 @@ export default async function handler(
   try {
     const { uid } = await auth.verifyIdToken(req.headers.token as string);
 
-    console.log("USERR UID", uid);
-
     const data = req.body.creditPackage;
     const session = await stripe.checkout.sessions.create({
       metadata: {
