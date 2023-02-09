@@ -12,6 +12,7 @@ import { registerOrLogin } from "@/lib/auth";
 import Link from "next/link";
 import UsageBar from "@/components/UsageBar";
 import Hero from "@/components/Hero";
+import Spinner from "@/components/Spinner";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -123,6 +124,7 @@ export default function RemoveBackground() {
           subHeading="Upload your photo and watch the magic happen."
         />
       </div>
+
       <div className="my-16 flex gap-12">
         <div className="flex-1">
           <h1 className="mb-5 text-2xl">Upload</h1>
@@ -149,7 +151,11 @@ export default function RemoveBackground() {
         <div className="flex-1">
           <h1 className="mb-5 text-2xl">Result</h1>
 
-          {loading && <p>Loading...</p>}
+          {loading && (
+            <div className="flex justify-center">
+              <Spinner />
+            </div>
+          )}
 
           {prediction && (
             <div>
