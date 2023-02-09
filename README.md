@@ -1,10 +1,14 @@
-# Remove Background App
+# Background Removal App
 
-This project removes the backgrounds from photos using AI.
+This project allows users to remove the background from their photos using AI.
 
 [![Remove Background App](./public/screenshot.png)](https://rodgetech.com/)
 
-## Running Locally
+## How it works
+
+Background removal is made possible by using the [modnet](https://github.com/pollinations/modnet) approach via [Replicate](https://replicate.com/). This project allows users to upload a photo which will first be stored in S3, forwarded to n Next.js API handler, and lastly utilize the Replicate API to return the photo with its background removed. All data such as user profile and credit packs are stored in Firestore, while the associated stripe payment webhook and cloud functions are managed in Rowy.
+
+## Running locally
 
 ### Install dependencies:
 
