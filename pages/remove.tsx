@@ -13,6 +13,7 @@ import Link from "next/link";
 import UsageBar from "@/components/UsageBar";
 import Hero from "@/components/Hero";
 import Spinner from "@/components/Spinner";
+import downloadPhoto, { appendNewToName } from "@/lib/download";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -22,7 +23,10 @@ export default function RemoveBackground() {
   const [prediction, setPrediction] = useState<any>(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [removedBgLoaded, setRemovedBgLoaded] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [photoName, setPhotoName] = useState<string | null>(null);
+
   const { user } = useAuth();
   const { used, limit, incrementFreeUsed } = usePackage();
 
@@ -40,6 +44,8 @@ export default function RemoveBackground() {
     }
 
     setLoading(true);
+
+    setPhotoName(file.name);
 
     setLocalFile(
       Object.assign(file, {
@@ -137,13 +143,26 @@ export default function RemoveBackground() {
               height={475}
             />
           )}
-          {localFile && (
-            <p className="mb-2">
-              {localFile.path} - {localFile.size} bytes
-            </p>
+
+          {!removedBgLoaded && <Upload onUpload={handleUpload} />}
+
+          {removedBgLoaded && (
+            <div className="text-center">
+              <button
+                className="cursor-pointer rounded-sm bg-black py-2 px-6 text-white hover:text-zinc-300"
+                onClick={() => {
+                  setLocalFile(undefined);
+                  setS3FileUrl(undefined);
+                  setRemovedBgLoaded(false);
+                  setError(null);
+                  setPrediction(undefined);
+                }}
+              >
+                Upload New Photo
+              </button>
+            </div>
           )}
 
-          <Upload onUpload={handleUpload} />
           <div className="mt-5">
             <UsageBar />
           </div>
@@ -167,9 +186,25 @@ export default function RemoveBackground() {
                     className="relative mt-2 mb-4 rounded-2xl sm:mt-0"
                     width={475}
                     height={475}
+                    onLoadingComplete={() => setRemovedBgLoaded(true)}
                   />
                 </>
               )}
+            </div>
+          )}
+          {removedBgLoaded && (
+            <div className="text-center">
+              <button
+                className="cursor-pointer rounded-sm border border-black py-2 px-6  hover:bg-black hover:text-zinc-300"
+                onClick={() => {
+                  downloadPhoto(
+                    prediction.output!,
+                    appendNewToName(photoName!)
+                  );
+                }}
+              >
+                Download Photo
+              </button>
             </div>
           )}
         </div>
