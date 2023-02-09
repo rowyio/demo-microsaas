@@ -19,8 +19,6 @@ export default function useAuth() {
 
   useEffect(() => {
     async function loadProfile(user: FormattedUser) {
-      console.log("FormattedUser", user);
-
       const profile = await getUserProfile(user.uid);
 
       if (profile) {

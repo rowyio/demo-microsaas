@@ -40,7 +40,6 @@ export default function usePackage() {
   useEffect(() => {
     if (user) {
       const unsub = onSnapshot(doc(db, "profiles", user.id), (doc) => {
-        console.log("Current data: ", doc.data());
         const profile = doc.data();
         if (profile) {
           const profilePackage = profile.package as ProfilePackage;

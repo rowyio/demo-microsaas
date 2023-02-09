@@ -70,7 +70,6 @@ export async function registerOrLogin(): Promise<{
 export const formatUser = async (user: User) => {
   const decodedToken = await user.getIdTokenResult(/*forceRefresh*/ true);
   const { token, expirationTime } = decodedToken;
-  console.log(token);
   return {
     uid: user.uid,
     email: user.email,
