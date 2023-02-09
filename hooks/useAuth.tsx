@@ -17,22 +17,22 @@ export default function useAuth() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<Profile>();
 
-  useEffect(() => {
-    async function loadProfile(user: FormattedUser) {
-      const profile = await getUserProfile(user.uid);
+  const loadProfile = async (user: FormattedUser) => {
+    const profile = await getUserProfile(user.uid);
 
-      if (profile) {
-        setUser({
-          id: profile.id,
-          userId: user.uid,
-          package: profile.data().package,
-          token: user.token,
-          expirationTime: user.expirationTime,
-        });
-        setLoading(false);
-      }
+    if (profile) {
+      setUser({
+        id: profile.id,
+        userId: user.uid,
+        package: profile.data().package,
+        token: user.token,
+        expirationTime: user.expirationTime,
+      });
+      setLoading(false);
     }
+  };
 
+  useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         const formattedUser = await formatUser(user);
@@ -49,5 +49,6 @@ export default function useAuth() {
   return {
     user,
     loading,
+    loadProfile,
   };
 }

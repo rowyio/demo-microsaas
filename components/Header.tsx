@@ -6,7 +6,7 @@ import { registerOrLogin } from "@/lib/auth";
 import { useRouter } from "next/router";
 
 export default function Header() {
-  const { user } = useAuth();
+  const { user, loadProfile } = useAuth();
   const router = useRouter();
 
   const logout = () => {
@@ -34,7 +34,12 @@ export default function Header() {
               <li>
                 <button
                   className="cursor-pointer rounded-sm py-2 px-3 active:bg-zinc-200"
-                  onClick={registerOrLogin}
+                  onClick={async () => {
+                    const result = await registerOrLogin();
+                    if (result.user) {
+                      loadProfile(result.user);
+                    }
+                  }}
                 >
                   Sign In
                 </button>
@@ -42,7 +47,12 @@ export default function Header() {
               <li>
                 <button
                   className="cursor-pointer rounded-sm bg-black py-2 px-3 text-white hover:text-zinc-300"
-                  onClick={registerOrLogin}
+                  onClick={async () => {
+                    const result = await registerOrLogin();
+                    if (result.user) {
+                      loadProfile(result.user);
+                    }
+                  }}
                 >
                   Get Started
                 </button>

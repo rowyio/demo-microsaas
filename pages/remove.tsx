@@ -14,6 +14,7 @@ import UsageBar from "@/components/UsageBar";
 import Hero from "@/components/Hero";
 import Spinner from "@/components/Spinner";
 import downloadPhoto, { appendNewToName } from "@/lib/download";
+import { useRouter } from "next/router";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -29,6 +30,7 @@ export default function RemoveBackground() {
 
   const { user } = useAuth();
   const { used, limit, incrementFreeUsed } = usePackage();
+  const router = useRouter();
 
   const [setImageDimensions, imageDimensions] = useState<{
     width: number;
@@ -239,9 +241,9 @@ export default function RemoveBackground() {
                 <button
                   className="cursor-pointer rounded-sm bg-black py-2 px-8 text-white hover:text-zinc-300"
                   onClick={async () => {
-                    const { user } = await registerOrLogin();
-                    if (user) {
-                      setShowLoginModal(false);
+                    const result = await registerOrLogin();
+                    if (result.user) {
+                      router.reload();
                     }
                   }}
                 >
