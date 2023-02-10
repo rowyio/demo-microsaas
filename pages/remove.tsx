@@ -95,8 +95,9 @@ export default function RemoveBackground() {
       }
 
       setPrediction(prediction);
-      setLoading(false);
     }
+
+    setLoading(false);
 
     if (user) {
       // Save prediction in firestore
@@ -169,6 +170,12 @@ export default function RemoveBackground() {
         </div>
         <div className="flex-1">
           <h1 className="mb-5 text-2xl">Result</h1>
+
+          {error && (
+            <p className="text-center text-lg text-red-500">
+              An error occurred, please try again later.
+            </p>
+          )}
 
           {loading && (
             <div className="flex justify-center">
