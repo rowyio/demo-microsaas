@@ -1,11 +1,10 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useS3Upload } from "next-s3-upload";
 import Upload, { CustomFile } from "@/components/Upload";
 import Modal from "@/components/Modal";
 import { collection, setDoc, doc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { db, storage } from "@/lib/firebase";
 import useAuth from "@/hooks/useAuth";
 import usePackage from "@/hooks/usePackage";
 import { registerOrLogin } from "@/lib/auth";
@@ -15,12 +14,14 @@ import Hero from "@/components/Hero";
 import Spinner from "@/components/Spinner";
 import downloadPhoto, { appendNewToName } from "@/lib/download";
 import { useRouter } from "next/router";
+import { ref } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
+import { upload } from "@/lib/storage";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export default function RemoveBackground() {
   const [localFile, setLocalFile] = useState<CustomFile>();
-  const [s3FileUrl, setS3FileUrl] = useState<string>();
   const [prediction, setPrediction] = useState<any>(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -32,13 +33,6 @@ export default function RemoveBackground() {
   const { used, limit, incrementFreeUsed } = usePackage();
   const router = useRouter();
 
-  const [setImageDimensions, imageDimensions] = useState<{
-    width: number;
-    height: number;
-  }>();
-
-  let { uploadToS3 } = useS3Upload();
-
   const handleUpload = async (file: File) => {
     if (used === limit) {
       setShowLoginModal(true);
@@ -46,18 +40,16 @@ export default function RemoveBackground() {
     }
 
     setLoading(true);
-
     setPhotoName(file.name);
-
     setLocalFile(
       Object.assign(file, {
         preview: URL.createObjectURL(file),
       })
     );
 
-    let { url } = await uploadToS3(file);
-    setS3FileUrl(url);
-    // let { height, width } = await getImageData(file);
+    const storageRef = ref(storage, `images/${uuidv4()}/${file.name}`);
+
+    const uploadedImageUrl = await upload(storageRef, file);
 
     const response = await fetch("/api/predictions", {
       method: "POST",
@@ -65,7 +57,7 @@ export default function RemoveBackground() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        image: url,
+        image: uploadedImageUrl,
       }),
     });
 
@@ -103,7 +95,7 @@ export default function RemoveBackground() {
       // Save prediction in firestore
       const predictionsRef = collection(db, "predictions");
       await setDoc(doc(predictionsRef), {
-        input: url,
+        input: uploadedImageUrl,
         output: prediction.output,
         profile: user.id,
         "_createdBy.timestamp": new Date(),
@@ -153,7 +145,6 @@ export default function RemoveBackground() {
                 className="cursor-pointer rounded-sm bg-black py-2 px-6 text-white hover:text-zinc-300"
                 onClick={() => {
                   setLocalFile(undefined);
-                  setS3FileUrl(undefined);
                   setRemovedBgLoaded(false);
                   setError(null);
                   setPrediction(undefined);
