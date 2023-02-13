@@ -51,7 +51,6 @@ export default function RemoveBackground() {
 
     const uploadedImageUrl = await upload(storageRef, file);
 
-    // Save user history
     const response = await fetch("/api/predictions", {
       method: "POST",
       headers: {
