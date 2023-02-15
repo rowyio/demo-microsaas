@@ -55,7 +55,7 @@ export default function Packages() {
   }, []);
 
   return (
-    <div className="flex gap-8">
+    <div className="gap-8 space-y-10 sm:block md:flex md:space-y-0">
       {packages &&
         packages.map((pack) => (
           <div

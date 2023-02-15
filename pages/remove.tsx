@@ -124,7 +124,7 @@ export default function RemoveBackground() {
         />
       </div>
 
-      <div className="my-16 flex gap-12">
+      <div className="my-16 block gap-12 space-y-8 md:flex md:space-y-0">
         <div className="flex-1">
           <h1 className="mb-5 text-2xl">Upload</h1>
           {localFile && (

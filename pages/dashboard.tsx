@@ -41,7 +41,7 @@ export default function Dashboard() {
         </div>
         <div>
           <div className="flex items-baseline justify-between">
-            <h2 className="mb-3 text-2xl tracking-wide">Credit packages</h2>
+            <h2 className="mb-3 text-2xl tracking-wide">Packages</h2>
             <div className="rounded-md border  bg-zinc-200 px-2 text-sm">
               Note: 1 credit = 1 photo
             </div>

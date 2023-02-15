@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div
-      className={`${inter.className} m-auto flex min-h-screen w-full max-w-5xl flex-col`}
+      className={`${inter.className} m-auto flex min-h-screen max-w-5xl flex-col px-4 md:px-0`}
     >
       <Header />
       <main className="flex w-full flex-1 flex-col">{children}</main>
