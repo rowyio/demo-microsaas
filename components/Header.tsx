@@ -23,12 +23,12 @@ export default function Header() {
   };
 
   return (
-    <div className="flex items-center gap-12 py-8">
-      <div className=" tracking-wider text-zinc-500">
+    <div className="block items-center gap-12 border-b border-b-zinc-200 py-8 md:flex md:border-b-0">
+      <div className="mb-5 text-center tracking-wider text-zinc-500 md:mb-0">
         <Link href={user ? "/remove" : "/"}>Background Removal App</Link>
       </div>
-      <div className="flex-1 ">
-        <ul className="flex justify-end gap-5 text-zinc-500">
+      <div className="block flex-1">
+        <ul className="flex justify-center gap-5 text-zinc-500 md:justify-end">
           {!user && (
             <>
               <li>
