@@ -62,13 +62,13 @@ export default function Packages() {
             key={pack.id}
             className="flex-1 rounded-sm border border-zinc-300"
           >
-            {hasCredit() && packageId === pack.id && (
+            {/* {hasCredit() && packageId === pack.id && (
               <div className="relative">
                 <div className="absolute right-0 -top-3 rounded-md bg-black px-2 text-center text-sm text-white">
                   Active
                 </div>
               </div>
-            )}
+            )} */}
             <div className="px-4 py-8">
               <div className="flex gap-2">
                 <h1 className="mb-1 text-2xl">${pack.price}</h1>
@@ -81,7 +81,7 @@ export default function Packages() {
               <p className="mb-4 text-lg">{pack.limit} Credits</p>
               <button
                 className="hover:text-zinc-white w-full cursor-pointer rounded-sm border border-black py-2 px-3 text-sm hover:bg-black hover:text-white disabled:cursor-not-allowed  disabled:border-zinc-300 disabled:text-zinc-300 disabled:hover:bg-white disabled:hover:text-zinc-300"
-                disabled={hasCredit() || loading}
+                disabled={loading}
                 onClick={() => purchase(pack)}
               >
                 Purchase
