@@ -12,7 +12,7 @@ export default function Home() {
       </Head>
       <div className="mt-12">
         <Hero
-          heading="Try for free!"
+          heading="Get rid of those annoying backgrounds."
           subHeading="Remove backgrounds from up to 10 images, no charge."
           link={{ title: "Remove Background", to: "/remove" }}
           alignment="center"
