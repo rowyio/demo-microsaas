@@ -32,7 +32,7 @@ export default function RemoveBackground() {
   const [output, setOutput] = useState<string>();
 
   const { user } = useAuth();
-  const { used, limit, incrementFreeUsed } = usePackage();
+  const { used, limit } = usePackage();
   const router = useRouter();
 
   const handleUpload = async (file: File) => {
@@ -64,14 +64,7 @@ export default function RemoveBackground() {
       }),
     });
 
-    let prediction = await response.json();
-
-    if (prediction.predictionId) {
-      setPredictionId(prediction.predictionId as string);
-      return;
-    }
-
-    console.log("The predictions", prediction);
+    const prediction = await response.json();
 
     if (response.status !== 201) {
       console.log("prediction errror", prediction.detail);
@@ -80,29 +73,9 @@ export default function RemoveBackground() {
       return;
     }
 
-    setPrediction(prediction);
-
-    while (
-      prediction.status !== "succeeded" &&
-      prediction.status !== "failed"
-    ) {
-      await sleep(1000);
-      const response = await fetch("/api/predictions/" + prediction.id);
-      prediction = await response.json();
-
-      if (response.status !== 200) {
-        setError(prediction.detail);
-        setLoading(false);
-        return;
-      }
-
-      setPrediction(prediction);
-    }
-
-    setLoading(false);
-
-    if (!user) {
-      incrementFreeUsed();
+    if (prediction.predictionId) {
+      setPredictionId(prediction.predictionId as string);
+      return;
     }
   };
 
@@ -111,6 +84,7 @@ export default function RemoveBackground() {
     return () => localFile && URL.revokeObjectURL(localFile.preview);
   }, []);
 
+  // Listen for when the prediction is completed
   useEffect(() => {
     if (predictionId) {
       const unsub = onSnapshot(doc(db, "predictions", predictionId), (doc) => {
@@ -212,30 +186,6 @@ export default function RemoveBackground() {
             </div>
           )}
 
-          {!output && prediction && (
-            <div>
-              {prediction.output && (
-                <>
-                  {!removedBgLoaded && (
-                    <div className="justify-centertext-center flex w-full flex-col items-center">
-                      <Spinner />
-                      <p className="text-lg text-zinc-700">
-                        Adding final touches...
-                      </p>
-                    </div>
-                  )}
-                  <Image
-                    src={prediction.output}
-                    alt="output"
-                    className="relative mt-2 mb-4 rounded-2xl sm:mt-0"
-                    width={475}
-                    height={475}
-                    onLoadingComplete={() => setRemovedBgLoaded(true)}
-                  />
-                </>
-              )}
-            </div>
-          )}
           {removedBgLoaded && (
             <div className="text-center">
               <button

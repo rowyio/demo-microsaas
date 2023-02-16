@@ -6,7 +6,7 @@ import { registerOrLogin } from "@/lib/auth";
 import { useRouter } from "next/router";
 
 export default function Header() {
-  const { user, loadProfile } = useAuth();
+  const { user, loadProfile, isAuthenticated } = useAuth();
   const router = useRouter();
 
   const logout = () => {
@@ -33,7 +33,7 @@ export default function Header() {
       </div>
       <div className="block flex-1">
         <ul className="flex justify-center gap-5 text-zinc-500 md:justify-end">
-          {!user && (
+          {!isAuthenticated && (
             <>
               <li>
                 <button
@@ -63,7 +63,7 @@ export default function Header() {
               </li>
             </>
           )}
-          {user && (
+          {isAuthenticated && (
             <>
               <li>
                 <button
