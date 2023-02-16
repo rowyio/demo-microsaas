@@ -16,7 +16,7 @@ import downloadPhoto, { appendNewToName } from "@/lib/download";
 import { useRouter } from "next/router";
 import { ref } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { upload } from "@/lib/storage";
+import { getImageExtension, upload } from "@/lib/storage";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -93,10 +93,19 @@ export default function RemoveBackground() {
 
     if (user) {
       // Save prediction in firestore
+      const response = await fetch(prediction.output);
+      const blob = await response.blob();
+
+      const extension = getImageExtension(prediction.output);
+      const outputName = `${uuidv4()}.${extension}`;
+
+      const outputStorageRef = ref(storage, `images/output/${outputName}`);
+      const uploadedOutputImageUrl = await upload(outputStorageRef, blob);
+
       const predictionsRef = collection(db, "predictions");
       await setDoc(doc(predictionsRef), {
         input: uploadedImageUrl,
-        output: prediction.output,
+        output: uploadedOutputImageUrl,
         profile: user.id,
         "_createdBy.timestamp": new Date(),
       });
