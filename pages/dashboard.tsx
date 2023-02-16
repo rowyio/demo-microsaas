@@ -35,16 +35,14 @@ export default function Dashboard() {
             subHeading="View your usage, or buy more credits."
           />
         </div>
-        <div className="my-16">
-          <h2 className="mb-3 text-2xl tracking-wide">Credit usage</h2>
+        <div className="my-16 ">
+          <h2 className="mb-3 text-2xl tracking-wide">Your usage</h2>
           <UsageBar />
         </div>
         <div>
           <div className="flex items-baseline justify-between">
             <h2 className="mb-3 text-2xl tracking-wide">Packages</h2>
-            <div className="rounded-md border  bg-zinc-200 px-2 text-sm">
-              Note: 1 credit = 1 photo
-            </div>
+            <div className=" text-sm">Note: 1 credit = 1 photo</div>
           </div>
           <Packages />
         </div>

@@ -23,8 +23,10 @@ export default function Header() {
   };
 
   return (
-    <div className="block items-center gap-12 border-b border-b-zinc-200 py-8 md:flex md:border-b-0">
-      <div className="mb-5 text-center tracking-wider text-zinc-500 md:mb-0">
+    <div
+      className={`block items-center gap-12 border-b border-b-zinc-200 py-8 md:flex md:border-b-0`}
+    >
+      <div className="mb-5 text-center tracking-wider  md:mb-0">
         <Link href={user ? "/remove" : "/"}>Background Removal App</Link>
       </div>
       <div className="block flex-1">
@@ -33,7 +35,7 @@ export default function Header() {
             <>
               <li>
                 <button
-                  className="cursor-pointer rounded-sm py-2 px-3 active:bg-zinc-200"
+                  className="cursor-pointer rounded-md py-2 px-3 active:bg-zinc-200"
                   onClick={async () => {
                     const result = await registerOrLogin();
                     if (result.user) {
@@ -46,7 +48,7 @@ export default function Header() {
               </li>
               <li>
                 <button
-                  className="cursor-pointer rounded-sm bg-black py-2 px-3 text-white hover:text-zinc-300"
+                  className="cursor-pointer rounded-md bg-black py-2 px-3 text-white hover:text-zinc-300"
                   onClick={async () => {
                     const result = await registerOrLogin();
                     if (result.user) {
@@ -63,7 +65,7 @@ export default function Header() {
             <>
               <li>
                 <button
-                  className="cursor-pointer rounded-sm py-2 px-3 active:bg-zinc-200"
+                  className="cursor-pointer rounded-md py-2 px-3 active:bg-zinc-200"
                   onClick={logout}
                 >
                   Sign Out
@@ -71,7 +73,7 @@ export default function Header() {
               </li>
               <li>
                 <Link href="/dashboard">
-                  <button className="cursor-pointer rounded-sm bg-black py-2 px-3 text-white hover:text-zinc-300">
+                  <button className="cursor-pointer rounded-md bg-black py-2 px-3 text-white hover:text-zinc-300">
                     Dashboard
                   </button>
                 </Link>

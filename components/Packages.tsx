@@ -60,7 +60,7 @@ export default function Packages() {
         packages.map((pack) => (
           <div
             key={pack.id}
-            className="flex-1 rounded-sm border border-zinc-300"
+            className="flex-1 rounded-xl bg-white shadow-xl shadow-slate-900/10"
           >
             {/* {hasCredit() && packageId === pack.id && (
               <div className="relative">
@@ -70,7 +70,7 @@ export default function Packages() {
               </div>
             )} */}
             <div className="px-4 py-8">
-              <div className="flex gap-2">
+              <div className="flex justify-center gap-2">
                 <h1 className="mb-1 text-2xl">${pack.price}</h1>
                 {pack.price === 0 && (
                   <div className="text-sm">
@@ -78,9 +78,9 @@ export default function Packages() {
                   </div>
                 )}
               </div>
-              <p className="mb-4 text-lg">{pack.limit} Credits</p>
+              <p className="mb-4 text-center text-lg">{pack.limit} Credits</p>
               <button
-                className="hover:text-zinc-white w-full cursor-pointer rounded-sm border border-black py-2 px-3 text-sm hover:bg-black hover:text-white disabled:cursor-not-allowed  disabled:border-zinc-300 disabled:text-zinc-300 disabled:hover:bg-white disabled:hover:text-zinc-300"
+                className="hover:text-zinc-white w-full cursor-pointer rounded-md border border-black py-2 px-3 text-sm hover:bg-black hover:text-white disabled:cursor-not-allowed  disabled:border-zinc-300 disabled:text-zinc-300 disabled:hover:bg-white disabled:hover:text-zinc-300"
                 disabled={loading}
                 onClick={() => purchase(pack)}
               >
