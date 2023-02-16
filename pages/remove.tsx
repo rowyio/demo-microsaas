@@ -18,8 +18,6 @@ import { v4 as uuidv4 } from "uuid";
 import { upload } from "@/lib/storage";
 import { doc, onSnapshot } from "firebase/firestore";
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
 export default function RemoveBackground() {
   const [localFile, setLocalFile] = useState<CustomFile>();
   const [prediction, setPrediction] = useState<any>(null);
@@ -31,12 +29,12 @@ export default function RemoveBackground() {
   const [predictionId, setPredictionId] = useState<string>();
   const [output, setOutput] = useState<string>();
 
-  const { user } = useAuth();
-  const { used, limit } = usePackage();
+  const { user, isAuthenticated } = useAuth();
+  const { hasCredit } = usePackage();
   const router = useRouter();
 
   const handleUpload = async (file: File) => {
-    if (used === limit) {
+    if (!hasCredit()) {
       setShowLoginModal(true);
       return;
     }
@@ -211,9 +209,7 @@ export default function RemoveBackground() {
         >
           <div className="py-4">
             <div className="mb-8 text-center">
-              <p className="font-semibold">
-                Oh oh, you&apos;ve used up all your credits.
-              </p>
+              <p>Oh oh, you&apos;ve used up all your credits.</p>
               {!user && (
                 <p>
                   Good news is by signing up you get an additional 100 free
@@ -223,7 +219,7 @@ export default function RemoveBackground() {
             </div>
 
             <div className="text-center">
-              {!user && (
+              {!isAuthenticated && (
                 <button
                   className="cursor-pointer rounded-md bg-black py-2 px-8 text-white hover:text-zinc-300"
                   onClick={async () => {
@@ -236,7 +232,7 @@ export default function RemoveBackground() {
                   Sign in with Google
                 </button>
               )}
-              {user && (
+              {isAuthenticated && (
                 <Link href="/dashboard">
                   <button className="cursor-pointer rounded-md bg-black py-2 px-8 text-white hover:text-zinc-300">
                     Buy credits

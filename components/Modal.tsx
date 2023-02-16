@@ -42,8 +42,8 @@ export default function Modal({ isOpen, title, children, onClose }: Props) {
       >
         <div className="relative h-full w-full max-w-2xl md:h-auto">
           <div className="relative rounded-lg bg-white">
-            <div className="flex items-start justify-between rounded-t border-b border-zinc-300 px-4 py-3">
-              <h4 className="text-lg ">{title}</h4>
+            <div className="flex items-start justify-between rounded-t border-b border-zinc-200 px-4 py-3">
+              <h4 className="text-lg">{title}</h4>
               <button
                 type="button"
                 className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-zinc-400"
