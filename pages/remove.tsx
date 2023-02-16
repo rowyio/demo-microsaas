@@ -115,7 +115,13 @@ export default function RemoveBackground() {
 
       <div className="my-16 block gap-12 space-y-8 md:flex md:space-y-0">
         <div className="flex-1">
-          <h1 className="mb-5 text-2xl">Upload</h1>
+          <div className="mb-5 flex items-center gap-3">
+            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-black font-bold text-white">
+              1
+            </div>
+            <h1 className=" text-2xl">Upload</h1>
+          </div>
+
           {localFile && (
             <Image
               alt="uploaded photo"
@@ -149,7 +155,12 @@ export default function RemoveBackground() {
           </div>
         </div>
         <div className="flex-1">
-          <h1 className="mb-5 text-2xl">Result</h1>
+          <div className="mb-5 flex items-center gap-3">
+            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-black font-bold text-white">
+              2
+            </div>
+            <h1 className=" text-2xl">Result</h1>
+          </div>
 
           {error && (
             <p className="text-center text-lg text-red-500">
@@ -184,15 +195,12 @@ export default function RemoveBackground() {
             </div>
           )}
 
-          {removedBgLoaded && (
+          {removedBgLoaded && output && (
             <div className="text-center">
               <button
                 className="cursor-pointer rounded-md border border-black py-2 px-6  hover:bg-black hover:text-zinc-300"
                 onClick={() => {
-                  downloadPhoto(
-                    prediction.output!,
-                    appendNewToName(photoName!)
-                  );
+                  downloadPhoto(output, appendNewToName(photoName!));
                 }}
               >
                 Download Photo
