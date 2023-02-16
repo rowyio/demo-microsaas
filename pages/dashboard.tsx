@@ -42,7 +42,7 @@ export default function Dashboard() {
             <div>
               <h2 className="text-2xl tracking-wide">Your usage</h2>
             </div>
-            {!!used && !!limit && (
+            {used != undefined && limit != undefined && (
               <div>
                 <p className="text-lg">
                   Used: {used}/{limit}
