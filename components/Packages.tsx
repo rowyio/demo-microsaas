@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 
 export default function Packages() {
   const [loading, setLoading] = useState(false);
-  const { packageId, hasCredit } = usePackage();
   const { user } = useAuth();
   const [packages, setPackages] = useState<Package[]>();
 

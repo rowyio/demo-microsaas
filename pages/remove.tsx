@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Upload, { CustomFile } from "@/components/Upload";
 import Modal from "@/components/Modal";
-import { collection, setDoc, doc, updateDoc } from "firebase/firestore";
 import { db, storage } from "@/lib/firebase";
 import useAuth from "@/hooks/useAuth";
 import usePackage from "@/hooks/usePackage";
@@ -16,8 +15,8 @@ import downloadPhoto, { appendNewToName } from "@/lib/download";
 import { useRouter } from "next/router";
 import { ref } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { getImageExtension, upload } from "@/lib/storage";
-import { getUserProfile } from "@/lib/profiles";
+import { upload } from "@/lib/storage";
+import { doc, onSnapshot } from "firebase/firestore";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -29,6 +28,8 @@ export default function RemoveBackground() {
   const [removedBgLoaded, setRemovedBgLoaded] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [photoName, setPhotoName] = useState<string | null>(null);
+  const [predictionId, setPredictionId] = useState<string>();
+  const [output, setOutput] = useState<string>();
 
   const { user } = useAuth();
   const { used, limit, incrementFreeUsed } = usePackage();
@@ -56,6 +57,7 @@ export default function RemoveBackground() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        token: `${user?.token}`,
       },
       body: JSON.stringify({
         image: uploadedImageUrl,
@@ -63,6 +65,13 @@ export default function RemoveBackground() {
     });
 
     let prediction = await response.json();
+
+    if (prediction.predictionId) {
+      setPredictionId(prediction.predictionId as string);
+      return;
+    }
+
+    console.log("The predictions", prediction);
 
     if (response.status !== 201) {
       console.log("prediction errror", prediction.detail);
@@ -92,35 +101,7 @@ export default function RemoveBackground() {
 
     setLoading(false);
 
-    if (user) {
-      // Save prediction in firestore
-      const response = await fetch(prediction.output);
-      const blob = await response.blob();
-
-      const extension = getImageExtension(prediction.output);
-      const outputName = `${uuidv4()}.${extension}`;
-
-      const outputStorageRef = ref(storage, `images/output/${outputName}`);
-      const uploadedOutputImageUrl = await upload(outputStorageRef, blob);
-
-      const predictionsRef = collection(db, "predictions");
-      await setDoc(doc(predictionsRef), {
-        input: uploadedImageUrl,
-        output: uploadedOutputImageUrl,
-        profile: user.id,
-        "_createdBy.timestamp": new Date(),
-      });
-
-      //? Increment profile used credits...
-      //? Because rowy task seems to crash at times
-      const profile = await getUserProfile(user.userId);
-      const currentUsed = Number(profile?.data().package.used);
-
-      const profileRef = doc(db, "profiles", user.id);
-      await updateDoc(profileRef, {
-        "package.used": currentUsed + 1,
-      });
-    } else {
+    if (!user) {
       incrementFreeUsed();
     }
   };
@@ -129,6 +110,22 @@ export default function RemoveBackground() {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
     return () => localFile && URL.revokeObjectURL(localFile.preview);
   }, []);
+
+  useEffect(() => {
+    if (predictionId) {
+      const unsub = onSnapshot(doc(db, "predictions", predictionId), (doc) => {
+        const prediction = doc.data();
+        console.log("real time pred:", prediction);
+        if (prediction && prediction.output) {
+          setOutput(prediction.output);
+          setLoading(false);
+        }
+      });
+      return () => {
+        unsub();
+      };
+    }
+  }, [predictionId]);
 
   return (
     <>
@@ -194,7 +191,28 @@ export default function RemoveBackground() {
             </div>
           )}
 
-          {prediction && (
+          {output && (
+            <div>
+              {!removedBgLoaded && (
+                <div className="justify-centertext-center flex w-full flex-col items-center">
+                  <Spinner />
+                  <p className="text-lg text-zinc-700">
+                    Adding final touches...
+                  </p>
+                </div>
+              )}
+              <Image
+                src={output}
+                alt="output"
+                className="relative mt-2 mb-4 rounded-2xl sm:mt-0"
+                width={475}
+                height={475}
+                onLoadingComplete={() => setRemovedBgLoaded(true)}
+              />
+            </div>
+          )}
+
+          {!output && prediction && (
             <div>
               {prediction.output && (
                 <>
