@@ -2,6 +2,7 @@ import Hero from "@/components/Hero";
 import Packages from "@/components/Packages";
 import UsageBar from "@/components/UsageBar";
 import useAuth from "@/hooks/useAuth";
+import usePackage from "@/hooks/usePackage";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -9,6 +10,7 @@ import { toast } from "react-hot-toast";
 
 export default function Dashboard() {
   const { loading, user } = useAuth();
+  const { used, limit } = usePackage();
   const router = useRouter();
 
   const { payment_status: paymentStatus } = router.query;
@@ -35,16 +37,25 @@ export default function Dashboard() {
             subHeading="View your usage, or buy more credits."
           />
         </div>
-        <div className="my-16">
-          <h2 className="mb-3 text-2xl tracking-wide">Credit usage</h2>
-          <UsageBar />
+        <div className="my-16 ">
+          <div className="mb-3 flex items-baseline justify-between">
+            <div>
+              <h2 className="text-2xl tracking-wide">Your usage</h2>
+            </div>
+            {!!used && !!limit && (
+              <div>
+                <p className="text-lg">
+                  {used}/{limit}
+                </p>
+              </div>
+            )}
+          </div>
+          <UsageBar showRatio={false} />
         </div>
         <div>
           <div className="flex items-baseline justify-between">
             <h2 className="mb-3 text-2xl tracking-wide">Packages</h2>
-            <div className="rounded-md border  bg-zinc-200 px-2 text-sm">
-              Note: 1 credit = 1 photo
-            </div>
+            <div className=" text-sm">Note: 1 credit = 1 photo</div>
           </div>
           <Packages />
         </div>

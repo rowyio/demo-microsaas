@@ -142,7 +142,7 @@ export default function RemoveBackground() {
           {removedBgLoaded && (
             <div className="text-center">
               <button
-                className="cursor-pointer rounded-sm bg-black py-2 px-6 text-white hover:text-zinc-300"
+                className="cursor-pointer rounded-md bg-black py-2 px-6 text-white hover:text-zinc-300"
                 onClick={() => {
                   setLocalFile(undefined);
                   setRemovedBgLoaded(false);
@@ -201,7 +201,7 @@ export default function RemoveBackground() {
           {removedBgLoaded && (
             <div className="text-center">
               <button
-                className="cursor-pointer rounded-sm border border-black py-2 px-6  hover:bg-black hover:text-zinc-300"
+                className="cursor-pointer rounded-md border border-black py-2 px-6  hover:bg-black hover:text-zinc-300"
                 onClick={() => {
                   downloadPhoto(
                     prediction.output!,
@@ -237,7 +237,7 @@ export default function RemoveBackground() {
             <div className="text-center">
               {!user && (
                 <button
-                  className="cursor-pointer rounded-sm bg-black py-2 px-8 text-white hover:text-zinc-300"
+                  className="cursor-pointer rounded-md bg-black py-2 px-8 text-white hover:text-zinc-300"
                   onClick={async () => {
                     const result = await registerOrLogin();
                     if (result.user) {
@@ -250,7 +250,7 @@ export default function RemoveBackground() {
               )}
               {user && (
                 <Link href="/dashboard">
-                  <button className="cursor-pointer rounded-sm bg-black py-2 px-8 text-white hover:text-zinc-300">
+                  <button className="cursor-pointer rounded-md bg-black py-2 px-8 text-white hover:text-zinc-300">
                     Buy credits
                   </button>
                 </Link>
