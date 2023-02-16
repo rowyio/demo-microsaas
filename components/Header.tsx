@@ -26,8 +26,10 @@ export default function Header() {
     <div
       className={`block items-center gap-12 border-b border-b-zinc-200 py-8 md:flex md:border-b-0`}
     >
-      <div className="mb-5 text-center tracking-wider  md:mb-0">
-        <Link href={user ? "/remove" : "/"}>Background Removal App</Link>
+      <div className="mb-5 text-center text-lg tracking-widest md:mb-0">
+        <Link href={user ? "/remove" : "/"}>
+          <span className=" text-zinc-500">background</span> Removal App
+        </Link>
       </div>
       <div className="block flex-1">
         <ul className="flex justify-center gap-5 text-zinc-500 md:justify-end">
@@ -35,7 +37,7 @@ export default function Header() {
             <>
               <li>
                 <button
-                  className="cursor-pointer rounded-md py-2 px-3 active:bg-zinc-200"
+                  className="cursor-pointer rounded-md border border-zinc-200 py-2 px-4 active:bg-zinc-200"
                   onClick={async () => {
                     const result = await registerOrLogin();
                     if (result.user) {
@@ -48,7 +50,7 @@ export default function Header() {
               </li>
               <li>
                 <button
-                  className="cursor-pointer rounded-md bg-black py-2 px-3 text-white hover:text-zinc-300"
+                  className="cursor-pointer rounded-md bg-black py-2 px-4 text-white hover:text-zinc-300"
                   onClick={async () => {
                     const result = await registerOrLogin();
                     if (result.user) {
@@ -65,7 +67,7 @@ export default function Header() {
             <>
               <li>
                 <button
-                  className="cursor-pointer rounded-md py-2 px-3 active:bg-zinc-200"
+                  className="cursor-pointer rounded-md border border-zinc-200 py-2 px-4 active:bg-zinc-200"
                   onClick={logout}
                 >
                   Sign Out
@@ -73,7 +75,7 @@ export default function Header() {
               </li>
               <li>
                 <Link href="/dashboard">
-                  <button className="cursor-pointer rounded-md bg-black py-2 px-3 text-white hover:text-zinc-300">
+                  <button className="cursor-pointer rounded-md bg-black py-2 px-4 text-white hover:text-zinc-300">
                     Dashboard
                   </button>
                 </Link>

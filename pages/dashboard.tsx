@@ -42,11 +42,13 @@ export default function Dashboard() {
             <div>
               <h2 className="text-2xl tracking-wide">Your usage</h2>
             </div>
-            <div className="">
-              <p className="text-lg">
-                {used}/{limit}
-              </p>
-            </div>
+            {!!used && !!limit && (
+              <div>
+                <p className="text-lg">
+                  {used}/{limit}
+                </p>
+              </div>
+            )}
           </div>
           <UsageBar showRatio={false} />
         </div>
