@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Upload, { CustomFile } from "@/components/Upload";
 import Modal from "@/components/Modal";
-import { collection, setDoc, doc } from "firebase/firestore";
+import { collection, setDoc, doc, updateDoc } from "firebase/firestore";
 import { db, storage } from "@/lib/firebase";
 import useAuth from "@/hooks/useAuth";
 import usePackage from "@/hooks/usePackage";
@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import { ref } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { getImageExtension, upload } from "@/lib/storage";
+import { getUserProfile } from "@/lib/profiles";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -108,6 +109,16 @@ export default function RemoveBackground() {
         output: uploadedOutputImageUrl,
         profile: user.id,
         "_createdBy.timestamp": new Date(),
+      });
+
+      //? Increment profile used credits...
+      //? Because rowy task seems to crash at times
+      const profile = await getUserProfile(user.userId);
+      const currentUsed = Number(profile?.data().package.used);
+
+      const profileRef = doc(db, "profiles", user.id);
+      await updateDoc(profileRef, {
+        "package.used": currentUsed + 1,
       });
     } else {
       incrementFreeUsed();

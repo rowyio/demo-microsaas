@@ -26,7 +26,7 @@ export default function Header() {
     <div
       className={`block items-center gap-12 border-b border-b-zinc-200 py-8 md:flex md:border-b-0`}
     >
-      <div className="mb-5 text-center text-lg tracking-widest md:mb-0">
+      <div className="mb-5 text-center text-lg tracking-wide md:mb-0">
         <Link href={user ? "/remove" : "/"}>
           <span className=" text-zinc-500">background</span> Removal App
         </Link>
