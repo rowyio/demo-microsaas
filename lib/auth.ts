@@ -4,7 +4,6 @@ import {
   signInWithPopup,
   User,
   signInAnonymously,
-  ProviderId,
 } from "firebase/auth";
 import { collection, doc, query, setDoc, where } from "firebase/firestore";
 import { getPackages } from "./packages";
@@ -100,10 +99,11 @@ export async function anonymouslySignIn() {
     const formattedUser = await formatUser(user);
 
     return { user: formattedUser };
-
-    console.log("anonymouslySignIn", result.user);
-  } catch (error) {
+  } catch (error: any) {
     console.log("Anonymous sign in error:", error);
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    return { errorCode, errorMessage };
   }
 }
 

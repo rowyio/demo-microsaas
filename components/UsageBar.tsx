@@ -12,7 +12,7 @@ export default function UsageBar({ showRatio = true }: Props) {
   return (
     <>
       <div className="flex items-center gap-3">
-        <div className="w-full overflow-hidden rounded-full bg-zinc-200">
+        <div className="w-full overflow-hidden rounded-full bg-zinc-200/50">
           <div
             className="rounded-full bg-black py-0.5 text-center text-xs font-medium leading-none text-white"
             style={{ width: `${Math.ceil((used / limit) * 100)}%` }}
