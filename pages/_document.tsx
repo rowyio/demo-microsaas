@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head />
-      <body className="border-t-8">
+      <body>
         <Main />
         <NextScript />
       </body>

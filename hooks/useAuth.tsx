@@ -11,14 +11,17 @@ export type Profile = {
   package: ProfilePackage;
   token: string;
   expirationTime: string;
+  isAnonymous: boolean;
 };
 
 export default function useAuth() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<Profile>();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const loadProfile = async (user: FormattedUser) => {
     const profile = await getUserProfile(user.uid);
+    console.log("load profile data", profile?.data());
 
     if (profile) {
       setUser({
@@ -27,9 +30,11 @@ export default function useAuth() {
         package: profile.data().package,
         token: user.token,
         expirationTime: user.expirationTime,
+        isAnonymous: user.isAnonymous,
       });
-      setLoading(false);
+      setIsAuthenticated(!user.isAnonymous);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -46,9 +51,13 @@ export default function useAuth() {
     });
   }, []);
 
+  console.log("usss", user);
+  console.log("isAuthenticated", isAuthenticated);
+
   return {
     user,
     loading,
     loadProfile,
+    isAuthenticated,
   };
 }

@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 
 export default function Dashboard() {
-  const { loading, user } = useAuth();
+  const { isAuthenticated, user, loading } = useAuth();
   const { used, limit } = usePackage();
   const router = useRouter();
 
@@ -21,7 +21,12 @@ export default function Dashboard() {
     }
   }, [paymentStatus]);
 
-  if (!loading && !user) router.push("/");
+  if (loading) return null;
+
+  if (!isAuthenticated) {
+    router.push("/");
+    return null;
+  }
 
   return (
     <>

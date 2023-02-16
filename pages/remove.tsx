@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Upload, { CustomFile } from "@/components/Upload";
 import Modal from "@/components/Modal";
-import { collection, setDoc, doc, updateDoc } from "firebase/firestore";
 import { db, storage } from "@/lib/firebase";
 import useAuth from "@/hooks/useAuth";
 import usePackage from "@/hooks/usePackage";
@@ -16,10 +15,8 @@ import downloadPhoto, { appendNewToName } from "@/lib/download";
 import { useRouter } from "next/router";
 import { ref } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { getImageExtension, upload } from "@/lib/storage";
-import { getUserProfile } from "@/lib/profiles";
-
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+import { upload } from "@/lib/storage";
+import { doc, onSnapshot } from "firebase/firestore";
 
 export default function RemoveBackground() {
   const [localFile, setLocalFile] = useState<CustomFile>();
@@ -29,13 +26,15 @@ export default function RemoveBackground() {
   const [removedBgLoaded, setRemovedBgLoaded] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [photoName, setPhotoName] = useState<string | null>(null);
+  const [predictionId, setPredictionId] = useState<string>();
+  const [output, setOutput] = useState<string>();
 
-  const { user } = useAuth();
-  const { used, limit, incrementFreeUsed } = usePackage();
+  const { user, isAuthenticated } = useAuth();
+  const { hasCredit } = usePackage();
   const router = useRouter();
 
   const handleUpload = async (file: File) => {
-    if (used === limit) {
+    if (!hasCredit()) {
       setShowLoginModal(true);
       return;
     }
@@ -56,13 +55,14 @@ export default function RemoveBackground() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        token: `${user?.token}`,
       },
       body: JSON.stringify({
         image: uploadedImageUrl,
       }),
     });
 
-    let prediction = await response.json();
+    const prediction = await response.json();
 
     if (response.status !== 201) {
       console.log("prediction errror", prediction.detail);
@@ -71,57 +71,9 @@ export default function RemoveBackground() {
       return;
     }
 
-    setPrediction(prediction);
-
-    while (
-      prediction.status !== "succeeded" &&
-      prediction.status !== "failed"
-    ) {
-      await sleep(1000);
-      const response = await fetch("/api/predictions/" + prediction.id);
-      prediction = await response.json();
-
-      if (response.status !== 200) {
-        setError(prediction.detail);
-        setLoading(false);
-        return;
-      }
-
-      setPrediction(prediction);
-    }
-
-    setLoading(false);
-
-    if (user) {
-      // Save prediction in firestore
-      const response = await fetch(prediction.output);
-      const blob = await response.blob();
-
-      const extension = getImageExtension(prediction.output);
-      const outputName = `${uuidv4()}.${extension}`;
-
-      const outputStorageRef = ref(storage, `images/output/${outputName}`);
-      const uploadedOutputImageUrl = await upload(outputStorageRef, blob);
-
-      const predictionsRef = collection(db, "predictions");
-      await setDoc(doc(predictionsRef), {
-        input: uploadedImageUrl,
-        output: uploadedOutputImageUrl,
-        profile: user.id,
-        "_createdBy.timestamp": new Date(),
-      });
-
-      //? Increment profile used credits...
-      //? Because rowy task seems to crash at times
-      const profile = await getUserProfile(user.userId);
-      const currentUsed = Number(profile?.data().package.used);
-
-      const profileRef = doc(db, "profiles", user.id);
-      await updateDoc(profileRef, {
-        "package.used": currentUsed + 1,
-      });
-    } else {
-      incrementFreeUsed();
+    if (prediction.predictionId) {
+      setPredictionId(prediction.predictionId as string);
+      return;
     }
   };
 
@@ -129,6 +81,23 @@ export default function RemoveBackground() {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
     return () => localFile && URL.revokeObjectURL(localFile.preview);
   }, []);
+
+  // Listen for when the prediction is completed
+  useEffect(() => {
+    if (predictionId) {
+      const unsub = onSnapshot(doc(db, "predictions", predictionId), (doc) => {
+        const prediction = doc.data();
+        console.log("real time pred:", prediction);
+        if (prediction && prediction.output) {
+          setOutput(prediction.output);
+          setLoading(false);
+        }
+      });
+      return () => {
+        unsub();
+      };
+    }
+  }, [predictionId]);
 
   return (
     <>
@@ -146,7 +115,13 @@ export default function RemoveBackground() {
 
       <div className="my-16 block gap-12 space-y-8 md:flex md:space-y-0">
         <div className="flex-1">
-          <h1 className="mb-5 text-2xl">Upload</h1>
+          <div className="mb-5 flex items-center gap-3">
+            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-black font-bold text-white">
+              1
+            </div>
+            <h1 className=" text-2xl">Upload</h1>
+          </div>
+
           {localFile && (
             <Image
               alt="uploaded photo"
@@ -180,7 +155,12 @@ export default function RemoveBackground() {
           </div>
         </div>
         <div className="flex-1">
-          <h1 className="mb-5 text-2xl">Result</h1>
+          <div className="mb-5 flex items-center gap-3">
+            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-black font-bold text-white">
+              2
+            </div>
+            <h1 className=" text-2xl">Result</h1>
+          </div>
 
           {error && (
             <p className="text-center text-lg text-red-500">
@@ -194,39 +174,33 @@ export default function RemoveBackground() {
             </div>
           )}
 
-          {prediction && (
+          {output && (
             <div>
-              {prediction.output && (
-                <>
-                  {!removedBgLoaded && (
-                    <div className="justify-centertext-center flex w-full flex-col items-center">
-                      <Spinner />
-                      <p className="text-lg text-zinc-700">
-                        Adding final touches...
-                      </p>
-                    </div>
-                  )}
-                  <Image
-                    src={prediction.output}
-                    alt="output"
-                    className="relative mt-2 mb-4 rounded-2xl sm:mt-0"
-                    width={475}
-                    height={475}
-                    onLoadingComplete={() => setRemovedBgLoaded(true)}
-                  />
-                </>
+              {!removedBgLoaded && (
+                <div className="justify-centertext-center flex w-full flex-col items-center">
+                  <Spinner />
+                  <p className="text-lg text-zinc-700">
+                    Adding final touches...
+                  </p>
+                </div>
               )}
+              <Image
+                src={output}
+                alt="output"
+                className="relative mt-2 mb-4 rounded-2xl sm:mt-0"
+                width={475}
+                height={475}
+                onLoadingComplete={() => setRemovedBgLoaded(true)}
+              />
             </div>
           )}
-          {removedBgLoaded && (
+
+          {removedBgLoaded && output && (
             <div className="text-center">
               <button
                 className="cursor-pointer rounded-md border border-black py-2 px-6  hover:bg-black hover:text-zinc-300"
                 onClick={() => {
-                  downloadPhoto(
-                    prediction.output!,
-                    appendNewToName(photoName!)
-                  );
+                  downloadPhoto(output, appendNewToName(photoName!));
                 }}
               >
                 Download Photo
@@ -243,9 +217,7 @@ export default function RemoveBackground() {
         >
           <div className="py-4">
             <div className="mb-8 text-center">
-              <p className="font-semibold">
-                Oh oh, you&apos;ve used up all your credits.
-              </p>
+              <p>Oh oh, you&apos;ve used up all your credits.</p>
               {!user && (
                 <p>
                   Good news is by signing up you get an additional 100 free
@@ -255,7 +227,7 @@ export default function RemoveBackground() {
             </div>
 
             <div className="text-center">
-              {!user && (
+              {!isAuthenticated && (
                 <button
                   className="cursor-pointer rounded-md bg-black py-2 px-8 text-white hover:text-zinc-300"
                   onClick={async () => {
@@ -268,7 +240,7 @@ export default function RemoveBackground() {
                   Sign in with Google
                 </button>
               )}
-              {user && (
+              {isAuthenticated && (
                 <Link href="/dashboard">
                   <button className="cursor-pointer rounded-md bg-black py-2 px-8 text-white hover:text-zinc-300">
                     Buy credits

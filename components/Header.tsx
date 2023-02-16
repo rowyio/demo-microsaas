@@ -3,18 +3,16 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import useAuth from "@/hooks/useAuth";
 import { registerOrLogin } from "@/lib/auth";
-import { useRouter } from "next/router";
 
 export default function Header() {
-  const { user, loadProfile } = useAuth();
-  const router = useRouter();
+  const { user, loadProfile, isAuthenticated } = useAuth();
 
   const logout = () => {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
         console.log("Signed out successfully");
-        router.push("/");
+        location.replace("/");
       })
       .catch((error) => {
         // An error happened.
@@ -26,14 +24,14 @@ export default function Header() {
     <div
       className={`block items-center gap-12 border-b border-b-zinc-200 py-8 md:flex md:border-b-0`}
     >
-      <div className="mb-5 text-center text-lg tracking-wide md:mb-0">
-        <Link href={user ? "/remove" : "/"}>
+      <div className="mb-5 text-center text-lg tracking-wider md:mb-0">
+        <Link href={isAuthenticated ? "/remove" : "/"}>
           <span className=" text-zinc-500">background</span> Removal App
         </Link>
       </div>
       <div className="block flex-1">
         <ul className="flex justify-center gap-5 text-zinc-500 md:justify-end">
-          {!user && (
+          {!isAuthenticated && (
             <>
               <li>
                 <button
@@ -63,7 +61,7 @@ export default function Header() {
               </li>
             </>
           )}
-          {user && (
+          {isAuthenticated && (
             <>
               <li>
                 <button
