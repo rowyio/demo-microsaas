@@ -1,0 +1,13 @@
+name: Weekly purge of anonymous data
+on:
+  schedule:
+    - cron: "0 0 * * 0"
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call API route
+        run: |
+          curl --request POST \
+          --url 'https://bg-removal-app.vercel.app/api/users/purge' \
+          --header 'Authorization: Bearer ${{ secrets.API_SECRET_KEY }}'
