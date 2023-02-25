@@ -33,6 +33,9 @@ export default function RemoveBackground() {
   const { hasCredit } = usePackage();
   const router = useRouter();
 
+  console.log(user)
+
+
   const handleUpload = async (file: File) => {
     if (!hasCredit()) {
       setShowLoginModal(true);
@@ -51,14 +54,25 @@ export default function RemoveBackground() {
 
     const uploadedImageUrl = await upload(storageRef, file);
 
-    const response = await fetch("/api/predictions", {
+    // const response = await fetch("/api/predictions", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     token: `${user?.token}`,
+    //   },
+    //   body: JSON.stringify({
+    //     image: uploadedImageUrl,
+    //   }),
+    // });
+
+    const response = await fetch("https://rowy-hooks-7tdcrfawba-uc.a.run.app/wh/profiles/dyWP1dMotfUphOHEe8UP", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        token: `${user?.token}`,
       },
       body: JSON.stringify({
         image: uploadedImageUrl,
+        profileId: user?.id
       }),
     });
 

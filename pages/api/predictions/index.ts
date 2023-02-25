@@ -53,12 +53,25 @@ export default async function handler(
 
     if (!profileSnap.empty) {
       const profile = profileSnap.docs[0];
-      const document = await firestore.collection("predictions").add({
+
+      const imagesRef = firestore
+        .collection("profiles")
+        .doc(profile.id)
+        .collection("images");
+
+      const document = await imagesRef.add({
         replicateResponse: prediction,
         input: data.image,
-        profile: profile.id,
       });
-      console.log("document id", document.id);
+
+      // TODO: Instead of doing thi save under sub collection profiles/uid/predictions
+      // const document = await firestore.collection("predictions").add({
+      //   replicateResponse: prediction,
+      //   input: data.image,
+      //   profile: profile.id,
+      // });
+
+      console.log("Document ID", document.id);
       return res.status(201).json({ predictionId: document.id });
     }
   }
