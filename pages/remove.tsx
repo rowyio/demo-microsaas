@@ -77,27 +77,29 @@ export default function RemoveBackground() {
     }
   };
 
-  useEffect(() => {
-    // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-    return () => localFile && URL.revokeObjectURL(localFile.preview);
-  }, []);
-
   // Listen for when the prediction is completed
   useEffect(() => {
     if (predictionId) {
-      const unsub = onSnapshot(doc(db, "predictions", predictionId), (doc) => {
-        const prediction = doc.data();
-        console.log("real time pred:", prediction);
-        if (prediction && prediction.output) {
-          setOutput(prediction.output);
-          setLoading(false);
+      const unsub = onSnapshot(
+        doc(db, `profiles/${user?.id}/images/${predictionId}`),
+        (doc) => {
+          const prediction = doc.data();
+          if (prediction && prediction.output) {
+            setOutput(prediction.output);
+            setLoading(false);
+          }
         }
-      });
+      );
       return () => {
         unsub();
       };
     }
   }, [predictionId]);
+
+  useEffect(() => {
+    // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
+    return () => localFile && URL.revokeObjectURL(localFile.preview);
+  }, []);
 
   return (
     <>
@@ -143,6 +145,8 @@ export default function RemoveBackground() {
                   setRemovedBgLoaded(false);
                   setError(null);
                   setPrediction(undefined);
+                  setPredictionId(undefined);
+                  setOutput(undefined);
                 }}
               >
                 Upload New Photo
