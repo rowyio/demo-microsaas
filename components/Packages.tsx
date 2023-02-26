@@ -1,5 +1,4 @@
 import useAuth from "@/hooks/useAuth";
-import usePackage from "@/hooks/usePackage";
 import { db } from "@/lib/firebase";
 import { getPackages, Package } from "@/lib/packages";
 import { collection, orderBy, query } from "firebase/firestore";
@@ -28,14 +27,17 @@ export default function Packages() {
   const purchase = async (creditPackage: Package) => {
     setLoading(true);
     try {
-      const response = await fetch("/api/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          token: `${user?.token}`,
-        },
-        body: JSON.stringify({ creditPackage }),
-      });
+      const response = await fetch(
+        "https://rowy-hooks-7tdcrfawba-uc.a.run.app/wh/profiles/jGcQyirsJjdy7CbbTBL2",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            token: `${user?.token}`,
+          },
+          body: JSON.stringify({ creditPackage, profileId: user?.id }),
+        }
+      );
 
       if (response.ok) {
         const data = (await response.json()) as { url: string };
