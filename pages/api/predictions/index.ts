@@ -31,7 +31,7 @@ export default async function handler(
       input: { image: data.image },
       ...(userId && {
         webhook:
-          "https://rowy-hooks-7tdcrfawba-uc.a.run.app/wh/predictions/OHoJWoh8l4AFBDeYJoVS",
+          "https://rowy-hooks-7tdcrfawba-uc.a.run.app/wh/profiles/fEL3bYffUHlPwkoTkJ1g",
       }),
     }),
   });
@@ -43,7 +43,7 @@ export default async function handler(
     return;
   }
 
-  const prediction = await response.json();
+  const replicateResponse = await response.json();
 
   if (userId) {
     const profileSnap = await firestore
@@ -54,28 +54,22 @@ export default async function handler(
     if (!profileSnap.empty) {
       const profile = profileSnap.docs[0];
 
+      profile.ref.update({ replicateResponse });
+
       const imagesRef = firestore
         .collection("profiles")
         .doc(profile.id)
         .collection("images");
 
       const document = await imagesRef.add({
-        replicateResponse: prediction,
+        replicateResponse,
         input: data.image,
       });
 
-      // TODO: Instead of doing thi save under sub collection profiles/uid/predictions
-      // const document = await firestore.collection("predictions").add({
-      //   replicateResponse: prediction,
-      //   input: data.image,
-      //   profile: profile.id,
-      // });
-
-      console.log("Document ID", document.id);
       return res.status(201).json({ predictionId: document.id });
     }
   }
 
   res.statusCode = 201;
-  res.end(JSON.stringify(prediction));
+  res.end(JSON.stringify(replicateResponse));
 }
