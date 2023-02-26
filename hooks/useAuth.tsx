@@ -21,7 +21,6 @@ export default function useAuth() {
 
   const loadProfile = async (user: FormattedUser) => {
     const profile = await getUserProfile(user.uid);
-    console.log("load profile data", profile?.data());
 
     if (profile) {
       setUser({
@@ -50,9 +49,6 @@ export default function useAuth() {
       }
     });
   }, []);
-
-  console.log("usss", user);
-  console.log("isAuthenticated", isAuthenticated);
 
   return {
     user,

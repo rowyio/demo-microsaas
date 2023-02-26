@@ -51,21 +51,25 @@ export default function RemoveBackground() {
 
     const uploadedImageUrl = await upload(storageRef, file);
 
-    const response = await fetch("/api/predictions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        token: `${user?.token}`,
-      },
-      body: JSON.stringify({
-        image: uploadedImageUrl,
-      }),
-    });
+    const response = await fetch(
+      "https://rowy-hooks-7tdcrfawba-uc.a.run.app/wh/profiles/dyWP1dMotfUphOHEe8UP",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: `${user?.token}`,
+        },
+        body: JSON.stringify({
+          image: uploadedImageUrl,
+          profileId: user?.id,
+        }),
+      }
+    );
 
     const prediction = await response.json();
 
-    if (response.status !== 201) {
-      console.log("prediction errror", prediction.detail);
+    if (response.status !== 200) {
+      console.log("prediction error", prediction.detail);
       setError(prediction.detail);
       setLoading(false);
       return;
