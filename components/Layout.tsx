@@ -14,7 +14,6 @@ export default function Layout({ children }: { children: ReactNode }) {
   // }, []);
 
   useEffect(() => {
-    console.log(loading);
     if (!user && !loading) {
       console.log("user not authenticated");
       anonymouslySignIn();
