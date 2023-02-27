@@ -14,25 +14,14 @@ export async function purgeAnonymousData() {
     .where("isAnonymous", "==", true)
     .get();
 
-  const batch = firestore.batch();
-
   for (const profileDoc of profilesSnap.docs) {
     const profile = profileDoc.data();
     const userId = profile.userId;
     const user = await auth.getUser(userId);
 
-    // Purge all anonymous data after 5 days
+    // Purge anonymous profiles after 5 days since creation
     if (daysPast(new Date(user.metadata.creationTime)) === 5) {
-      // Delete predictions
-      const predictionsSnap = await firestore
-        .collection("predictions")
-        .where("profile", "==", profileDoc.id)
-        .get();
-      predictionsSnap.forEach((doc) => {
-        batch.delete(doc.ref);
-      });
-      await batch.commit();
-      // Delete profile
+      // Delete profile document
       await profileDoc.ref.delete();
       // Delete auth user
       await auth.deleteUser(userId);
