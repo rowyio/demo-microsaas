@@ -6,10 +6,28 @@ import { useAtomValue } from "jotai";
 import { userAuthAtom } from "@/atoms";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
 
 export default function Header() {
+  const [isOpen, setIsOpen] = useState(false);
   const { user, isAuthenticated } = useAtomValue(userAuthAtom);
   const router = useRouter();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    event.target;
+    if (
+      dropdownRef.current &&
+      event.target instanceof HTMLElement &&
+      !dropdownRef.current.contains(event.target)
+    ) {
+      setIsOpen(false);
+    }
+  };
 
   const logout = () => {
     signOut(auth)
@@ -25,6 +43,13 @@ export default function Header() {
       });
   };
 
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, []);
+
   return (
     <div
       className={`block items-center gap-12 border-b border-b-zinc-200 py-8 md:flex md:border-b-0`}
@@ -35,7 +60,7 @@ export default function Header() {
         </Link>
       </div>
       <div className="block flex-1">
-        <ul className="flex items-center justify-center gap-5 text-zinc-500 md:justify-end">
+        <ul className="flex items-center justify-center gap-5 text-zinc-600 md:justify-end">
           {!isAuthenticated && (
             <>
               <li>
@@ -59,31 +84,69 @@ export default function Header() {
           {isAuthenticated && (
             <>
               <li>
-                <button
-                  className="cursor-pointer rounded-md border border-zinc-200 py-2 px-4 active:bg-zinc-200"
-                  onClick={logout}
-                >
-                  Sign Out
-                </button>
+                <Link href="/">
+                  <button className="cursor-pointer py-2 px-2 hover:text-black active:bg-zinc-200">
+                    Home
+                  </button>
+                </Link>
               </li>
               <li>
-                <Link href="/dashboard">
-                  <button className="cursor-pointer rounded-md bg-black py-2 px-4 text-white hover:text-zinc-300">
-                    Dashboard
+                <Link href="/remove">
+                  <button className="cursor-pointer py-2 px-2 hover:text-black active:bg-zinc-200">
+                    Remove Background
                   </button>
                 </Link>
               </li>
             </>
           )}
-          {user?.photoUrl && (
+          {isAuthenticated && (
             <li>
-              <Image
-                src={user.photoUrl}
-                alt="user photo"
-                width={45}
-                height={45}
-                className="rounded-full"
-              />
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  className="flex items-center text-white focus:outline-none"
+                  onClick={toggleDropdown}
+                >
+                  {user?.photoUrl && (
+                    <Image
+                      src={user.photoUrl}
+                      alt="user photo"
+                      width={45}
+                      height={45}
+                      className="rounded-full"
+                    />
+                  )}
+                  <svg
+                    className="ml-1 h-4 w-4 fill-black"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M10 12l-5.79-5.79a1 1 0 0 1 1.41-1.41L10 9.17l4.38-4.38a1 1 0 0 1 1.41 1.41L10 12z" />
+                  </svg>
+                </button>
+                {isOpen && (
+                  <div className="absolute mt-2 w-36 rounded-lg bg-white py-2 shadow-xl">
+                    <Link
+                      href="dashboard"
+                      className="block px-4 py-2 text-gray-800 hover:bg-black hover:text-white"
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      href="packages"
+                      className="block px-4 py-2 text-gray-800 hover:bg-black hover:text-white"
+                    >
+                      Packages
+                    </Link>
+                    <a
+                      href="#"
+                      className="block px-4 py-2 text-gray-800 hover:bg-black hover:text-white"
+                      onClick={logout}
+                    >
+                      Sign out
+                    </a>
+                  </div>
+                )}
+              </div>
             </li>
           )}
         </ul>
