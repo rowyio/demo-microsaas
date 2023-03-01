@@ -5,7 +5,7 @@ import Head from "next/head";
 import Image from "next/image";
 
 export default function Home() {
-  const { user } = useAtomValue(userAuthAtom);
+  const { isAuthenticated } = useAtomValue(userAuthAtom);
   return (
     <>
       <Head>
@@ -17,7 +17,7 @@ export default function Home() {
         <Hero
           heading="Get rid of those annoying backgrounds."
           subHeading={
-            user
+            isAuthenticated
               ? "Go ahead and start removing those backgrounds."
               : "Remove backgrounds from up to 10 images, no charge."
           }
