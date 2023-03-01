@@ -12,7 +12,6 @@ import { onAuthStateChanged } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useAtom, useSetAtom } from "jotai";
 import { ReactNode, useEffect, useState } from "react";
-import Spinner from "./Spinner";
 
 export default function AuthIsLoaded({ children }: { children: ReactNode }) {
   const [userAuth, setUserAuth] = useAtom(userAuthAtom);
@@ -79,13 +78,6 @@ export default function AuthIsLoaded({ children }: { children: ReactNode }) {
   // useEffect(() => {
   //   signOut(auth);
   // }, []);
-
-  // if (!userAuth.user)
-  //   return (
-  //     <div className="bg-grey-lighter flex h-screen min-h-screen items-center justify-center bg-white">
-  //       <Spinner />
-  //     </div>
-  //   );
 
   return <>{children}</>;
 }
