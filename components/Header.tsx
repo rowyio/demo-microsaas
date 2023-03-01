@@ -106,12 +106,12 @@ export default function Header() {
                   className="flex items-center text-white focus:outline-none"
                   onClick={toggleDropdown}
                 >
-                  {user?.photoUrl && (
+                  {user && (
                     <Image
-                      src={user.photoUrl}
+                      src={user.photoUrl ? user.photoUrl : "avatar.png"}
                       alt="user photo"
-                      width={45}
-                      height={45}
+                      width={43}
+                      height={43}
                       className="rounded-full"
                     />
                   )}
