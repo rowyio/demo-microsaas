@@ -1,25 +1,8 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import useAuth from "@/hooks/useAuth";
-import { anonymouslySignIn } from "@/lib/auth";
-import { signOut } from "firebase/auth";
-import { auth } from "@/lib/firebase";
 
 export default function Layout({ children }: { children: ReactNode }) {
-  const { user, loading } = useAuth();
-
-  // useEffect(() => {
-  //   signOut(auth);
-  // }, []);
-
-  useEffect(() => {
-    if (!user && !loading) {
-      console.log("user not authenticated");
-      anonymouslySignIn();
-    }
-  }, [loading, user]);
-
   return (
     <div
       className={`m-auto flex min-h-screen max-w-5xl flex-col px-4 text-zinc-700 md:px-0`}

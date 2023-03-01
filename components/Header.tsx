@@ -1,18 +1,23 @@
 import Link from "next/link";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import useAuth from "@/hooks/useAuth";
 import { registerOrLogin } from "@/lib/auth";
+import { useAtomValue } from "jotai";
+import { userAuthAtom } from "@/atoms";
+import Image from "next/image";
+import { useRouter } from "next/router";
 
 export default function Header() {
-  const { user, loadProfile, isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAtomValue(userAuthAtom);
+  const router = useRouter();
 
   const logout = () => {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
         console.log("Signed out successfully");
-        location.replace("/");
+        // location.replace("/");
+        router.push("/");
       })
       .catch((error) => {
         // An error happened.
@@ -24,24 +29,19 @@ export default function Header() {
     <div
       className={`block items-center gap-12 border-b border-b-zinc-200 py-8 md:flex md:border-b-0`}
     >
-      <div className="mb-5 text-center text-lg tracking-wider md:mb-0">
-        <Link href={isAuthenticated ? "/remove" : "/"}>
+      <div className="mb-5 text-center text-lg md:mb-0">
+        <Link href="/">
           <span className=" text-zinc-500">background</span> Removal App
         </Link>
       </div>
       <div className="block flex-1">
-        <ul className="flex justify-center gap-5 text-zinc-500 md:justify-end">
+        <ul className="flex items-center justify-center gap-5 text-zinc-500 md:justify-end">
           {!isAuthenticated && (
             <>
               <li>
                 <button
                   className="cursor-pointer rounded-md border border-zinc-200 py-2 px-4 active:bg-zinc-200"
-                  onClick={async () => {
-                    const result = await registerOrLogin();
-                    if (result.user) {
-                      loadProfile(result.user);
-                    }
-                  }}
+                  onClick={registerOrLogin}
                 >
                   Sign In
                 </button>
@@ -49,12 +49,7 @@ export default function Header() {
               <li>
                 <button
                   className="cursor-pointer rounded-md bg-black py-2 px-4 text-white hover:text-zinc-300"
-                  onClick={async () => {
-                    const result = await registerOrLogin();
-                    if (result.user) {
-                      loadProfile(result.user);
-                    }
-                  }}
+                  onClick={registerOrLogin}
                 >
                   Get Started
                 </button>
@@ -79,6 +74,17 @@ export default function Header() {
                 </Link>
               </li>
             </>
+          )}
+          {user?.photoUrl && (
+            <li>
+              <Image
+                src={user.photoUrl}
+                alt="user photo"
+                width={45}
+                height={45}
+                className="rounded-full"
+              />
+            </li>
           )}
         </ul>
       </div>

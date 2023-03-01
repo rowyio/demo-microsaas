@@ -1,16 +1,16 @@
+import { creditsAtom, userAuthAtom } from "@/atoms";
 import Hero from "@/components/Hero";
 import Packages from "@/components/Packages";
 import UsageBar from "@/components/UsageBar";
-import useAuth from "@/hooks/useAuth";
-import usePackage from "@/hooks/usePackage";
+import { useAtomValue } from "jotai";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 
 export default function Dashboard() {
-  const { isAuthenticated, user, loading } = useAuth();
-  const { used, limit } = usePackage();
+  const { isAuthenticated, user } = useAtomValue(userAuthAtom);
+  const { used, limit } = useAtomValue(creditsAtom);
   const router = useRouter();
 
   const { payment_status: paymentStatus } = router.query;
@@ -20,13 +20,6 @@ export default function Dashboard() {
       toast.success("Purchase successful");
     }
   }, [paymentStatus]);
-
-  if (loading) return null;
-
-  if (!isAuthenticated) {
-    router.push("/");
-    return null;
-  }
 
   return (
     <>

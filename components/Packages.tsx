@@ -1,12 +1,14 @@
-import useAuth from "@/hooks/useAuth";
+import { userAuthAtom } from "@/atoms";
 import { db } from "@/lib/firebase";
-import { getPackages, Package } from "@/lib/packages";
+import { getPackages } from "@/lib/packages";
+import { Package } from "@/lib/types";
 import { collection, orderBy, query } from "firebase/firestore";
+import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 
 export default function Packages() {
   const [loading, setLoading] = useState(false);
-  const { user } = useAuth();
+  const { user } = useAtomValue(userAuthAtom);
   const [packages, setPackages] = useState<Package[]>();
 
   const loadPackages = async () => {
@@ -63,13 +65,6 @@ export default function Packages() {
             key={pack.id}
             className="flex-1 rounded-xl bg-white shadow-xl shadow-slate-900/10"
           >
-            {/* {hasCredit() && packageId === pack.id && (
-              <div className="relative">
-                <div className="absolute right-0 -top-3 rounded-md bg-black px-2 text-center text-sm text-white">
-                  Active
-                </div>
-              </div>
-            )} */}
             <div className="px-4 py-8">
               <div className="flex justify-center gap-2">
                 <h1 className="mb-1 text-2xl">${pack.price}</h1>
