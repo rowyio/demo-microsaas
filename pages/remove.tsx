@@ -4,8 +4,6 @@ import Image from "next/image";
 import Upload, { CustomFile } from "@/components/Upload";
 import Modal from "@/components/Modal";
 import { db, storage } from "@/lib/firebase";
-import useAuth from "@/hooks/useAuth";
-import usePackage from "@/hooks/usePackage";
 import { registerOrLogin } from "@/lib/auth";
 import Link from "next/link";
 import UsageBar from "@/components/UsageBar";
@@ -17,6 +15,8 @@ import { ref } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { upload } from "@/lib/storage";
 import { doc, onSnapshot } from "firebase/firestore";
+import { useAtomValue } from "jotai";
+import { creditsAtom, userAuthAtom } from "@/atoms";
 
 export default function RemoveBackground() {
   const [localFile, setLocalFile] = useState<CustomFile>();
@@ -29,12 +29,12 @@ export default function RemoveBackground() {
   const [predictionId, setPredictionId] = useState<string>();
   const [output, setOutput] = useState<string>();
 
-  const { user, isAuthenticated } = useAuth();
-  const { hasCredit } = usePackage();
+  const { user, isAuthenticated } = useAtomValue(userAuthAtom);
+  const { used, limit } = useAtomValue(creditsAtom);
   const router = useRouter();
 
   const handleUpload = async (file: File) => {
-    if (!hasCredit()) {
+    if (used >= limit) {
       setShowLoginModal(true);
       return;
     }

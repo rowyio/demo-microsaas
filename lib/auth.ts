@@ -32,32 +32,6 @@ export async function registerOrLogin(): Promise<{
 
     // The signed-in user info.
     const user = result.user;
-    const userId = user.uid;
-
-    const existingProfile = await getUserProfile(userId);
-
-    // Create profile on first sign in
-    if (!existingProfile) {
-      const packagesQuery = query(
-        collection(db, "credit_packages"),
-        where("price", "==", 0)
-      );
-      const packagesSnapshot = await getPackages(packagesQuery);
-      const packageData = packagesSnapshot[0];
-
-      // Assign free package for new users
-      const profilesRef = collection(db, "profiles");
-      await setDoc(doc(profilesRef), {
-        userId,
-        package: {
-          id: packageData.id,
-          price: packageData.data().price,
-          limit: packageData.data().limit,
-          used: 0,
-        },
-        "_createdBy.timestamp": new Date(),
-      });
-    }
 
     const formattedUser = await formatUser(user);
 
@@ -78,23 +52,6 @@ export async function anonymouslySignIn() {
 
     // The signed-in user info.
     const user = result.user;
-    const userId = user.uid;
-
-    const existingProfile = await getUserProfile(userId);
-
-    if (!existingProfile) {
-      // Assign 10 free credits
-      const profilesRef = collection(db, "profiles");
-      await setDoc(doc(profilesRef), {
-        userId,
-        isAnonymous: true,
-        package: {
-          limit: 10,
-          used: 0,
-        },
-        "_createdBy.timestamp": new Date(),
-      });
-    }
 
     const formattedUser = await formatUser(user);
 
