@@ -19,8 +19,8 @@ export async function purgeAnonymousData() {
     const userId = profile.userId;
     const user = await auth.getUser(userId);
 
-    // Purge anonymous profiles after 5 days since creation
-    if (daysPast(new Date(user.metadata.creationTime)) === 5) {
+    // Purge anonymous profiles after 1 day
+    if (daysPast(new Date(user.metadata.creationTime)) === 1) {
       // Delete profile document
       await profileDoc.ref.delete();
       // Delete auth user
