@@ -17,9 +17,9 @@ export default function UsageBar({ showRatio = true }: Props) {
             width: `${limit == 0 ? 0 : Math.ceil((used / limit) * 100)}%`,
           }}
         >
-          <span className="p-0.5 ">{`${Math.ceil(
-            (used / limit) * 100
-          )}%`}</span>
+          <span className="p-0.5 ">{`${
+            limit == 0 ? 0 : Math.ceil((used / limit) * 100)
+          }%`}</span>
         </div>
       </div>
       {showRatio && (

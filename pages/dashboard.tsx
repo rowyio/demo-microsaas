@@ -9,14 +9,15 @@ import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
 
 export default function Dashboard() {
   const { isAuthenticated, user } = useAtomValue(userAuthAtom);
   const [images, setImages] = useState<Prediction[]>([]);
   const router = useRouter();
 
-  const { payment_status: paymentStatus } = router.query;
+  useEffect(() => {
+    if (user && !isAuthenticated) router.push("/");
+  }, [router, isAuthenticated, user]);
 
   useEffect(() => {
     const loadImages = async (user: Profile) => {
@@ -34,12 +35,6 @@ export default function Dashboard() {
     };
     if (user) loadImages(user);
   }, [user]);
-
-  useEffect(() => {
-    if (paymentStatus && paymentStatus === "success") {
-      toast.success("Purchase successful");
-    }
-  }, [paymentStatus]);
 
   return (
     <>

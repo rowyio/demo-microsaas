@@ -16,6 +16,10 @@ export default function BuyCredits() {
   const { payment_status: paymentStatus } = router.query;
 
   useEffect(() => {
+    if (user && !isAuthenticated) router.push("/");
+  }, [router, isAuthenticated, user]);
+
+  useEffect(() => {
     if (paymentStatus && paymentStatus === "success") {
       toast.success("Purchase successful");
     }
