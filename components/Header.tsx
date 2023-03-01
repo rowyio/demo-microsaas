@@ -83,7 +83,7 @@ export default function Header() {
           )}
           {isAuthenticated && (
             <>
-              <li>
+              <li className="hidden md:block">
                 <Link href="/">
                   <button className="cursor-pointer py-2 px-2 hover:text-black active:bg-zinc-200">
                     Home
@@ -124,7 +124,7 @@ export default function Header() {
                   </svg>
                 </button>
                 {isOpen && (
-                  <div className="absolute mt-2 w-36 rounded-lg bg-white py-2 shadow-xl">
+                  <div className="absolute right-0 mt-2 w-36 rounded-lg bg-white py-2 shadow-xl md:left-0">
                     <Link
                       href="dashboard"
                       className="block px-4 py-2 text-gray-800 hover:bg-black hover:text-white"

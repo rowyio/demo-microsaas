@@ -62,7 +62,7 @@ export default function Dashboard() {
             {images.map((image, index) => (
               <li
                 key={index}
-                className="flex gap-24 border-b pb-8 last:border-b-0"
+                className="flex gap-5 border-b pb-8 last:border-b-0 md:gap-24"
               >
                 <div className="space-y-6 text-center">
                   <Image
@@ -73,7 +73,7 @@ export default function Dashboard() {
                     className="rounded-lg"
                   />
                   <button
-                    className="cursor-pointer rounded-md border border-black py-2 px-6  hover:bg-black hover:text-zinc-300"
+                    className="cursor-pointer underline hover:text-black"
                     onClick={() => {
                       downloadPhoto(image.input, appendNewToName(image.id));
                     }}
@@ -90,7 +90,7 @@ export default function Dashboard() {
                     className="rounded-lg"
                   />
                   <button
-                    className="cursor-pointer rounded-md border border-black py-2 px-6  hover:bg-black hover:text-zinc-300"
+                    className="cursor-pointer underline hover:text-black"
                     onClick={() => {
                       downloadPhoto(image.output, appendNewToName(image.id));
                     }}

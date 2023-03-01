@@ -11,21 +11,6 @@ export default function Packages() {
   const { user } = useAtomValue(userAuthAtom);
   const [packages, setPackages] = useState<Package[]>();
 
-  const loadPackages = async () => {
-    const packagesQuery = query(
-      collection(db, "credit_packages"),
-      orderBy("price", "asc")
-    );
-    const packagesSnapshot = await getPackages(packagesQuery);
-    const allPackages = packagesSnapshot.map((item) => ({
-      ...item.data(),
-      id: item.id,
-    })) as Package[];
-    // Filter out free package
-    const filteredPackages = allPackages.filter((item) => item.price !== 0);
-    setPackages(filteredPackages);
-  };
-
   const purchase = async (creditPackage: Package) => {
     setLoading(true);
     try {
@@ -54,6 +39,20 @@ export default function Packages() {
   };
 
   useEffect(() => {
+    const loadPackages = async () => {
+      const packagesQuery = query(
+        collection(db, "credit_packages"),
+        orderBy("price", "asc")
+      );
+      const packagesSnapshot = await getPackages(packagesQuery);
+      const allPackages = packagesSnapshot.map((item) => ({
+        ...item.data(),
+        id: item.id,
+      })) as Package[];
+      // Filter out free package
+      const filteredPackages = allPackages.filter((item) => item.price !== 0);
+      setPackages(filteredPackages);
+    };
     loadPackages();
   }, []);
 
