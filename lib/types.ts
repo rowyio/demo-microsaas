@@ -13,6 +13,12 @@ export type Package = {
   price: number;
 };
 
+export type Prediction = {
+  id: string;
+  input: string;
+  output: string;
+};
+
 export type ProfilePackage = {
   used: number;
   limit: number;
