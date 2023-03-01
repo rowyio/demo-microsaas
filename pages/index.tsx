@@ -1,8 +1,11 @@
+import { userAuthAtom } from "@/atoms";
 import Hero from "@/components/Hero";
+import { useAtomValue } from "jotai";
 import Head from "next/head";
 import Image from "next/image";
 
 export default function Home() {
+  const { user } = useAtomValue(userAuthAtom);
   return (
     <>
       <Head>
@@ -13,7 +16,11 @@ export default function Home() {
       <div className="mt-12">
         <Hero
           heading="Get rid of those annoying backgrounds."
-          subHeading="Remove backgrounds from up to 10 images, no charge."
+          subHeading={
+            user
+              ? "Go ahead and start removing those backgrounds."
+              : "Remove backgrounds from up to 10 images, no charge."
+          }
           link={{ title: "Remove Background", to: "/remove" }}
           alignment="center"
         />
