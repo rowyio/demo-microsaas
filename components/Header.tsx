@@ -30,9 +30,11 @@ export default function Header() {
               background removal app
             </h1>
           </Link>
-          <div className="md:hidden">
-            <Dropdown />
-          </div>
+          {isAuthenticated && (
+            <div className="md:hidden">
+              <Dropdown />
+            </div>
+          )}
         </div>
       </div>
       <div className="block flex-1">
