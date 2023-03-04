@@ -55,12 +55,24 @@ export default function Header() {
       className={`block items-center gap-12 border-b border-b-zinc-200 py-8 md:flex md:border-b-0`}
     >
       <div className="mb-5 text-center text-lg md:mb-0">
-        <Link href="/">
-          <span className=" text-zinc-500">background</span> Removal App
+        <Link
+          href="/"
+          className="flex items-center justify-center space-x-2 sm:justify-start"
+        >
+          <Image
+            alt="header logo"
+            src="/photo.svg"
+            className="h-9 w-9 sm:h-9 sm:w-9"
+            width={24}
+            height={24}
+          />
+          <h1 className="ml-2 text-xl tracking-tight">
+            background Removal App
+          </h1>
         </Link>
       </div>
       <div className="block flex-1">
-        <ul className="flex items-center justify-center gap-5 text-zinc-600 md:justify-end">
+        <ul className="flex items-center justify-center gap-5 text-lg text-zinc-600 md:justify-end">
           {!isAuthenticated && (
             <>
               <li>

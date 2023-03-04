@@ -23,6 +23,9 @@ export default function BuyCredits() {
     if (paymentStatus && paymentStatus === "success") {
       toast.success("Purchase successful");
     }
+    if (paymentStatus && paymentStatus === "cancel") {
+      toast.error("Purchase cancelled");
+    }
   }, [paymentStatus]);
 
   return (
