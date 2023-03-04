@@ -68,7 +68,7 @@ export default function Dashboard() {
                     className="rounded-lg"
                   />
                   <button
-                    className="cursor-pointer text-lg hover:text-black"
+                    className="cursor-pointer hover:text-black sm:text-lg"
                     onClick={() => {
                       downloadPhoto(image.input, appendNewToName(image.id));
                     }}
@@ -85,7 +85,7 @@ export default function Dashboard() {
                     className="rounded-lg"
                   />
                   <button
-                    className="cursor-pointer text-lg hover:text-black"
+                    className="cursor-pointer hover:text-black sm:text-lg"
                     onClick={() => {
                       downloadPhoto(image.output, appendNewToName(image.id));
                     }}
