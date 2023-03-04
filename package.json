@@ -25,6 +25,7 @@
     "react-hot-toast": "^2.4.0",
     "react-modal": "^3.16.1",
     "stripe": "^11.12.0",
+    "tabler-icons-react": "^1.56.0",
     "typescript": "4.9.5",
     "uuid": "^9.0.0"
   },

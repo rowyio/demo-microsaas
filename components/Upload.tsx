@@ -8,9 +8,9 @@ const baseStyle = {
   padding: "20px",
   borderWidth: 2,
   borderRadius: 2,
-  borderColor: "#eeeeee",
+  borderColor: "#27272a",
   borderStyle: "dashed",
-  color: "#bdbdbd",
+  color: "#3f3f46",
   outline: "none",
   transition: "border .24s ease-in-out",
 };

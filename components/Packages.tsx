@@ -63,11 +63,11 @@ export default function Packages() {
         packages.map((pack) => (
           <div
             key={pack.id}
-            className="flex-1 rounded-xl bg-white shadow-xl shadow-slate-900/10"
+            className="flex-1 rounded-md bg-white shadow-xl shadow-slate-900/10"
           >
             <div className="px-4 py-8">
               <div className="flex justify-center gap-2">
-                <h1 className="mb-1 text-2xl">${pack.price}</h1>
+                <h1 className="mb-1 text-2xl font-bold">${pack.price}</h1>
                 {pack.price === 0 && (
                   <div className="text-sm">
                     <span className="rounded-md bg-zinc-200 px-1">Free</span>

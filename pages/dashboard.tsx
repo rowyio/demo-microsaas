@@ -63,8 +63,8 @@ export default function Dashboard() {
                   <Image
                     src={image.input}
                     alt="input"
-                    width={250}
-                    height={250}
+                    width={300}
+                    height={300}
                     className="rounded-lg"
                   />
                   <button
@@ -80,8 +80,8 @@ export default function Dashboard() {
                   <Image
                     src={image.output}
                     alt="output"
-                    width={250}
-                    height={250}
+                    width={300}
+                    height={300}
                     className="rounded-lg"
                   />
                   <button

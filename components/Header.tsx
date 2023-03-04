@@ -7,6 +7,7 @@ import { userAuthAtom } from "@/atoms";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
+import { Home, Home2, PhotoEdit } from "tabler-icons-react";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,17 +58,17 @@ export default function Header() {
       <div className="mb-5 text-center text-lg md:mb-0">
         <Link
           href="/"
-          className="flex items-center justify-center space-x-2 sm:justify-start"
+          className="flex items-center justify-center space-x-2 sm:justify-start "
         >
           <Image
             alt="header logo"
             src="/photo.svg"
-            className="h-9 w-9 sm:h-9 sm:w-9"
+            className="h-7 w-7 sm:h-8 sm:w-8"
             width={24}
             height={24}
           />
           <h1 className="ml-2 text-xl tracking-tight">
-            background Removal App
+            background removal app
           </h1>
         </Link>
       </div>
@@ -97,14 +98,16 @@ export default function Header() {
             <>
               <li className="hidden md:block">
                 <Link href="/">
-                  <button className="cursor-pointer py-2 px-2 hover:text-black active:bg-zinc-200">
+                  <button className="flex cursor-pointer gap-1 py-2 px-2 hover:text-black active:bg-zinc-200">
+                    <Home2 />
                     Home
                   </button>
                 </Link>
               </li>
               <li>
                 <Link href="/remove">
-                  <button className="cursor-pointer py-2 px-2 hover:text-black active:bg-zinc-200">
+                  <button className="flex cursor-pointer gap-1 py-2 px-2 hover:text-black active:bg-zinc-200">
+                    <PhotoEdit />
                     Remove Background
                   </button>
                 </Link>

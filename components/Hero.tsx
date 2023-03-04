@@ -19,7 +19,7 @@ export default function Hero({
       <p className="pt-2 text-xl text-zinc-500">{subHeading}</p>
       {link && (
         <Link href={link.to}>
-          <button className="mt-10 cursor-pointer rounded-md bg-black py-2 px-8 text-white hover:text-zinc-300">
+          <button className="mt-10 cursor-pointer rounded-md bg-black py-3 px-8 text-white hover:text-zinc-300">
             {link.title}
           </button>
         </Link>
