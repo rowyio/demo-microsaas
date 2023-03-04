@@ -85,7 +85,7 @@ export default function Packages() {
             </div>
           </div>
         ))}
-      {loading && <FullScreenLoader text="Preparing checkout" />}
+      <FullScreenLoader text="Preparing checkout" isOpen={true} />
     </div>
   );
 }
