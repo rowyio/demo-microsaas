@@ -5,6 +5,7 @@ import { Package } from "@/lib/types";
 import { collection, orderBy, query } from "firebase/firestore";
 import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
+import FullScreenLoader from "./FullScreenLoader";
 
 export default function Packages() {
   const [loading, setLoading] = useState(false);
@@ -84,6 +85,7 @@ export default function Packages() {
             </div>
           </div>
         ))}
+      {loading && <FullScreenLoader text="Preparing checkout" />}
     </div>
   );
 }

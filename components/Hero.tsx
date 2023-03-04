@@ -14,7 +14,7 @@ export default function Hero({
   alignment = "left",
 }: Props) {
   return (
-    <div className={`border-b-2 border-zinc-200 pb-14 text-${alignment}`}>
+    <div className={`border-b-2 border-zinc-200 pb-12 text-${alignment}`}>
       <h1 className="text-3xl md:text-5xl">{heading}</h1>
       <p className="pt-2 text-xl text-zinc-500">{subHeading}</p>
       {link && (

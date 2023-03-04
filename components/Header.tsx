@@ -67,7 +67,7 @@ export default function Header() {
             height={24}
           />
           <h1 className="ml-2 text-xl tracking-tight">
-            Background Removal App
+            background Removal App
           </h1>
         </Link>
       </div>
