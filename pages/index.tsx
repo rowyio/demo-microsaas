@@ -32,7 +32,7 @@ export default function Home() {
             <div>
               <h2 className="mb-4 text-xl font-medium">Original photo</h2>
               <Image
-                alt="Original photo of my bro"
+                alt="Original photo of me"
                 src="/input.jpeg"
                 className="h-[520px] w-96 rounded-2xl"
                 width={400}
@@ -42,7 +42,7 @@ export default function Home() {
             <div className="mt-8 sm:mt-0">
               <h2 className="mb-4 text-xl font-medium">Background removed</h2>
               <Image
-                alt="Restored photo of my bro"
+                alt="Restored photo of me"
                 width={400}
                 height={400}
                 src="/output.png"

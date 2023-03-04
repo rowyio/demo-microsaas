@@ -59,7 +59,7 @@ export default function Dashboard() {
                 key={index}
                 className="flex gap-5 border-b pb-8 last:border-b-0 md:gap-24"
               >
-                <div className="space-y-6 text-center">
+                <div className="space-y-4 text-center">
                   <Image
                     src={image.input}
                     alt="input"
@@ -68,7 +68,7 @@ export default function Dashboard() {
                     className="rounded-lg"
                   />
                   <button
-                    className="cursor-pointer underline hover:text-black"
+                    className="cursor-pointer text-lg hover:text-black"
                     onClick={() => {
                       downloadPhoto(image.input, appendNewToName(image.id));
                     }}
@@ -76,7 +76,7 @@ export default function Dashboard() {
                     Download Photo
                   </button>
                 </div>
-                <div className="space-y-6 text-center">
+                <div className="space-y-4 text-center">
                   <Image
                     src={image.output}
                     alt="output"
@@ -85,7 +85,7 @@ export default function Dashboard() {
                     className="rounded-lg"
                   />
                   <button
-                    className="cursor-pointer underline hover:text-black"
+                    className="cursor-pointer text-lg hover:text-black"
                     onClick={() => {
                       downloadPhoto(image.output, appendNewToName(image.id));
                     }}
