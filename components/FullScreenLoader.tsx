@@ -21,7 +21,7 @@ export default function FullScreenLoader({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 h-screen w-full  bg-white/95">
+    <div className="fixed bottom-0 left-0 z-50 h-screen  w-full bg-white/95">
       <div className="flex h-full flex-col items-center justify-center gap-4">
         <h2 className="text-2xl text-zinc-700  md:text-3xl">{text}</h2>
         <Spinner />
