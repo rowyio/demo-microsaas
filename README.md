@@ -20,7 +20,10 @@ Background removal is made possible by using the [modnet](https://github.com/pol
 1. Go to [Stripe](https://stripe.com/) to create an account.
 2. Once you're signed in, ensure test mode is on and the go to the [API keys section](https://dashboard.stripe.com/test/apikeys) to get youre api key.
 
-### Storing API keys in .env
+### Creating a Rowy account.
+Add steps here.
+
+### Storing API keys in .env.local
 
 Create a `.env.local` file in the root of the project. And store your API key in it, as shown in the `.env.local.example` file.
 
