@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body.fullscreen-active {
+    overflow: hidden;
+}
