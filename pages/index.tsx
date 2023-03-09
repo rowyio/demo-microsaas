@@ -28,7 +28,7 @@ export default function Home() {
 
       <div className="mt-6 flex w-full flex-col items-center justify-between text-center sm:mt-10">
         <div className="mt-4 mb-16 flex flex-col space-y-10 space-x-5">
-          <div className="flex flex-col sm:flex-row sm:space-x-2">
+          <div className="flex flex-col sm:flex-row sm:space-x-10">
             <div>
               <h2 className="mb-4 text-xl font-medium">Original photo</h2>
               <Image
@@ -45,8 +45,8 @@ export default function Home() {
                 alt="Restored photo of me"
                 width={400}
                 height={400}
-                src="/output.png"
-                className="mt-2  h-[560px] w-96 rounded-2xl sm:mt-0"
+                src="/output.jpeg"
+                className="mt-2  h-[520px] w-96 rounded-2xl sm:mt-0"
               />
             </div>
           </div>
