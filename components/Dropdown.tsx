@@ -55,7 +55,7 @@ export default function Dropdown() {
   }, []);
 
   return (
-    <div className="relative z-50" ref={dropdownRef}>
+    <div className="relative z-30" ref={dropdownRef}>
       <button
         className="flex items-center text-white focus:outline-none"
         onClick={toggleDropdown}
