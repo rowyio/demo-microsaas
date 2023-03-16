@@ -12,16 +12,16 @@ const baseStyle = {
   color: "#3f3f46",
   outline: "none",
   transition: "border .24s ease-in-out",
-  backgroundColor: "#f3f4f6",
+  backgroundColor: "rgb(228 228 231 / 0.5)",
 };
 
 const focusedStyle = {
   borderStyle: "dashed",
-  borderColor: "#a1a1aa",
+  borderColor: "#000",
 };
 
 const acceptStyle = {
-  borderColor: "#a1a1aa",
+  borderColor: "#000",
   borderStyle: "dashed",
 };
 
