@@ -4,6 +4,7 @@ import { useAtomValue } from "jotai";
 import { userAuthAtom } from "@/atoms";
 import Image from "next/image";
 import { Home2, PhotoEdit } from "tabler-icons-react";
+
 import Dropdown from "./Dropdown";
 
 export default function Header() {
