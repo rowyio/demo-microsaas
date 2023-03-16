@@ -26,10 +26,7 @@ export default function Footer() {
         </p>
       </div>
       <div className="flex justify-center md:block">
-        <Link
-          href="https://github.com/rodgetech/bg-removal-app"
-          target="_blank"
-        >
+        <Link href="https://github.com/rowyio/demo-microsaas" target="_blank">
           <svg
             aria-hidden="true"
             className="h-8 w-8 fill-zinc-800 transition group-hover:fill-zinc-700"
