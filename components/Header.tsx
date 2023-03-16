@@ -10,6 +10,11 @@ import Dropdown from "./Dropdown";
 export default function Header() {
   const { isAuthenticated } = useAtomValue(userAuthAtom);
 
+  const handleLogin = async () => {
+    const res = await registerOrLogin();
+    console.log(res);
+  };
+
   return (
     <div
       className={`block items-center gap-12 border-b border-b-zinc-200 py-8 md:flex md:border-b-0`}
@@ -45,7 +50,7 @@ export default function Header() {
               <li>
                 <button
                   className="cursor-pointer rounded-md border border-zinc-200 py-2 px-4 active:bg-zinc-200"
-                  onClick={registerOrLogin}
+                  onClick={handleLogin}
                 >
                   Sign In
                 </button>
@@ -53,7 +58,7 @@ export default function Header() {
               <li>
                 <button
                   className="cursor-pointer rounded-md bg-black py-2 px-4 text-white hover:text-zinc-300"
-                  onClick={registerOrLogin}
+                  onClick={handleLogin}
                 >
                   Get Started
                 </button>
