@@ -1,14 +1,30 @@
-# Background Removal App
+# Background Removal App - AI MicroSaaS Template
 
-This project allows users to remove the background from their photos using AI.
+This project allows users to remove the background from their photos using AI and comes integrated with Stripe payment. You can clone this project to create a AI MicroSaaS project and easily modify it for any usecase.
 
-[![Remove Background App](./public/screenshot.png)](https://rodgetech.com/)
+[![Remove Background App](./public/screenshot.png)](https://demo-microsaas.vercel.app/)
+
+## Stack used
+
+**Database**: Firebase  
+**CMS**: Rowy  
+**Auth**: Firebase Auth  
+**Payment**: Stripe  
+**CSS**: Tailwind  
+**Usecase**: Subscription, SaaS, AI, MicroSaaS
 
 ## How it works
 
-Background removal is made possible by using the [modnet](https://github.com/pollinations/modnet) approach via [Replicate](https://replicate.com/). This project allows users to upload a photo which will first be stored in firebase storage, forwarded to a google cloud function managed in rowy, and lastly utilize the Replicate API to return the photo with its background removed. All data such as user profile, generated images, and credit packges are stored in Firestore, while the associated stripe payment webhook and cloud functions are all managed in [Rowy](https://rowy.io/).
+This app uses the [modnet](https://github.com/pollinations/modnet) API via [Replicate](https://replicate.com/) to removed background of images. Once users upload images, these images first gets stored to Firebase storage and then using low-code Cloud Functions built with [Rowy](https://www.rowy.io/blog), the image's background is removed by making API call to Replicate which returns the photo with its background removed. Without accound creation, user can get only 10 credits and for logged in users, they can unlock 100 credits along with ability to track paid users. User authentication is managed via Firebase Auth and managed easily on User management table of Rowy. All data such as user profile, generated images, and credit packges are stored in Firestore, while the associated stripe payment webhook and cloud functions are all managed in [Rowy](https://rowy.io/).
 
-## Running locally
+## Get started quickly using easy deploy template 
+
+### Frontend Template
+1. Clone and deploy the Next.js App using Vercel's one click deploy link
+2. Add the .env variables as shown in the .env.local.example file 
+
+### Backend Template
+Clone backend Table on Rowy that comes bundled with data CMS for user management via Firebase Auth, Cloud Functions for Replicate API along with webhooks Stripe credits and payments.  
 
 ### Creating a account on Replicate to get API key.
 
@@ -23,7 +39,8 @@ Background removal is made possible by using the [modnet](https://github.com/pol
 ### Creating a Rowy account.
 Add steps here.
 
-### Storing API keys in .env.local
+
+## Running locally
 
 Create a `.env.local` file in the root of the project. And store your API key in it, as shown in the `.env.local.example` file.
 
