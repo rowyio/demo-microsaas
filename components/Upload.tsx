@@ -5,29 +5,27 @@ const baseStyle = {
   flex: 1,
   display: "flex",
   flexDirection: "column",
-  padding: "40px 20px",
-  borderWidth: 1,
+  padding: "50px 20px",
+  borderWidth: 2,
   borderRadius: 8,
-  borderColor: "transparent",
+  borderColor: "#d4d4d8",
+  borderStyle: "dashed",
   color: "#3f3f46",
   outline: "none",
   transition: "border .24s ease-in-out",
-  backgroundColor: "rgb(228 228 231 / 0.5)",
+  backgroundColor: "#fff",
 };
 
 const focusedStyle = {
-  borderStyle: "dashed",
-  borderColor: "#000",
+  borderColor: "#2196f3",
 };
 
 const acceptStyle = {
-  borderColor: "#000",
-  borderStyle: "dashed",
+  borderColor: "#71717a",
 };
 
 const rejectStyle = {
   borderColor: "#ef4444",
-  borderStyle: "dashed",
 };
 
 export type CustomFile = FileWithPath & {
