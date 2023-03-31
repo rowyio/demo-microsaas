@@ -1,4 +1,4 @@
-import { userAuthAtom } from "@/atoms";
+import { userAuthAtom } from "@/atoms/atoms";
 import { db } from "@/lib/firebase";
 import { getPackages } from "@/lib/packages";
 import { Package } from "@/lib/types";
@@ -63,9 +63,9 @@ export default function Packages() {
         packages.map((pack) => (
           <div
             key={pack.id}
-            className="flex-1 rounded-md bg-white shadow-xl shadow-slate-900/10"
+            className="flex-1 rounded-md border border-gray-200 bg-white shadow-lg"
           >
-            <div className="px-4 py-8">
+            <div className="px-4 py-9">
               <div className="flex justify-center gap-2">
                 <h1 className="mb-1 text-2xl font-bold">${pack.price}</h1>
                 {pack.price === 0 && (

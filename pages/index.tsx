@@ -1,8 +1,10 @@
-import { userAuthAtom } from "@/atoms";
+import { userAuthAtom } from "@/atoms/atoms";
 import Hero from "@/components/Hero";
+import Container from "@/components/layout/Container";
 import { useAtomValue } from "jotai";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   const { isAuthenticated } = useAtomValue(userAuthAtom);
@@ -13,24 +15,27 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="mt-12">
+      <div className="mt-12 mb-4">
         <Hero
+          showSeparator={false}
           heading="Get rid of those annoying backgrounds."
           subHeading={
             isAuthenticated
-              ? "Go ahead and start removing those backgrounds."
-              : "Remove backgrounds from up to 10 images, no charge."
+              ? "Take control of your photos - give it a try today!"
+              : "Remove backgrounds from up to 10 images, on the house."
           }
           link={{ title: "Remove Background", to: "/remove" }}
           alignment="center"
         />
       </div>
 
-      <div className="mt-6 flex w-full flex-col items-center justify-between text-center sm:mt-10">
-        <div className="mt-4 mb-16 flex flex-col space-y-10 space-x-5">
+      <div className="flex w-full flex-col items-center justify-between text-center sm:mt-10">
+        <div className="mt-4flex flex-col space-y-10 space-x-5">
           <div className="flex flex-col sm:flex-row sm:space-x-10">
             <div>
-              <h2 className="mb-4 text-xl font-medium">Original photo</h2>
+              <h2 className="mb-4 font-display text-2xl font-bold">
+                Original photo
+              </h2>
               <Image
                 alt="Original photo of me"
                 src="/input.jpeg"
@@ -40,7 +45,9 @@ export default function Home() {
               />
             </div>
             <div className="mt-8 sm:mt-0">
-              <h2 className="mb-4 text-xl font-medium">Background removed</h2>
+              <h2 className="mb-4 font-display text-2xl font-bold">
+                Background removed
+              </h2>
               <Image
                 alt="Restored photo of me"
                 width={400}
@@ -52,6 +59,20 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Container className="mt-24 border-t py-16 text-center ">
+        <h2 className=" font-display text-4xl font-bold md:text-5xl">
+          <span className="bg-gradient-to-r from-gray-800 via-gray-500 to-gray-800  bg-clip-text  text-transparent">
+            Say goodbye to distracting backgrounds.
+          </span>
+          <br />
+          Try it out today.
+        </h2>
+        <Link href="remove">
+          <button className="mt-10 cursor-pointer rounded-md bg-black py-3 px-8 text-white hover:text-zinc-300">
+            Lets get started
+          </button>
+        </Link>
+      </Container>
     </>
   );
 }

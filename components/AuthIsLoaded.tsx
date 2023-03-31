@@ -3,7 +3,7 @@ import {
   initialAuthState,
   initialCreditsState,
   userAuthAtom,
-} from "@/atoms";
+} from "@/atoms/atoms";
 import { anonymouslySignIn, formatUser } from "@/lib/auth";
 import { auth, db } from "@/lib/firebase";
 import { getOrCreateProfile } from "@/lib/profiles";
@@ -21,7 +21,6 @@ export default function AuthIsLoaded({ children }: { children: ReactNode }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        console.log("user is logged in");
         const formattedUser = await formatUser(user);
         const profile = await getOrCreateProfile(
           user.uid,
@@ -48,7 +47,6 @@ export default function AuthIsLoaded({ children }: { children: ReactNode }) {
         anonymouslySignIn();
 
         // User is signed out, sign in anonymous user
-        console.log("user is logged out");
         setUserAuth(initialAuthState);
         setCredits(initialCreditsState);
         setLoading(false);
