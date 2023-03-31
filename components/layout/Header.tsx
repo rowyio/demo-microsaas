@@ -25,16 +25,14 @@ export default function Header() {
     <div className="border-b py-5">
       <Container>
         {errorCode === FIREBASE_DOMAIN_ERROR && <UnauthorizedDomainError />}
-        <div
-          className={`block items-center gap-12 border-b border-b-zinc-200 md:flex md:border-b-0`}
-        >
+        <div className={`block items-center gap-12  md:flex`}>
           <div className="mb-5 text-center text-lg md:mb-0">
             <div className="flex justify-center gap-4">
               <Link
                 href="/"
-                className="flex items-center justify-center space-x-2 sm:justify-start "
+                className="flex items-center justify-center space-x-2 sm:justify-start"
               >
-                <h1 className="ml-2 font-display text-2xl font-semibold tracking-tight">
+                <h1 className="font-display text-2xl font-semibold tracking-tight">
                   background removal app.
                 </h1>
               </Link>

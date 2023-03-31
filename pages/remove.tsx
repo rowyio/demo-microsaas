@@ -128,7 +128,7 @@ export default function RemoveBackground() {
               <div className="flex h-7 w-7 items-center justify-center rounded-md bg-black font-bold text-white">
                 1
               </div>
-              <h1 className=" text-2xl">Upload</h1>
+              <h1 className="font-display text-2xl font-bold">Upload</h1>
             </div>
 
             {localFile && (
@@ -170,7 +170,7 @@ export default function RemoveBackground() {
               <div className="flex h-7 w-7 items-center justify-center rounded-md bg-black font-bold text-white">
                 2
               </div>
-              <h1 className=" text-2xl">Result</h1>
+              <h1 className="font-display text-2xl font-bold">Result</h1>
             </div>
 
             {error && (

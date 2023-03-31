@@ -1,5 +1,6 @@
 import { userAuthAtom } from "@/atoms";
 import Hero from "@/components/Hero";
+import Container from "@/components/layout/Container";
 import downloadPhoto, { appendNewToName } from "@/lib/download";
 import { db } from "@/lib/firebase";
 import { Prediction, Profile } from "@/lib/types";
@@ -51,53 +52,55 @@ export default function Dashboard() {
           />
         </div>
       </div>
-      <div className="mb-16">
-        {images.length > 0 && (
-          <ul className="space-y-10">
-            {images.map((image, index) => (
-              <li
-                key={index}
-                className="flex gap-5 border-b pb-8 last:border-b-0 md:gap-24"
-              >
-                <div className="space-y-4 text-center">
-                  <Image
-                    src={image.input}
-                    alt="input"
-                    width={300}
-                    height={300}
-                    className="rounded-lg"
-                  />
-                  <button
-                    className="cursor-pointer hover:text-black sm:text-lg"
-                    onClick={() => {
-                      downloadPhoto(image.input, appendNewToName(image.id));
-                    }}
-                  >
-                    Download Photo
-                  </button>
-                </div>
-                <div className="space-y-4 text-center">
-                  <Image
-                    src={image.output}
-                    alt="output"
-                    width={300}
-                    height={300}
-                    className="rounded-lg"
-                  />
-                  <button
-                    className="cursor-pointer hover:text-black sm:text-lg"
-                    onClick={() => {
-                      downloadPhoto(image.output, appendNewToName(image.id));
-                    }}
-                  >
-                    Download Photo
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <Container>
+        <div className="mb-16">
+          {images.length > 0 && (
+            <ul className="space-y-10">
+              {images.map((image, index) => (
+                <li
+                  key={index}
+                  className="flex gap-5 border-b pb-8 last:border-b-0 md:gap-24"
+                >
+                  <div className="space-y-4 text-center">
+                    <Image
+                      src={image.input}
+                      alt="input"
+                      width={300}
+                      height={300}
+                      className="rounded-lg"
+                    />
+                    <button
+                      className="cursor-pointer hover:text-black sm:text-lg"
+                      onClick={() => {
+                        downloadPhoto(image.input, appendNewToName(image.id));
+                      }}
+                    >
+                      Download Photo
+                    </button>
+                  </div>
+                  <div className="space-y-4 text-center">
+                    <Image
+                      src={image.output}
+                      alt="output"
+                      width={300}
+                      height={300}
+                      className="rounded-lg"
+                    />
+                    <button
+                      className="cursor-pointer hover:text-black sm:text-lg"
+                      onClick={() => {
+                        downloadPhoto(image.output, appendNewToName(image.id));
+                      }}
+                    >
+                      Download Photo
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </Container>
     </>
   );
 }

@@ -69,7 +69,9 @@ export default function Upload({ onUpload, disabled = false }: Props) {
   return (
     <div {...getRootProps({ style: style as React.CSSProperties })}>
       <input {...getInputProps()} />
-      <p>Drop a image, or click to select one</p>
+      <p className="font-display text-lg font-semibold">
+        Drop a image, or click to select one
+      </p>
     </div>
   );
 }
