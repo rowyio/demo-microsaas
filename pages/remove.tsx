@@ -17,6 +17,7 @@ import { upload } from "@/lib/storage";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useAtomValue } from "jotai";
 import { creditsAtom, userAuthAtom } from "@/atoms";
+import Container from "@/components/layout/Container";
 
 export default function RemoveBackground() {
   const [localFile, setLocalFile] = useState<CustomFile>();
@@ -112,6 +113,7 @@ export default function RemoveBackground() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <div className="mt-12">
         <Hero
           heading="Remove background"
@@ -119,146 +121,149 @@ export default function RemoveBackground() {
         />
       </div>
 
-      <div className="my-16 block gap-12 space-y-8 md:flex md:space-y-0">
-        <div className="flex-1">
-          <div className="mb-5 flex items-center gap-3">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-black font-bold text-white">
-              1
+      <Container>
+        <div className="my-16 block gap-12 space-y-8 md:flex md:space-y-0">
+          <div className="flex-1">
+            <div className="mb-5 flex items-center gap-3">
+              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-black font-bold text-white">
+                1
+              </div>
+              <h1 className=" text-2xl">Upload</h1>
             </div>
-            <h1 className=" text-2xl">Upload</h1>
-          </div>
 
-          {localFile && (
-            <Image
-              alt="uploaded photo"
-              src={localFile.preview}
-              className="relative mt-2 mb-4 rounded-2xl  sm:mt-0"
-              width={475}
-              height={475}
-            />
-          )}
-
-          {!removedBgLoaded && <Upload onUpload={handleUpload} />}
-
-          {removedBgLoaded && (
-            <div className="text-center">
-              <button
-                className="cursor-pointer rounded-md bg-black py-2 px-6 text-white hover:text-zinc-300"
-                onClick={() => {
-                  setLocalFile(undefined);
-                  setRemovedBgLoaded(false);
-                  setError(null);
-                  setPrediction(undefined);
-                  setPredictionId(undefined);
-                  setOutput(undefined);
-                }}
-              >
-                Upload New Photo
-              </button>
-            </div>
-          )}
-
-          <div className="mt-5">
-            <UsageBar />
-          </div>
-        </div>
-        <div className="flex-1">
-          <div className="mb-5 flex items-center gap-3">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-black font-bold text-white">
-              2
-            </div>
-            <h1 className=" text-2xl">Result</h1>
-          </div>
-
-          {error && (
-            <p className="text-center text-lg text-red-500">
-              An error occurred, please try again later.
-            </p>
-          )}
-
-          {loading && (
-            <div className="flex justify-center">
-              <Spinner />
-            </div>
-          )}
-
-          {output && (
-            <div>
-              {!removedBgLoaded && (
-                <div className="justify-centertext-center flex w-full flex-col items-center">
-                  <Spinner />
-                  <p className="text-lg text-zinc-700">
-                    Adding final touches...
-                  </p>
-                </div>
-              )}
+            {localFile && (
               <Image
-                src={output}
-                alt="output"
-                className="relative mt-2 mb-4 rounded-2xl sm:mt-0"
+                alt="uploaded photo"
+                src={localFile.preview}
+                className="relative mt-2 mb-4 rounded-2xl  sm:mt-0"
                 width={475}
                 height={475}
-                onLoadingComplete={() => setRemovedBgLoaded(true)}
               />
-            </div>
-          )}
+            )}
 
-          {removedBgLoaded && output && (
-            <div className="text-center">
-              <button
-                className="cursor-pointer rounded-md border border-black py-2 px-6  hover:bg-black hover:text-zinc-300"
-                onClick={() => {
-                  downloadPhoto(output, appendNewToName(photoName!));
-                }}
-              >
-                Download Photo
-              </button>
-            </div>
-          )}
-        </div>
-        <Modal
-          isOpen={showLoginModal}
-          onClose={() => setShowLoginModal(false)}
-          title={
-            user ? "Purchase more credits to continue" : "Sign in to continue"
-          }
-        >
-          <div className="py-4">
-            <div className="mb-8 text-center">
-              <p>Oh oh, you&apos;ve used up all your credits.</p>
-              {!user && (
-                <p>
-                  Good news is by signing up you get an additional 100 free
-                  credits!
-                </p>
-              )}
-            </div>
+            {!removedBgLoaded && <Upload onUpload={handleUpload} />}
 
-            <div className="text-center">
-              {!isAuthenticated && (
+            {removedBgLoaded && (
+              <div className="text-center">
                 <button
-                  className="cursor-pointer rounded-md bg-black py-2 px-8 text-white hover:text-zinc-300"
-                  onClick={async () => {
-                    const result = await registerOrLogin();
-                    if (result.user) {
-                      router.reload();
-                    }
+                  className="cursor-pointer rounded-md bg-black py-2 px-6 text-white hover:text-zinc-300"
+                  onClick={() => {
+                    setLocalFile(undefined);
+                    setRemovedBgLoaded(false);
+                    setError(null);
+                    setPrediction(undefined);
+                    setPredictionId(undefined);
+                    setOutput(undefined);
                   }}
                 >
-                  Sign in with Google
+                  Upload New Photo
                 </button>
-              )}
-              {isAuthenticated && (
-                <Link href="/dashboard">
-                  <button className="cursor-pointer rounded-md bg-black py-2 px-8 text-white hover:text-zinc-300">
-                    Buy credits
-                  </button>
-                </Link>
-              )}
+              </div>
+            )}
+
+            <div className="mt-5">
+              <UsageBar />
             </div>
           </div>
-        </Modal>
-      </div>
+          <div className="flex-1">
+            <div className="mb-5 flex items-center gap-3">
+              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-black font-bold text-white">
+                2
+              </div>
+              <h1 className=" text-2xl">Result</h1>
+            </div>
+
+            {error && (
+              <p className="text-center text-lg text-red-500">
+                An error occurred, please try again later.
+              </p>
+            )}
+
+            {loading && (
+              <div className="flex justify-center">
+                <Spinner />
+              </div>
+            )}
+
+            {output && (
+              <div>
+                {!removedBgLoaded && (
+                  <div className="justify-centertext-center flex w-full flex-col items-center">
+                    <Spinner />
+                    <p className="text-lg text-zinc-700">
+                      Adding final touches...
+                    </p>
+                  </div>
+                )}
+                <Image
+                  src={output}
+                  alt="output"
+                  className="relative mt-2 mb-4 rounded-2xl sm:mt-0"
+                  width={475}
+                  height={475}
+                  onLoadingComplete={() => setRemovedBgLoaded(true)}
+                />
+              </div>
+            )}
+
+            {removedBgLoaded && output && (
+              <div className="text-center">
+                <button
+                  className="cursor-pointer rounded-md border border-black py-2 px-6  hover:bg-black hover:text-zinc-300"
+                  onClick={() => {
+                    downloadPhoto(output, appendNewToName(photoName!));
+                  }}
+                >
+                  Download Photo
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </Container>
+
+      <Modal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        title={
+          user ? "Purchase more credits to continue" : "Sign in to continue"
+        }
+      >
+        <div className="py-4">
+          <div className="mb-8 text-center">
+            <p>Oh oh, you&apos;ve used up all your credits.</p>
+            {!user && (
+              <p>
+                Good news is by signing up you get an additional 100 free
+                credits!
+              </p>
+            )}
+          </div>
+
+          <div className="text-center">
+            {!isAuthenticated && (
+              <button
+                className="cursor-pointer rounded-md bg-black py-2 px-8 text-white hover:text-zinc-300"
+                onClick={async () => {
+                  const result = await registerOrLogin();
+                  if (result.user) {
+                    router.reload();
+                  }
+                }}
+              >
+                Sign in with Google
+              </button>
+            )}
+            {isAuthenticated && (
+              <Link href="/dashboard">
+                <button className="cursor-pointer rounded-md bg-black py-2 px-8 text-white hover:text-zinc-300">
+                  Buy credits
+                </button>
+              </Link>
+            )}
+          </div>
+        </div>
+      </Modal>
     </>
   );
 }

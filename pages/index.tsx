@@ -13,7 +13,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="mt-12">
+      <div className="mt-12 mb-7">
         <Hero
           heading="Get rid of those annoying backgrounds."
           subHeading={
@@ -26,7 +26,7 @@ export default function Home() {
         />
       </div>
 
-      <div className="mt-6 flex w-full flex-col items-center justify-between text-center sm:mt-10">
+      <div className="flex w-full flex-col items-center justify-between text-center sm:mt-10">
         <div className="mt-4 mb-16 flex flex-col space-y-10 space-x-5">
           <div className="flex flex-col sm:flex-row sm:space-x-10">
             <div>
