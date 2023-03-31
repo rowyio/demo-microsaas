@@ -2,7 +2,6 @@ import Link from "next/link";
 import { registerOrLogin } from "@/lib/auth";
 import { useAtomValue } from "jotai";
 import { userAuthAtom } from "@/atoms";
-import Image from "next/image";
 import { Home2, PhotoEdit } from "tabler-icons-react";
 
 import Dropdown from "../Dropdown";
@@ -17,7 +16,6 @@ export default function Header() {
 
   const handleLogin = async () => {
     const res = await registerOrLogin();
-    console.log(res);
     setErrorCode(res.errorCode);
   };
 

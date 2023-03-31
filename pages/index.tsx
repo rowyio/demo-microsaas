@@ -15,13 +15,14 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="mt-12 mb-7">
+      <div className="mt-12 mb-4">
         <Hero
+          showSeparator={false}
           heading="Get rid of those annoying backgrounds."
           subHeading={
             isAuthenticated
-              ? "Go ahead and start removing those backgrounds."
-              : "Remove backgrounds from up to 10 images, no charge."
+              ? "Take control of your photos - give it a try today!"
+              : "Remove backgrounds from up to 10 images, on the house."
           }
           link={{ title: "Remove Background", to: "/remove" }}
           alignment="center"
@@ -58,7 +59,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <Container className="my-20 text-center md:my-28">
+      <Container className="mt-24 border-t py-16 text-center ">
         <h2 className=" font-display text-4xl font-bold md:text-5xl">
           <span className="bg-gradient-to-r from-gray-800 via-gray-500 to-gray-800  bg-clip-text  text-transparent">
             Say goodbye to distracting backgrounds.
