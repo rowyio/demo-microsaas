@@ -30,7 +30,9 @@ export default function Home() {
         <div className="mt-4 mb-16 flex flex-col space-y-10 space-x-5">
           <div className="flex flex-col sm:flex-row sm:space-x-10">
             <div>
-              <h2 className="mb-4 text-xl font-medium">Original photo</h2>
+              <h2 className="mb-4 font-display text-2xl font-bold">
+                Original photo
+              </h2>
               <Image
                 alt="Original photo of me"
                 src="/input.jpeg"
@@ -40,7 +42,9 @@ export default function Home() {
               />
             </div>
             <div className="mt-8 sm:mt-0">
-              <h2 className="mb-4 text-xl font-medium">Background removed</h2>
+              <h2 className="mb-4 font-display text-2xl font-bold">
+                Background removed
+              </h2>
               <Image
                 alt="Restored photo of me"
                 width={400}

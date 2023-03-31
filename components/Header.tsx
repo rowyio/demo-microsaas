@@ -32,15 +32,8 @@ export default function Header() {
               href="/"
               className="flex items-center justify-center space-x-2 sm:justify-start "
             >
-              <Image
-                alt="header logo"
-                src="/photo.svg"
-                className="h-7 w-7 sm:h-8 sm:w-8"
-                width={24}
-                height={24}
-              />
-              <h1 className="ml-2 text-xl tracking-tight">
-                background removal app
+              <h1 className="ml-2 font-display text-2xl font-semibold tracking-tight">
+                background removal app.
               </h1>
             </Link>
             {isAuthenticated && (
