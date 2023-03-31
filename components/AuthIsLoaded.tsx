@@ -3,7 +3,7 @@ import {
   initialAuthState,
   initialCreditsState,
   userAuthAtom,
-} from "@/atoms";
+} from "@/atoms/atoms";
 import { anonymouslySignIn, formatUser } from "@/lib/auth";
 import { auth, db } from "@/lib/firebase";
 import { getOrCreateProfile } from "@/lib/profiles";

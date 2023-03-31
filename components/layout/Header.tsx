@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { registerOrLogin } from "@/lib/auth";
 import { useAtomValue } from "jotai";
-import { userAuthAtom } from "@/atoms";
+import { userAuthAtom } from "@/atoms/atoms";
 import { Home2, PhotoEdit } from "tabler-icons-react";
 
 import Dropdown from "../Dropdown";

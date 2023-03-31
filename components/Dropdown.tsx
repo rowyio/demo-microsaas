@@ -1,4 +1,4 @@
-import { userAuthAtom } from "@/atoms";
+import { userAuthAtom } from "@/atoms/atoms";
 import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
 import { useAtomValue } from "jotai";

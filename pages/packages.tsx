@@ -1,4 +1,4 @@
-import { creditsAtom, userAuthAtom } from "@/atoms";
+import { creditsAtom, userAuthAtom } from "@/atoms/atoms";
 import Hero from "@/components/Hero";
 import Packages from "@/components/Packages";
 import UsageBar from "@/components/UsageBar";

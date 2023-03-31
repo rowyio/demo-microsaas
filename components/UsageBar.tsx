@@ -1,4 +1,4 @@
-import { creditsAtom } from "@/atoms";
+import { creditsAtom } from "@/atoms/atoms";
 import { useAtomValue } from "jotai";
 
 type Props = {

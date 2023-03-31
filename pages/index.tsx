@@ -1,4 +1,4 @@
-import { userAuthAtom } from "@/atoms";
+import { userAuthAtom } from "@/atoms/atoms";
 import Hero from "@/components/Hero";
 import Container from "@/components/layout/Container";
 import { useAtomValue } from "jotai";

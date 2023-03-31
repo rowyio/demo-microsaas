@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { Auth, Credits } from "./lib/types";
+import { Auth, Credits } from "../lib/types";
 
 export const initialAuthState: Auth = {
   isAuthenticated: false,

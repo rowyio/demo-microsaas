@@ -16,7 +16,7 @@ import { v4 as uuidv4 } from "uuid";
 import { upload } from "@/lib/storage";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useAtomValue } from "jotai";
-import { creditsAtom, userAuthAtom } from "@/atoms";
+import { creditsAtom, userAuthAtom } from "@/atoms/atoms";
 import Container from "@/components/layout/Container";
 
 export default function RemoveBackground() {
@@ -225,9 +225,7 @@ export default function RemoveBackground() {
       <Modal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
-        title={
-          user ? "Purchase more credits to continue" : "Sign in to continue"
-        }
+        title={user ? "Credit limit reached" : "Sign in to continue"}
       >
         <div className="py-4">
           <div className="mb-8 text-center">
@@ -237,6 +235,9 @@ export default function RemoveBackground() {
                 Good news is by signing up you get an additional 100 free
                 credits!
               </p>
+            )}
+            {user && (
+              <p>You will need to purchase additional credits to continue.</p>
             )}
           </div>
 

@@ -1,4 +1,4 @@
-import { userAuthAtom } from "@/atoms";
+import { userAuthAtom } from "@/atoms/atoms";
 import { db } from "@/lib/firebase";
 import { getPackages } from "@/lib/packages";
 import { Package } from "@/lib/types";
