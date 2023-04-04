@@ -16,7 +16,7 @@ export default function Packages() {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://rowy-hooks-7tdcrfawba-uc.a.run.app/wh/profiles/jGcQyirsJjdy7CbbTBL2",
+        process.env.NEXT_PUBLIC_ROWY_CREATE_STRIPE_CHECKOUT_WEBHOOK as string,
         {
           method: "POST",
           headers: {

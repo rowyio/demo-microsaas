@@ -61,3 +61,9 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## One-Click Deploy
+
+Deploy this project using [Vercel](https://vercel.com):
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/rowyio/demo-microsaas&env=REPLICATE_API_TOKEN,STRIPE_SECRET_KEY,FIREBASE_PROJECT_ID,FIREBASE_CLIENT_EMAIL,FIREBASE_PRIVATE_KEY,NEXT_PUBLIC_FIREBASE_API_KEY,NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,NEXT_PUBLIC_FIREBASE_SENDER_ID,NEXT_PUBLIC_FIREBASE_APP_ID,NEXT_PUBLIC_FIREBASE_PROJECT_ID,NEXT_PUBLIC_ROWY_START_PREDICTION_WEBHOOK,NEXT_PUBLIC_ROWY_CREATE_STRIPE_CHECKOUT_WEBHOOK&project-name=demo-microsaas&repo-name=demo-microsaas)

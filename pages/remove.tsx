@@ -53,7 +53,7 @@ export default function RemoveBackground() {
     const uploadedImageUrl = await upload(storageRef, file);
 
     const response = await fetch(
-      "https://rowy-hooks-7tdcrfawba-uc.a.run.app/wh/profiles/dyWP1dMotfUphOHEe8UP",
+      process.env.NEXT_PUBLIC_ROWY_START_PREDICTION_WEBHOOK as string,
       {
         method: "POST",
         headers: {
