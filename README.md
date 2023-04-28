@@ -1,4 +1,5 @@
-# Background Removal App - AI MicroSaaS Template
+# AI MicroSaaS Template
+## Background Removal App
 
 This project allows users to remove the background from their photos using AI and comes integrated with Stripe payment. You can clone this project to create a AI MicroSaaS project and easily modify it for any usecase.
 
