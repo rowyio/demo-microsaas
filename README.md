@@ -39,5 +39,3 @@ One-Click deploy using [Vercel](https://vercel.com):
 1. Create an account on [Rowy](https://rowy.io/?ref=microsaas)
 2. On your workspace, create a Firebase project right from Rowy's guided UI.
 3. Create a table from the `AI background remover` template - this will give you a guided setup experience to create database table for storing your app data including Firebase Auth authenticated users as well as steps to add [Replicate](https://replicate.com/) API key along with deploying pre-built backend Cloud Functions for Replicate and Stripe payments.
-
-📺 Watch this video to get step-by-step setup guide.
