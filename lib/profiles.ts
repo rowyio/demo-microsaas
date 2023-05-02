@@ -11,7 +11,7 @@ import { getPackages } from "./packages";
 
 export async function getUserProfile(userId: string) {
   const profilesQuery = query(
-    collection(db, "profiles"),
+    collection(db, process.env.NEXT_PUBLIC_PROFILES_COLLECTION || "profiles"),
     where("userId", "==", userId)
   );
   const profilesSnapshot = await getDocs(profilesQuery);
@@ -26,10 +26,16 @@ export async function getOrCreateProfile(userId: string, isAnonymous: boolean) {
   const existingProfile = await getUserProfile(userId);
 
   if (!existingProfile) {
-    const profilesRef = collection(db, "profiles");
+    const profilesRef = collection(
+      db,
+      process.env.NEXT_PUBLIC_PROFILES_COLLECTION || "profiles"
+    );
     if (!isAnonymous) {
       const packagesQuery = query(
-        collection(db, "credit_packages"),
+        collection(
+          db,
+          process.env.NEXT_PUBLIC_PROFILES_COLLECTION || "credit_packages"
+        ),
         where("price", "==", 0)
       );
       const packagesSnapshot = await getPackages(packagesQuery);

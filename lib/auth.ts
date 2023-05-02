@@ -1,13 +1,10 @@
-import { auth, db } from "@/lib/firebase";
+import { auth } from "@/lib/firebase";
 import {
   GoogleAuthProvider,
   signInWithPopup,
   User,
   signInAnonymously,
 } from "firebase/auth";
-import { collection, doc, query, setDoc, where } from "firebase/firestore";
-import { getPackages } from "./packages";
-import { getUserProfile } from "./profiles";
 
 const provider = new GoogleAuthProvider();
 
