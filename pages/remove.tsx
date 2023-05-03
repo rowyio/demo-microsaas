@@ -53,20 +53,19 @@ export default function RemoveBackground() {
 
     const uploadedImageUrl = await upload(storageRef, file);
 
-    const response = await fetch(
-      process.env.NEXT_PUBLIC_ROWY_START_PREDICTION_WEBHOOK as string,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          token: `${user?.token}`,
-        },
-        body: JSON.stringify({
-          image: uploadedImageUrl,
-          profileId: user?.id,
-        }),
-      }
-    );
+    const { tableEnv } = await getSchema();
+
+    const response = await fetch(tableEnv.startPredictionWebhook, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: `${user?.token}`,
+      },
+      body: JSON.stringify({
+        image: uploadedImageUrl,
+        profileId: user?.id,
+      }),
+    });
 
     const prediction = await response.json();
 

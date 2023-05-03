@@ -16,8 +16,10 @@ export default function Packages() {
   const purchase = async (creditPackage: Package) => {
     setLoading(true);
     try {
+      const { tableEnv } = await getSchema();
+
       const response = await fetch(
-        process.env.NEXT_PUBLIC_ROWY_CREATE_STRIPE_CHECKOUT_WEBHOOK as string,
+        tableEnv.createStripeCheckoutSessionWebhook,
         {
           method: "POST",
           headers: {
