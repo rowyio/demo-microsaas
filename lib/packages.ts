@@ -1,8 +1,11 @@
 import { db } from "@/lib/firebase";
 import { doc, DocumentData, getDoc, getDocs, Query } from "firebase/firestore";
+import { getSchema } from "./get-schema";
 
 export async function getPackage(id: string) {
-  const packagesRef = doc(db, "credit_packages", id);
+  const { tableEnv } = await getSchema();
+
+  const packagesRef = doc(db, tableEnv.collectionIds["creditPackages"], id);
   const packagesSnap = await getDoc(packagesRef);
 
   if (packagesSnap.exists()) {

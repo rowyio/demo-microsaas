@@ -87,12 +87,11 @@ export default function RemoveBackground() {
   useEffect(() => {
     async function onPredictionComplete() {
       const { tableEnv } = await getSchema();
-      console.log(tableEnv);
       if (predictionId) {
         const unsub = onSnapshot(
           doc(
             db,
-            `${tableEnv.collectionIds["profile"]}/${user?.id}/images/${predictionId}`
+            `${tableEnv.collectionIds["profiles"]}/${user?.id}/images/${predictionId}`
           ),
           (doc) => {
             const prediction = doc.data();

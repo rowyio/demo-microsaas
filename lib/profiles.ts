@@ -7,11 +7,12 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
-import { getPackages } from "./packages";
+import { getSchema } from "./get-schema";
 
 export async function getUserProfile(userId: string) {
+  const { tableEnv } = await getSchema();
   const profilesQuery = query(
-    collection(db, process.env.NEXT_PUBLIC_PROFILES_COLLECTION || "profiles"),
+    collection(db, tableEnv.collectionIds["profiles"]),
     where("userId", "==", userId)
   );
   const profilesSnapshot = await getDocs(profilesQuery);
@@ -23,28 +24,16 @@ export async function getUserProfile(userId: string) {
 }
 
 export async function getOrCreateProfile(userId: string, isAnonymous: boolean) {
+  const { tableEnv } = await getSchema();
   const existingProfile = await getUserProfile(userId);
-
   if (!existingProfile) {
-    const profilesRef = collection(
-      db,
-      process.env.NEXT_PUBLIC_PROFILES_COLLECTION || "profiles"
-    );
+    const profilesRef = collection(db, tableEnv.collectionIds["profiles"]);
     if (!isAnonymous) {
-      const packagesQuery = query(
-        collection(
-          db,
-          process.env.NEXT_PUBLIC_PROFILES_COLLECTION || "credit_packages"
-        ),
-        where("price", "==", 0)
-      );
-      const packagesSnapshot = await getPackages(packagesQuery);
-      const packageData = packagesSnapshot[0];
       // Assign free package for new users
       await setDoc(doc(profilesRef), {
         userId,
         package: {
-          limit: packageData.data().limit,
+          limit: 10,
           used: 0,
         },
         "_createdBy.timestamp": new Date(),

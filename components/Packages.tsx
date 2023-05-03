@@ -6,6 +6,7 @@ import { collection, orderBy, query } from "firebase/firestore";
 import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import FullScreenLoader from "./FullScreenLoader";
+import { getSchema } from "@/lib/get-schema";
 
 export default function Packages() {
   const [loading, setLoading] = useState(false);
@@ -41,8 +42,10 @@ export default function Packages() {
 
   useEffect(() => {
     const loadPackages = async () => {
+      const { tableEnv } = await getSchema();
+
       const packagesQuery = query(
-        collection(db, "credit_packages"),
+        collection(db, tableEnv.collectionIds["creditPackages"]),
         orderBy("price", "asc")
       );
       const packagesSnapshot = await getPackages(packagesQuery);
