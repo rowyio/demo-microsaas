@@ -34,7 +34,7 @@ export default function Home() {
           </Link>
         </div>
         <Hero
-          className="pt-3"
+          className="pt-1"
           showSeparator={false}
           heading="Get rid of those annoying backgrounds."
           subHeading={
