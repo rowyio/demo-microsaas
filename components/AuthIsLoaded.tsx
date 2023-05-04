@@ -60,8 +60,8 @@ export default function AuthIsLoaded({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     async function onProfileChange() {
-      const { tableEnv } = await getSchema();
       if (userAuth.user) {
+        const { tableEnv } = await getSchema();
         const unsub = onSnapshot(
           doc(db, tableEnv.collectionIds["profiles"], userAuth.user.id),
           (doc) => {
