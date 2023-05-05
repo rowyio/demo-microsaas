@@ -7,9 +7,11 @@ type Props = {
   link?: { title: string; to: string };
   alignment?: "left" | "right" | "center";
   showSeparator?: boolean;
+  className?: string;
 };
 
 export default function Hero({
+  className = "",
   heading,
   subHeading,
   link,
@@ -20,7 +22,7 @@ export default function Hero({
     <div
       className={`${
         showSeparator && "border-b border-dashed"
-      } py-12 text-${alignment}`}
+      } py-12 text-${alignment} ${className}`}
     >
       <Container>
         <h1 className="font-display text-3xl font-bold leading-[1.15] md:text-5xl ">
@@ -31,7 +33,7 @@ export default function Hero({
         <p className="pt-2 text-2xl text-zinc-600">{subHeading}</p>
         {link && (
           <Link href={link.to}>
-            <button className="mt-10 cursor-pointer rounded-md bg-black py-3 px-8 text-white hover:text-zinc-300">
+            <button className="mt-14 cursor-pointer rounded-md bg-black py-3 px-8 text-white hover:text-zinc-300">
               {link.title}
             </button>
           </Link>

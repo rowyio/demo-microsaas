@@ -16,7 +16,25 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="mt-12 mb-4">
+        <div className="mt-12 flex justify-center">
+          <Link href="https://www.rowy.io/" target="_blank">
+            <div className="flex gap-2 rounded-md  border bg-zinc-100 px-5 py-1">
+              <div>
+                <p className="text-base">Powered by</p>
+              </div>
+              <div style={{ width: 60, height: "auto", position: "relative" }}>
+                <Image
+                  fill
+                  src="/rowy.png"
+                  alt="rowy logo"
+                  style={{ objectFit: "contain" }}
+                />
+              </div>
+            </div>
+          </Link>
+        </div>
         <Hero
+          className="pt-1"
           showSeparator={false}
           heading="Get rid of those annoying backgrounds."
           subHeading={
