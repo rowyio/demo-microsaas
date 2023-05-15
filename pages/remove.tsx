@@ -18,6 +18,7 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { useAtomValue } from "jotai";
 import { creditsAtom, userAuthAtom } from "@/atoms/atoms";
 import Container from "@/components/layout/Container";
+import { getSchema } from "@/lib/get-schema";
 
 export default function RemoveBackground() {
   const [localFile, setLocalFile] = useState<CustomFile>();
@@ -52,20 +53,19 @@ export default function RemoveBackground() {
 
     const uploadedImageUrl = await upload(storageRef, file);
 
-    const response = await fetch(
-      process.env.NEXT_PUBLIC_ROWY_START_PREDICTION_WEBHOOK as string,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          token: `${user?.token}`,
-        },
-        body: JSON.stringify({
-          image: uploadedImageUrl,
-          profileId: user?.id,
-        }),
-      }
-    );
+    const { tableEnv } = await getSchema();
+
+    const response = await fetch(tableEnv.startPredictionWebhook, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: `${user?.token}`,
+      },
+      body: JSON.stringify({
+        image: uploadedImageUrl,
+        profileId: user?.id,
+      }),
+    });
 
     const prediction = await response.json();
 
@@ -84,21 +84,28 @@ export default function RemoveBackground() {
 
   // Listen for when the prediction is completed
   useEffect(() => {
-    if (predictionId) {
-      const unsub = onSnapshot(
-        doc(db, `profiles/${user?.id}/images/${predictionId}`),
-        (doc) => {
-          const prediction = doc.data();
-          if (prediction && prediction.output) {
-            setOutput(prediction.output);
-            setLoading(false);
+    async function onPredictionComplete() {
+      const { tableEnv } = await getSchema();
+      if (predictionId) {
+        const unsub = onSnapshot(
+          doc(
+            db,
+            `${tableEnv.collectionIds["profiles"]}/${user?.id}/images/${predictionId}`
+          ),
+          (doc) => {
+            const prediction = doc.data();
+            if (prediction && prediction.output) {
+              setOutput(prediction.output);
+              setLoading(false);
+            }
           }
-        }
-      );
-      return () => {
-        unsub();
-      };
+        );
+        return () => {
+          unsub();
+        };
+      }
     }
+    onPredictionComplete();
   }, [predictionId]);
 
   useEffect(() => {

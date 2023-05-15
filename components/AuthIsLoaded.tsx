@@ -6,6 +6,7 @@ import {
 } from "@/atoms/atoms";
 import { anonymouslySignIn, formatUser } from "@/lib/auth";
 import { auth, db } from "@/lib/firebase";
+import { getSchema } from "@/lib/get-schema";
 import { getOrCreateProfile } from "@/lib/profiles";
 import { Auth, ProfilePackage } from "@/lib/types";
 import { onAuthStateChanged } from "firebase/auth";
@@ -58,19 +59,26 @@ export default function AuthIsLoaded({ children }: { children: ReactNode }) {
   }, [setCredits, setUserAuth]);
 
   useEffect(() => {
-    if (userAuth.user) {
-      const unsub = onSnapshot(doc(db, "profiles", userAuth.user.id), (doc) => {
-        const profile = doc.data();
-        if (profile) {
-          const { used, limit } = profile.package as ProfilePackage;
-          setCredits({ used, limit });
-        }
-      });
+    async function onProfileChange() {
+      if (userAuth.user) {
+        const { tableEnv } = await getSchema();
+        const unsub = onSnapshot(
+          doc(db, tableEnv.collectionIds["profiles"], userAuth.user.id),
+          (doc) => {
+            const profile = doc.data();
+            if (profile) {
+              const { used, limit } = profile.package as ProfilePackage;
+              setCredits({ used, limit });
+            }
+          }
+        );
 
-      return () => {
-        unsub();
-      };
+        return () => {
+          unsub();
+        };
+      }
     }
+    onProfileChange();
   }, [userAuth.user, setCredits]);
 
   // useEffect(() => {

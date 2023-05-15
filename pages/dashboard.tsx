@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import Container from "@/components/layout/Container";
 import downloadPhoto, { appendNewToName } from "@/lib/download";
 import { db } from "@/lib/firebase";
+import { getSchema } from "@/lib/get-schema";
 import { Prediction, Profile } from "@/lib/types";
 import { collection, getDocs, query } from "firebase/firestore";
 import { useAtomValue } from "jotai";
@@ -10,6 +11,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { Download } from "tabler-icons-react";
 
 export default function Dashboard() {
   const { isAuthenticated, user } = useAtomValue(userAuthAtom);
@@ -22,7 +24,11 @@ export default function Dashboard() {
 
   useEffect(() => {
     const loadImages = async (user: Profile) => {
-      const imagesQuery = query(collection(db, "profiles", user.id, "images"));
+      const { tableEnv } = await getSchema();
+
+      const imagesQuery = query(
+        collection(db, tableEnv.collectionIds["profiles"], user.id, "images")
+      );
       const imagesSnap = await getDocs(imagesQuery);
 
       if (!imagesSnap.empty) {
@@ -75,7 +81,10 @@ export default function Dashboard() {
                         downloadPhoto(image.input, appendNewToName(image.id));
                       }}
                     >
-                      Download Photo
+                      <div className="flex gap-3">
+                        <Download />
+                        Download Photo
+                      </div>
                     </button>
                   </div>
                   <div className="space-y-4 text-center">
@@ -92,7 +101,10 @@ export default function Dashboard() {
                         downloadPhoto(image.output, appendNewToName(image.id));
                       }}
                     >
-                      Download Photo
+                      <div className="flex gap-3">
+                        <Download />
+                        Download Photo
+                      </div>
                     </button>
                   </div>
                 </li>
