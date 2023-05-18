@@ -18,11 +18,11 @@ This project allows users to remove the background from their photos using AI an
 
 ## How it works
 
-This app uses the [modnet](https://github.com/pollinations/modnet) API via [Replicate](https://replicate.com/) to removed background of images. Once users upload images, these images first gets stored to Firebase storage and then using low-code Cloud Functions built with [Rowy](https://rowy.io/?ref=microsaas), the image's background is removed by making API call to Replicate which returns the photo with its background removed. 
+This app uses the [modnet](https://github.com/pollinations/modnet) API via [Replicate](https://replicate.com/) to remove the background of images. Once users upload images, these images first gets stored to Firebase storage and then using low-code Cloud Functions built with [Rowy](https://rowy.io/?ref=microsaas), the image's background is removed by making API call to Replicate which returns the photo with its background removed. 
 
 User authentication is managed via Firebase Auth and managed easily on User management table of Rowy. All data such as user profile, generated images, and credit packges are stored in Firestore, while the associated stripe payment webhook and cloud functions are all managed in [Rowy](https://rowy.io/?ref=microsaas).
 
-This app also have Stripe payment integrated with webhooks built in low-code using Rowy with the following plan that can be customized easily.
+This app also has Stripe payment integrated with webhooks built in low-code using Rowy, with the following plan that can be easily customized.
 - Without account creation → 10 free credits
 - With logged in users → unlock 100 credits along with ability to track paid users
 
@@ -34,7 +34,7 @@ This app also have Stripe payment integrated with webhooks built in low-code usi
 
 One-Click deploy using [Vercel](https://vercel.com):
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/rowyio/demo-microsaas&env=REPLICATE_API_TOKEN,STRIPE_SECRET_KEY,FIREBASE_PROJECT_ID,FIREBASE_CLIENT_EMAIL,FIREBASE_PRIVATE_KEY,NEXT_PUBLIC_FIREBASE_API_KEY,NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,NEXT_PUBLIC_FIREBASE_SENDER_ID,NEXT_PUBLIC_FIREBASE_APP_ID,NEXT_PUBLIC_FIREBASE_PROJECT_ID,NEXT_PUBLIC_PROFILES_TABLE_ID&project-name=demo-microsaas&repo-name=demo-microsaas)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/rowyio/demo-microsaas&env=REPLICATE_API_TOKEN,STRIPE_SECRET_KEY,NEXT_PUBLIC_FIREBASE_API_KEY,NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,NEXT_PUBLIC_FIREBASE_SENDER_ID,NEXT_PUBLIC_FIREBASE_APP_ID,NEXT_PUBLIC_FIREBASE_PROJECT_ID,NEXT_PUBLIC_PROFILES_TABLE_ID&project-name=demo-microsaas&repo-name=demo-microsaas)
 
 ### Backend Template
 1. Create an account on [Rowy](https://rowy.io/?ref=microsaas)

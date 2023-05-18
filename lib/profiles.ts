@@ -32,8 +32,9 @@ export async function getOrCreateProfile(userId: string, isAnonymous: boolean) {
       // Assign free package for new users
       await setDoc(doc(profilesRef), {
         userId,
+        isAnonymous: false,
         package: {
-          limit: 10,
+          limit: 100,
           used: 0,
         },
         "_createdBy.timestamp": new Date(),
