@@ -5,8 +5,6 @@ import { TABLE_ID } from "./const";
 type TableEnv = {
   tableEnv: {
     collectionIds: Record<string, any>;
-    startPredictionWebhook: string;
-    createStripeCheckoutSessionWebhook: string;
   };
 };
 

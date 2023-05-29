@@ -7,6 +7,7 @@ import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import FullScreenLoader from "./FullScreenLoader";
 import { getSchema } from "@/lib/get-schema";
+import { CREATE_STRIPE_CHECKOUT_ENDPOINT } from "@/lib/const";
 
 export default function Packages() {
   const [loading, setLoading] = useState(false);
@@ -18,17 +19,14 @@ export default function Packages() {
     try {
       const { tableEnv } = await getSchema();
 
-      const response = await fetch(
-        tableEnv.createStripeCheckoutSessionWebhook,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            token: `${user?.token}`,
-          },
-          body: JSON.stringify({ creditPackage, profileId: user?.id }),
-        }
-      );
+      const response = await fetch(CREATE_STRIPE_CHECKOUT_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: `${user?.token}`,
+        },
+        body: JSON.stringify({ creditPackage, profileId: user?.id }),
+      });
 
       if (response.ok) {
         const data = (await response.json()) as { url: string };

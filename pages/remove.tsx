@@ -19,6 +19,7 @@ import { useAtomValue } from "jotai";
 import { creditsAtom, userAuthAtom } from "@/atoms/atoms";
 import Container from "@/components/layout/Container";
 import { getSchema } from "@/lib/get-schema";
+import { START_PREDICTION_ENDPOINT } from "@/lib/const";
 
 export default function RemoveBackground() {
   const [localFile, setLocalFile] = useState<CustomFile>();
@@ -55,7 +56,7 @@ export default function RemoveBackground() {
 
     const { tableEnv } = await getSchema();
 
-    const response = await fetch(tableEnv.startPredictionWebhook, {
+    const response = await fetch(START_PREDICTION_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
