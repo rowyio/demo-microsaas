@@ -63,7 +63,11 @@ export default function AuthIsLoaded({ children }: { children: ReactNode }) {
       if (userAuth.user) {
         const { tableEnv } = await getSchema();
         const unsub = onSnapshot(
-          doc(db, tableEnv.collectionIds["profiles"], userAuth.user.id),
+          doc(
+            db,
+            tableEnv.collectionIds["microSaaSProfiles"],
+            userAuth.user.id
+          ),
           (doc) => {
             const profile = doc.data();
             if (profile) {

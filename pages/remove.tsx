@@ -91,7 +91,7 @@ export default function RemoveBackground() {
         const unsub = onSnapshot(
           doc(
             db,
-            `${tableEnv.collectionIds["profiles"]}/${user?.id}/images/${predictionId}`
+            `${tableEnv.collectionIds["microSaaSProfiles"]}/${user?.id}/images/${predictionId}`
           ),
           (doc) => {
             const prediction = doc.data();

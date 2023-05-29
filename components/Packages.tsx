@@ -45,7 +45,7 @@ export default function Packages() {
       const { tableEnv } = await getSchema();
 
       const packagesQuery = query(
-        collection(db, tableEnv.collectionIds["creditPackages"]),
+        collection(db, tableEnv.collectionIds["microSaaSPackages"]),
         orderBy("price", "asc")
       );
       const packagesSnapshot = await getPackages(packagesQuery);

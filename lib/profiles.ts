@@ -12,7 +12,7 @@ import { getSchema } from "./get-schema";
 export async function getUserProfile(userId: string) {
   const { tableEnv } = await getSchema();
   const profilesQuery = query(
-    collection(db, tableEnv.collectionIds["profiles"]),
+    collection(db, tableEnv.collectionIds["microSaaSProfiles"]),
     where("userId", "==", userId)
   );
   const profilesSnapshot = await getDocs(profilesQuery);
@@ -27,7 +27,10 @@ export async function getOrCreateProfile(userId: string, isAnonymous: boolean) {
   const { tableEnv } = await getSchema();
   const existingProfile = await getUserProfile(userId);
   if (!existingProfile) {
-    const profilesRef = collection(db, tableEnv.collectionIds["profiles"]);
+    const profilesRef = collection(
+      db,
+      tableEnv.collectionIds["microSaaSProfiles"]
+    );
     if (!isAnonymous) {
       // Assign free package for new users
       await setDoc(doc(profilesRef), {

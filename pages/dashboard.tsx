@@ -27,7 +27,12 @@ export default function Dashboard() {
       const { tableEnv } = await getSchema();
 
       const imagesQuery = query(
-        collection(db, tableEnv.collectionIds["profiles"], user.id, "images")
+        collection(
+          db,
+          tableEnv.collectionIds["microSaaSProfiles"],
+          user.id,
+          "images"
+        )
       );
       const imagesSnap = await getDocs(imagesQuery);
 
