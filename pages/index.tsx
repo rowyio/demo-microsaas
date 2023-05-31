@@ -17,7 +17,7 @@ export default function Home() {
       </Head>
       <div className="mt-12 mb-4">
         <div className="mt-12 flex justify-center">
-          <Link href="https://www.rowy.io/" target="_blank">
+          <Link href="https://www.rowy.io?ref=microsaas" target="_blank">
             <div className="flex gap-2 rounded-md  border bg-zinc-100 px-5 py-1">
               <div>
                 <p className="text-base">Powered by</p>
