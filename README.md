@@ -3,7 +3,7 @@
 
 This project allows users to remove the background from their photos using AI and comes integrated with Stripe payment. You can clone this project to create a AI MicroSaaS project and easily modify it for any usecase.
 
-[![Remove Background App](./public/screenshot.png)](https://demo-microsaas.vercel.app/)
+[![Remove Background App](./public/screenshot.jpeg)](https://demo-microsaas.vercel.app/)
 
 ## Stack used
 
