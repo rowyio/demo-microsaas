@@ -5,7 +5,7 @@ import { getSchema } from "./get-schema";
 export async function getPackage(id: string) {
   const { tableEnv } = await getSchema();
 
-  const packagesRef = doc(db, tableEnv.collectionIds["creditPackages"], id);
+  const packagesRef = doc(db, tableEnv.collectionIds["microSaaSPackages"], id);
   const packagesSnap = await getDoc(packagesRef);
 
   if (packagesSnap.exists()) {
