@@ -5,7 +5,6 @@ import { useAtomValue } from "jotai";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { BrandYoutube } from "tabler-icons-react";
 
 export default function Home() {
   const { isAuthenticated } = useAtomValue(userAuthAtom);
@@ -47,8 +46,7 @@ export default function Home() {
           alignment="center"
         />
       </div>
-
-      <div className="mb-10 flex w-full flex-col items-center justify-between text-center sm:mb-20 sm:mt-10">
+      <div className="mb-10 flex w-full flex-col items-center justify-between text-center sm:mb-20 sm:mt-2">
         <div className="mt-4flex flex-col space-y-10 space-x-5">
           <div className="flex flex-col sm:flex-row sm:space-x-10">
             <div>
@@ -78,7 +76,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <Container className="mb-20">
+      <Container className="mb-14 sm:mb-20">
         <div className="py-5">
           <h2 className="mb-2 text-center font-display text-3xl font-semibold">
             Want to know what it takes to build an app like this?
