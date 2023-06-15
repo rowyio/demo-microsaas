@@ -78,12 +78,18 @@ export default function Home() {
       </div>
       <Container className="mb-14 sm:mb-20">
         <div className="py-5">
-          <h2 className="mb-2 text-center font-display text-3xl font-semibold">
-            Want to know what it takes to build an app like this?
-          </h2>
-          <p className="flex items-center justify-center gap-1 text-2xl">
+          <h1 className="text-center font-display text-3xl font-bold leading-[1.15] md:text-5xl">
+            <span className="bg-gradient-to-r from-gray-800 via-gray-500 to-gray-800  bg-clip-text font-display text-4xl font-extrabold leading-tight text-transparent sm:text-4xl sm:leading-tight">
+              Want to know what it takes to build an app like this?
+            </span>
+          </h1>
+          <p className="flex items-center justify-center gap-1 pt-3 text-2xl">
             🍿 Check out the{" "}
-            <a href="#" className="underline">
+            <a
+              href="https://www.youtube.com/watch?v=GLHiWYBZH2M"
+              className="underline"
+              target="_blank"
+            >
               video tutorial
             </a>
           </p>
