@@ -5,20 +5,19 @@ import { Package } from "@/lib/types";
 import { collection, orderBy, query } from "firebase/firestore";
 import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
-import FullScreenLoader from "./FullScreenLoader";
 import { getSchema } from "@/lib/get-schema";
 import { CREATE_STRIPE_CHECKOUT_ENDPOINT } from "@/lib/const";
+import Spinner from "./Spinner";
 
 export default function Packages() {
   const [loading, setLoading] = useState(false);
+  const [loadingPackages, setLoadingPackages] = useState(false);
   const { user } = useAtomValue(userAuthAtom);
   const [packages, setPackages] = useState<Package[]>();
 
   const purchase = async (creditPackage: Package) => {
     setLoading(true);
     try {
-      const { tableEnv } = await getSchema();
-
       const response = await fetch(CREATE_STRIPE_CHECKOUT_ENDPOINT, {
         method: "POST",
         headers: {
@@ -42,6 +41,7 @@ export default function Packages() {
 
   useEffect(() => {
     const loadPackages = async () => {
+      setLoadingPackages(true);
       const { tableEnv } = await getSchema();
 
       const packagesQuery = query(
@@ -56,9 +56,17 @@ export default function Packages() {
       // Filter out free package
       const filteredPackages = allPackages.filter((item) => item.price !== 0);
       setPackages(filteredPackages);
+      setLoadingPackages(false);
     };
     loadPackages();
   }, []);
+
+  if (loadingPackages)
+    return (
+      <div className="mt-10 flex justify-center">
+        <Spinner />
+      </div>
+    );
 
   return (
     <div className="gap-8 space-y-10 sm:block md:flex md:space-y-0">
@@ -66,7 +74,7 @@ export default function Packages() {
         packages.map((pack) => (
           <div
             key={pack.id}
-            className="flex-1 rounded-md border border-gray-200 bg-white shadow-lg"
+            className="flex-1 rounded-md border border-gray-200 "
           >
             <div className="px-4 py-9">
               <div className="flex justify-center gap-2">
@@ -88,7 +96,6 @@ export default function Packages() {
             </div>
           </div>
         ))}
-      <FullScreenLoader text="Preparing checkout" isOpen={loading} />
     </div>
   );
 }

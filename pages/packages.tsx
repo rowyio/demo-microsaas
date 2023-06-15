@@ -37,7 +37,7 @@ export default function BuyCredits() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="mb-16">
+      <div className="mb-20">
         <div className="mt-12">
           <Hero
             heading="Purchase credits"

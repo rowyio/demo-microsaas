@@ -18,11 +18,11 @@ export default function Home() {
       <div className="mt-12 mb-4">
         <div className="mt-12 flex justify-center">
           <Link href="https://www.rowy.io?ref=microsaas" target="_blank">
-            <div className="flex gap-2 rounded-md  border bg-zinc-100 px-5 py-1">
+            <div className="flex gap-2 rounded-md  bg-slate-100 px-5 py-1">
               <div>
-                <p className="text-base">Powered by</p>
+                <p className="text-lg">Powered by</p>
               </div>
-              <div style={{ width: 60, height: "auto", position: "relative" }}>
+              <div style={{ width: 64, height: "auto", position: "relative" }}>
                 <Image
                   fill
                   src="/rowy.png"
@@ -46,8 +46,7 @@ export default function Home() {
           alignment="center"
         />
       </div>
-
-      <div className="mb-11 flex w-full flex-col items-center justify-between text-center sm:mb-28 sm:mt-10">
+      <div className="mb-10 flex w-full flex-col items-center justify-between text-center sm:mb-20 sm:mt-2">
         <div className="mt-4flex flex-col space-y-10 space-x-5">
           <div className="flex flex-col sm:flex-row sm:space-x-10">
             <div>
@@ -77,6 +76,25 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Container className="mb-14 sm:mb-20">
+        <div className="py-5">
+          <h1 className="text-center font-display text-3xl font-bold leading-[1.15] md:text-5xl">
+            <span className="bg-gradient-to-r from-gray-800 via-gray-500 to-gray-800  bg-clip-text font-display text-4xl font-extrabold leading-tight text-transparent sm:text-4xl sm:leading-tight">
+              Want to know what it takes to build an app like this?
+            </span>
+          </h1>
+          <p className="flex items-center justify-center gap-1 pt-3 text-2xl">
+            🍿 Check out the{" "}
+            <a
+              href="https://www.youtube.com/watch?v=GLHiWYBZH2M"
+              className="underline"
+              target="_blank"
+            >
+              video tutorial
+            </a>
+          </p>
+        </div>
+      </Container>
     </>
   );
 }
