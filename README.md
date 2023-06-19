@@ -7,7 +7,7 @@ This project allows users to remove the background from their photos using AI an
 
 ## Stack used
 
-**App Frontend**: Next.js
+**App Frontend**: Next.js  
 **Database**: Firebase  
 **CMS**: Rowy  
 **Auth**: Firebase Auth  
